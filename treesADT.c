@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
-
 typedef struct node
 {
     struct node * treeQtyTail; // tail to next neighborhood node by order of amount of trees per neighborhood
