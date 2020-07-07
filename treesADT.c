@@ -37,4 +37,20 @@ treesADT newTree()
     return tree;
 }
 
+void freeRec(Neighborhood * hood, Tree * tree)
+{
+    if(hood != NULL && tree != NULL)
+        freeRec(hood->treeQtyTail, tree->treeTail);
+    if(hood == NULL && tree != NULL)
+        freeRec(hood, tree->treeTail);
+    if(hood != NULL && tree == NULL)
+        freeRec(hood->treeQtyTail, tree);
+    free(hood);
+    free(tree);
+}
 
+void freeTrees(treesADT trees)
+{
+    freeRec(trees->treeQtyFirst, trees->treeFirst);
+    free(trees);
+}
