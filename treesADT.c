@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
+typedef treesCDT *treesADT;
 typedef struct node
 {
     struct node * treeQtyTail; // tail to next neighborhood node by order of amount of trees per neighborhood
@@ -53,4 +54,10 @@ void freeTrees(treesADT trees)
     freeRec(trees->treeQtyFirst, trees->treeFirst);
     free(trees);
 }
+Neighborhood *addRec(Neighborhood first, )
+void addHood(Neighborhood hood, treesADT tree)
+{
+
+    Neighborhood *aux=NULL;//we create aux to save the node created
+    tree->treeQtyFirst=addRec(tree->treeQtyFirst,hood, &aux);
 }
