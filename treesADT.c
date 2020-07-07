@@ -54,3 +54,4 @@ void freeTrees(treesADT trees)
     freeRec(trees->treeQtyFirst, trees->treeFirst);
     free(trees);
 }
+}
