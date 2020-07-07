@@ -32,7 +32,6 @@ treesADT newTree()
     if((tree = calloc(1,sizeof(treesCDT))) == NULL )
     {
         printf("No memory available");
-        return NO_MEM;
     }
     return tree;
 }
