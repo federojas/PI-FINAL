@@ -18,3 +18,23 @@ typedef struct node
     char * name; // scientific name
     size_t diameterMean; // diameter average
 }Tree;
+
+typedef struct     
+{
+    Neighborhood * treeQtyFirst; // pointer to first node in descending order by quantity of trees
+    Neighborhood * treePerHabFirst; // pointer to first node in descending order by amount of trees per habitant
+    Tree * treeFirst; // pointer to first node in descending order by diamater average of a tree type
+}treesCDT;
+
+treesADT newTree()
+{
+    treesADT tree;
+    if((tree = calloc(1,sizeof(treesCDT))) == NULL )
+    {
+        printf("No memory available");
+        return no_Mem;
+    }
+    return tree;
+}
+
+
