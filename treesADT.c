@@ -18,3 +18,5 @@ typedef struct node
     char * name; // scientific name
     size_t diameterMean; // diameter average
 }Tree;
+//function in which we add nodes and organize them with the criteria of query1 and query2
+void add()
