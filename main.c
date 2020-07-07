@@ -4,14 +4,14 @@
 #include <string.h>
 //include our ADT.h later
 #define OK 0 // poner en el .H
-enum errors {arg_Err = 1, no_Mem, }; // poner en el .H
+enum errors {ARG_ERR = 1, NO_MEM, }; // poner en el .H
 
 int main(int argc, char const *argv[])
 {
     if(argc != 3)
     {
         printf("Incorrect amount of arguments.\n");
-        return arg_Err;
+        return ARG_ERR;
     }
     // initialize ADT
     // the csv files are created
