@@ -3,8 +3,8 @@
 #include <ctype.h>
 #include <string.h>
 //include our ADT.h later
-#define OK 0
-enum errors {arg_Err = 1, };
+#define OK 0 // poner en el .H
+enum errors {arg_Err = 1, no_Mem, }; // poner en el .H
 
 int main(int argc, char const *argv[])
 {
