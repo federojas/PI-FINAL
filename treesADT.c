@@ -3,18 +3,18 @@
 #include <ctype.h>
 #include <string.h>
 typedef treesCDT *treesADT;
-typedef struct node
+typedef struct node1
 {
-    struct node * treeQtyTail; // tail to next neighborhood node by order of amount of trees per neighborhood
-    struct node * treesPerHabTail; // tail to next neighborhood node by order of amount of trees per habitant
+    struct node1 * treeQtyTail; // tail to next neighborhood node by order of amount of trees per neighborhood
+    struct node1 * treesPerHabTail; // tail to next neighborhood node by order of amount of trees per habitant
     char * name; // neighborhood name
     size_t treeQty; // amount of trees per neighborhood
     size_t treesPerHab; // amount of trees per habitant
 }Neighborhood;
 
-typedef struct node
+typedef struct node2
 {
-    struct node * treeTail; // tail to next tree node
+    struct node2 * treeTail; // tail to next tree node
     char * name; // scientific name
     size_t diameterMean; // diameter average
 }Tree;
@@ -58,6 +58,6 @@ Neighborhood *addRec(Neighborhood first, )
 void addHood(Neighborhood hood, treesADT tree)
 {
 
-    Neighborhood *aux=NULL;//we create aux to save the node created
+    Neighborhood *aux=NULL;// an auxiliary pointer to node is created to save the newly created node's memory location
     tree->treeQtyFirst=addRec(tree->treeQtyFirst,hood, &aux);
 }
