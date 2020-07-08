@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
-typedef treesCDT *treesADT;
+
 typedef struct node1
 {
     struct node1 * treeQtyTail; // tail to next neighborhood node by order of amount of trees per neighborhood
@@ -19,12 +19,14 @@ typedef struct node2
     size_t diameterMean; // diameter average
 }Tree;
 
-typedef struct     
+typedef struct 
 {
     Neighborhood * treeQtyFirst; // pointer to first node in descending order by quantity of trees
     Neighborhood * treePerHabFirst; // pointer to first node in descending order by amount of trees per habitant
     Tree * treeFirst; // pointer to first node in descending order by diamater average of a tree type
 }treesCDT;
+
+typedef treesCDT * treesADT;
 
 treesADT newTree()
 {
@@ -37,7 +39,7 @@ treesADT newTree()
     return tree;
 }
 
-void freeRec(Neighborhood * hood, Tree * tree)
+static void freeRec(Neighborhood * hood, Tree * tree)
 {
     if(hood != NULL && tree != NULL)
         freeRec(hood->treeQtyTail, tree->treeTail);
@@ -54,10 +56,21 @@ void freeTrees(treesADT trees)
     freeRec(trees->treeQtyFirst, trees->treeFirst);
     free(trees);
 }
-Neighborhood *addRec(Neighborhood first, )
+static Neighborhood *addRecHood(Neighborhood first, )
 void addHood(Neighborhood hood, treesADT tree)
 {
 
     Neighborhood *aux=NULL;// an auxiliary pointer to node is created to save the newly created node's memory location
     tree->treeQtyFirst=addRec(tree->treeQtyFirst,hood, &aux);
 }
+
+static Tree * addTreeRec(Tree * tree, Tree tree)
+{
+
+}
+
+void addTree(treesADT tree_collection, Tree tree)
+{
+    tree_collection->treeFirst = addTreeRec(tree_collection->treeFirst, tree);
+}
+
