@@ -12,12 +12,15 @@ typedef struct node1
     size_t treesPerHab; // amount of trees per habitant
 }Neighborhood;
 
-typedef struct node2
-{
-    struct node2 * treeTail; // tail to next tree node
+typedef struct tTree {
     char * name; // scientific name
     size_t diameterMean; // diameter average
-}Tree;
+} tTree;
+
+typedef struct node2 {
+    tTree tree;             // specs of the current tree
+    struct node2 * treeTail; // tail to next tree node
+} Tree;
 
 typedef struct 
 {
