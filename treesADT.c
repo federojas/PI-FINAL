@@ -30,6 +30,7 @@ treesADT newTree() {
     return tree;
 }
 
+<<<<<<< HEAD
 void freeTree
 static Neighborhood *addRecHood(Neighborhood first, )
 void addHood(Neighborhood hood, treesADT tree)
@@ -38,14 +39,8 @@ void addHood(Neighborhood hood, treesADT tree)
     Neighborhood *aux=NULL;// an auxiliary pointer to node is created to save the newly created node's memory location
     tree->treeQtyFirst=addRec(tree->treeQtyFirst,hood, &aux);
 }
+=======
 
-static Tree * addTreeRec(Tree * tree, Tree tree)
-{
+>>>>>>> 1d4453e778f06029cffa42f2562d6c5d5bdc8417
 
-}
-
-void addTree(treesADT tree_collection, Tree tree)
-{
-    tree_collection->treeFirst = addTreeRec(tree_collection->treeFirst, tree);
-}
 
