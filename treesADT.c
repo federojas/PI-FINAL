@@ -6,12 +6,15 @@
 typedef struct tHood {
     char * hood_name;
     size_t habitants;
+    size_t treeQty;
+     size_t treesPerHab;
 } tHood;
 
 typedef struct tTree {
     char * common_name; // scientific name
     size_t diameter;
     size_t qty;
+    size_t diameterMean; // average diameter of tree species
 } tTree;
 
 typedef struct hood {
@@ -25,9 +28,9 @@ typedef struct tree {
 } tree;
 
 typedef struct treesCDT {
-    hood * firstHood1;          // tomando con orden qty
-    hood * firstHood2;           // tomando con orden qty/habitants
-    tree * firstTreeByDiameter;
+    hood * firstHoodQty;          // neighborhoos in descending order by qty
+    hood * firstHoodHab;          // neighborhoos in descending order by qty/habitants
+    tree * firstTreeByDiameter;   // trees in descending order by average species diameter
 } treesCDT;
 
 typedef struct treesCDT * treesADT;
