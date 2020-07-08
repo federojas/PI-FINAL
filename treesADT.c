@@ -3,6 +3,35 @@
 #include <ctype.h>
 #include <string.h>
 
+typedef struct tHood {
+    char * hood_name;
+    size_t habitants;
+} tHood;
+
+typedef struct tTree {
+    char * common_name; // scientific name
+    size_t diameter;
+    size_t qty;
+} tTree;
+
+typedef struct hood {
+    tHood hood;
+    struct hood * tail;
+} hood;
+
+typedef struct tree {
+    tTree tree;
+    struct tree * tail;
+} tree;
+
+typedef struct treesCDT {
+    hood * firstHood1;          // tomando con orden qty
+    hood * firstHood2;           // tomando con orden qty/habitants
+    tree * firstTreeByDiameter;
+} treesCDT;
+
+typedef struct treesCDT * treesADT;
+
 typedef struct node1
 {
     struct node1 * treeQtyTail; // tail to next neighborhood node by order of amount of trees per neighborhood
