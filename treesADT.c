@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
-typedef treesCDT *treesADT;
 
 typedef struct node1
 {
@@ -11,25 +10,26 @@ typedef struct node1
     char * name; // neighborhood name
     size_t treeQty; // amount of trees per neighborhood
     size_t treesPerHab; // amount of trees per habitant
-} Neighborhood;
+}Neighborhood;
 
-typedef struct tTree {
+typedef struct node2
+{
+    struct node2 * treeTail; // tail to next tree node
     char * name; // scientific name
     size_t diameterMean; // diameter average
-} tTree;
+}Tree;
 
-typedef struct node2 {
-    tTree tree;             // specs of the current tree
-    struct node2 * treeTail; // tail to next tree node
-} Tree;
-
-typedef struct treesCDT {
+typedef struct 
+{
     Neighborhood * treeQtyFirst; // pointer to first node in descending order by quantity of trees
-    Neighborhood * treesPerHabFirst; // pointer to first node in descending order by amount of trees per habitant
+    Neighborhood * treePerHabFirst; // pointer to first node in descending order by amount of trees per habitant
     Tree * treeFirst; // pointer to first node in descending order by diamater average of a tree type
-} treesCDT;
+}treesCDT;
 
-treesADT newTree() {
+typedef treesCDT * treesADT;
+
+treesADT newTree()
+{
     treesADT tree;
     if((tree = calloc(1,sizeof(treesCDT))) == NULL )
     {
@@ -39,7 +39,7 @@ treesADT newTree() {
     return tree;
 }
 
-void freeRec(Neighborhood * hood, Tree * tree)
+static void freeRec(Neighborhood * hood, Tree * tree)
 {
     if(hood != NULL && tree != NULL)
         freeRec(hood->treeQtyTail, tree->treeTail);
@@ -56,14 +56,21 @@ void freeTrees(treesADT trees)
     freeRec(trees->treeQtyFirst, trees->treeFirst);
     free(trees);
 }
+static Neighborhood *addRecHood(Neighborhood first, )
+void addHood(Neighborhood hood, treesADT tree)
+{
 
-Neighborhood * addRecNbhd (Neighborhood * first, 
-
-void addNbhd (Neighborhood nbhd, treesADT tree) {
-    Neighborhood * aux = NULL;// an auxiliary pointer to node is created to save the newly created node's memory location
-    tree->treeQtyFirst = addRec (tree->treeQtyFirst, nbhd, aux);
+    Neighborhood *aux=NULL;// an auxiliary pointer to node is created to save the newly created node's memory location
+    tree->treeQtyFirst=addRec(tree->treeQtyFirst,hood, &aux);
 }
 
-void addTree (treesADT trees, Tree tree) {
+static Tree * addTreeRec(Tree * tree, Tree tree)
+{
 
 }
+
+void addTree(treesADT tree_collection, Tree tree)
+{
+    tree_collection->treeFirst = addTreeRec(tree_collection->treeFirst, tree);
+}
+
