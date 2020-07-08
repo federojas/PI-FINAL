@@ -28,18 +28,27 @@ int main(int argc, char const *argv[])
     query3=fopen("query3.csv","w");
     }*/
 
-    char asd[100];
-    //fgets(asd,100,trees);       
-    fgets(asd,100,neighborhoods); 
-    printf("%s\n",asd);      
-    char *token;
-    token=strtok(asd,";");
-    //fgets(asd,100,neighborhoods)
-    while(token!=NULL){
-        printf("%s\n",token);
-        int key=atoi(token);
-        token=strtok(NULL,";");
-        //printf("%d\n",key);
+    char asd[1000];
+    //fgets(asd,100,trees);    ESTE SI VA    
+    fgets(asd,1000,neighborhoods); //skip first line 
+    /*printf("%s\n",asd);      
+    char *token=strtok(asd,";\n\r\t");
+    printf("%s\n",token)   ;
+    token=strtok(NULL,";\n\r\t");
+    printf("%s\n",token)   ;
+    fgets(asd,1000,neighborhoods);
+    token=strtok(asd,";\n\r\t");
+    printf("%s\n",token)   ;
+    token=strtok(NULL,";\n\r\t"); TODA ESTA PARTE NO VA
+    printf("%s\n",token)   ;*/
+        char *token;
+    while(fgets(asd,1000,neighborhoods)){
+        token=strtok(asd,";\n\t\r");
+        int hood=atoi(token);
+        token=strtok(NULL,";\n\r\t");
+        int people=atoi(token);
+        printf("%d\t%d\n",hood,people);
+
     }
     return OK;
 }
