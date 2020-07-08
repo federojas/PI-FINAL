@@ -76,38 +76,6 @@ treesADT newTree()
     return tree;
 }
 
-static void freeRec(Neighborhood * hood, Tree * tree)
-{
-    if(hood != NULL && tree != NULL)
-        freeRec(hood->treeQtyTail, tree->treeTail);
-    if(hood == NULL && tree != NULL)
-        freeRec(hood, tree->treeTail);
-    if(hood != NULL && tree == NULL)
-        freeRec(hood->treeQtyTail, tree);
-    free(hood);
-    free(tree);
-}
 
-void freeTrees(treesADT trees)
-{
-    freeRec(trees->treeQtyFirst, trees->treeFirst);
-    free(trees);
-}
-static Neighborhood *addRecHood(Neighborhood first, )
-void addHood(Neighborhood hood, treesADT tree)
-{
 
-    Neighborhood *aux=NULL;// an auxiliary pointer to node is created to save the newly created node's memory location
-    tree->treeQtyFirst=addRec(tree->treeQtyFirst,hood, &aux);
-}
-
-static Tree * addTreeRec(Tree * tree, Tree tree)
-{
-
-}
-
-void addTree(treesADT tree_collection, Tree tree)
-{
-    tree_collection->treeFirst = addTreeRec(tree_collection->treeFirst, tree);
-}
 

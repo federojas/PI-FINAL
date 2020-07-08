@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
-//include our ADT.h later
+//INCLUIR HOODADT.H Y TREESADT.H
 #define OK 0 // poner en el .H
 enum errors {ARG_ERR = 1, NO_MEM, }; // poner en el .H
 
