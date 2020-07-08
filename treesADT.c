@@ -14,7 +14,9 @@ typedef struct node1
 
 typedef struct tTree {
     char * name; // scientific name
-    size_t diameterMean; // diameter average
+    size_t quantity; // total number of specimens used to calculate diameterMean
+    size_t diameterSum; // sum of all specimen diameters used to calculate diameterMean
+    size_t diameterMean; // diameter average of tree species
 } tTree;
 
 typedef struct node2 {
