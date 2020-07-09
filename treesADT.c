@@ -163,7 +163,7 @@ int main(int argc, char const *argv[]){
 
     }
     printf("%d\n",countDiametro);
-    //ahora tengo el contador por lo que tengo que guardarme esa key 
+    //ahora tengo el contador por lxo que tengo que guardarme esa key 
     int i,j;
     char name[100];
     while(fgets(lines, 10000, trees))
