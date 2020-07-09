@@ -79,29 +79,26 @@ void freetTree (tTree tree) {
 }
 
 tree * addRec (treeNode * first, tTree tree) {
-    if (first == NULL || first->tree.diameterMean < tree.diameterMean) {
-        treeNode * aux = malloc(sizeof(treeNode));
-        if(aux == NULL) {
-            printf("No memory available\n");
+    treeNode * aux = malloc(sizeof(treeNode));
+    if (aux == NULL) {
             return NULL;        
         }
-        aux->tree.common_name = realloc(aux->tree.common_name, strlen(tree.common_name)+1);
-        strcpy(aux->tree.common_name, tree.common_name);
+    aux->tree.common_name = realloc(aux->tree.common_name, strlen(tree.common_name)+1);
+    if (aux->tree.common_name == NULL)
+        return NULL;
+    strcpy(aux->tree.common_name, tree.common_name);
+    if (first == NULL || first->tree.diameterMean < tree.diameterMean) {
         aux->tail = first;
         return aux;
     }
     if (first->tree.diameterMean == tree.diameterMean) {
         if (strcmp(first->tree.common_name, tree.common_name) > 0) {
-            treeNode * aux = malloc(sizeof(treeNode));
-            aux->tree.common_name = realloc(aux->tree.common_name, strlen(tree.common_name)+1);
-            strcpy(aux->tree.common_name, tree.common_name);
             aux->tail = first;
             return aux;
         }
-        else {
-            
-        }
+        
     }
+
 }
 
 int treeList(treesADT tree)
