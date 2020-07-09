@@ -3,13 +3,14 @@
 #include <ctype.h>
 #include <string.h>
 #include <stdio.h>
-
+#define OK 1
+#define NO_MEM 0
 #define BLOCK 100
 
 typedef struct tTree {
     char * common_name;             // scientific name
     float diameterSum;              // sum of all database species diameters
-    size_t qty;                     //amount of species specimens on data base
+    long qty;                     //amount of species specimens on data base
     float diameterMean;             // average diameter of tree species
 } tTree;
 
@@ -43,17 +44,13 @@ int addTree (treesADT tree, char * name, size_t diameter)
     {
         tree->vectDim += BLOCK;
         tree->treeVect = realloc(tree->treeVect, tree->vectDim * sizeof(tTree));
-        if (tree->treeVect == NULL)
-        {
-            printf("No memory available\n");
+        if (tree->treeVect == NULL) {
             return NO_MEM;
         }
     }
     tree->treeVect[tree->vectSize].common_name = realloc(tree->treeVect[tree->vectSize].common_name, (strlen(name)+1)*sizeof(char));
-    if(tree->treeVect[tree->vectSize].common_name == NULL)
-    {
-        printf("No memory available\n");
-            return NO_MEM;        
+    if(tree->treeVect[tree->vectSize].common_name == NULL) {
+        return NO_MEM;        
     }
     strcpy(tree->treeVect[tree->vectSize].common_name, name);
     tree->treeVect[tree->vectSize].diameterSum = diameter;
@@ -128,15 +125,20 @@ int treeList(treesADT tree) {
 
 //function to create a new treeADT
 treesADT newTree() {
-    treesADT tree;
-    tree = calloc(1, sizeof(treesCDT));
-    if(tree == NULL) {
-        printf("No memory available\n");
-        return NO_MEM;
-    }
+    treesADT tree = calloc(1, sizeof(treesCDT));
+    if(tree == NULL) return NULL;
     return tree;
 }
 
+static void prinlist(treesADT tree){
+    treeNode *aux=tree->firstTree;
+    while (aux!=NULL)
+    {
+        printf("%ld\n",aux->tree.qty);
+        aux=aux->tail;
+    }
+    
+}
 int main(int argc, char const *argv[]){
     FILE *trees;
     trees=fopen(argv[1],"r");
@@ -146,6 +148,8 @@ int main(int argc, char const *argv[]){
     char *token;
     token=strtok(lines,"; ");
     int countNombre =0,countDiametro=0,nombre=0,diametro=0,salir=0;
+    treesADT tree=newTree();
+    //este while lo uso para saber que columnas son las que uso pero no se si hacen falta pq ya abriendo el archivo se cuales son 
     while(token!=NULL && !salir){
         if(strcmp("nombre_cientifico",token)==0)
         {
@@ -181,7 +185,7 @@ int main(int argc, char const *argv[]){
             if(j==11)
             {
                 diametro=atoi(token);
-                printf("%d\n",diametro);
+                //printf("%d\n",diametro);
 
             }
             i++;
@@ -189,8 +193,11 @@ int main(int argc, char const *argv[]){
             token=strtok(NULL,";");
 
         }
-        printf("%s\t%d\n",name,diametro);
+        addTree (tree, name,  diametro);
+        //printf("%s\t%d\n",name,diametro);
 
     }
+    treeList(tree);
+    prinlist(tree);
 
 }
