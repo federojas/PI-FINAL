@@ -79,26 +79,35 @@ void freetTree (tTree tree) {
 }
 
 tree * addRec (treeNode * first, tTree tree) {
-    treeNode * aux = malloc(sizeof(treeNode));
-    if (aux == NULL) {
+    if (first == NULL || first->tree.diameterMean < tree.diameterMean) {
+            treeNode * aux = malloc(sizeof(treeNode));
+        if (aux == NULL) {
             return NULL;        
         }
-    aux->tree.common_name = realloc(aux->tree.common_name, strlen(tree.common_name)+1);
-    if (aux->tree.common_name == NULL)
-        return NULL;
-    strcpy(aux->tree.common_name, tree.common_name);
-    if (first == NULL || first->tree.diameterMean < tree.diameterMean) {
+        aux->tree.common_name = realloc(aux->tree.common_name, strlen(tree.common_name)+1);
+        if (aux->tree.common_name == NULL)
+            return NULL;
+        strcpy(aux->tree.common_name, tree.common_name);
         aux->tail = first;
         return aux;
     }
     if (first->tree.diameterMean == tree.diameterMean) {
         if (strcmp(first->tree.common_name, tree.common_name) > 0) {
+            treeNode * aux = malloc(sizeof(treeNode));
+            if (aux == NULL) {
+                return NULL;        
+            }
+            aux->tree.common_name = realloc(aux->tree.common_name, strlen(tree.common_name)+1);
+             if (aux->tree.common_name == NULL)
+            return NULL;
+            strcpy(aux->tree.common_name, tree.common_name);
+
             aux->tail = first;
             return aux;
         }
-        
     }
-
+    first->tail = addRec (first->tail, tree);
+    return first;
 }
 
 int treeList(treesADT tree)
@@ -125,4 +134,62 @@ treesADT newTree() {
         return NO_MEM;
     }
     return tree;
+}
+
+int main(int argc, char const *argv[]){
+    FILE *trees;
+    trees=fopen(argv[1],"r");
+    char lines[10000];
+    fgets(lines,10000, trees);
+    //me fijo en donde esta la columna con nombre de arboles 
+    char *token;
+    token=strtok(lines,"; ");
+    int countNombre =0,countDiametro=0,nombre=0,diametro=0,salir=0;
+    while(token!=NULL && !salir){
+        if(strcmp("nombre_cientifico",token)==0)
+        {
+            nombre=1;
+        }
+        if(strcmp("diametro_altura_pecho",token)==0){
+            diametro==1;
+        }
+            if(nombre==0)
+                countNombre++;
+            if(diametro==0)
+                countDiametro++;
+            if(diametro!=0 && nombre!=0)
+                salir=1;
+        token=strtok(NULL,"; ");
+
+    }
+    printf("%d\n",countDiametro);
+    //ahora tengo el contador por lo que tengo que guardarme esa key 
+    int i,j;
+    char name[100];
+    while(fgets(lines, 10000, trees))
+    {
+        i=0,j=0;
+        token=strtok(lines,";");
+        while(token!=NULL){
+            if(i==countNombre)
+            {
+                strcpy(name,token);
+               // printf("%s\n",name);
+
+            }
+            if(j==11)
+            {
+                diametro=atoi(token);
+                printf("%d\n",diametro);
+
+            }
+            i++;
+            j++;
+            token=strtok(NULL,";");
+
+        }
+        printf("%s\t%d\n",name,diametro);
+
+    }
+
 }
