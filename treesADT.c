@@ -78,7 +78,7 @@ void freetTree (tTree tree) {
     free(tree);
 }
 
-tree * addRec (treeNode * first, tTree tree) {
+treeNode * addRec (treeNode * first, tTree tree) {
     if (first == NULL || first->tree.diameterMean < tree.diameterMean) {
             treeNode * aux = malloc(sizeof(treeNode));
         if (aux == NULL) {
@@ -98,32 +98,33 @@ tree * addRec (treeNode * first, tTree tree) {
                 return NULL;        
             }
             aux->tree.common_name = realloc(aux->tree.common_name, strlen(tree.common_name)+1);
-             if (aux->tree.common_name == NULL)
-            return NULL;
+            if (aux->tree.common_name == NULL)
+                return NULL;
             strcpy(aux->tree.common_name, tree.common_name);
 
             aux->tail = first;
             return aux;
         }
     }
-    first->tail = addRec (first->tail, tree);
+    first->tail = addRec(first->tail, tree);
     return first;
 }
 
-int treeList(treesADT tree)
-{
+int treeList(treesADT tree) {
     tree->treeVect = realloc(tree->treeVect, tree->vectSize * sizeof(tTree)); // we free up unused memory
     if(tree->treeVect == NULL) {
         printf("No memory available\n");
         return NO_MEM;        
     }
     for(int i = 0; i < tree->vectSize; i++) {
-        tree->firstTree = addRec (tree->firstTree, tree->treeVect[i]);
+        tree->firstTree = addRec(tree->firstTree, tree->treeVect[i]);
         if (tree->firstTree == NULL) {
             return NO_MEM;
         }
         freetTree(tree->treeVec[i]);
     }
+    free(tree->treeVect);
+    return OK;
 }
 
 treesADT newTree() {
