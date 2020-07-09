@@ -137,7 +137,6 @@ static void prinlist(treesADT tree){
     treeNode *aux=tree->firstTree;
     while (aux!=NULL)
     {
-        printf("%ld\n",aux->tree.qty);
         aux=aux->tail;
     }
     
