@@ -116,9 +116,9 @@ int treeList(treesADT tree) {
             return NO_MEM;
         }
         free(tree->treeVect[i].common_name);
-        free(tree->treeVect[i]);
     }
     free(tree->treeVect);
+    tree->treeVect = NULL;
     return OK;
 }
 
