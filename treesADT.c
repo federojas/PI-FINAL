@@ -69,6 +69,22 @@ int addTree (treesADT tree, char * name, float diameter)
     return OK;
 }
 
+<<<<<<< HEAD
+=======
+//function that calculates all of the species average diameters
+void diamAvg(treesADT tree) 
+{
+    float diameter;
+    size_t quantity;
+    for(int i = 0; i < tree->vectSize; i++) {
+        diameter = tree->treeVect[i].diameterSum;
+        quantity = tree->treeVect[i].qty;
+        tree->treeVect[i].diameterMean = (float)(diameter/quantity);
+    }
+}
+
+//aux function used to insert nodes in the tree list in descending diameter avg order, alphabetical order used to resolve ties
+>>>>>>> 068ef9542a3cfbb366c3c5e4e70cee5fa346a7c0
 static treeNode * addRecTree (treeNode * first, tTree tree) {
     if (first == NULL || first->tree.diameterMean < tree.diameterMean) {
         treeNode * aux = malloc(sizeof(treeNode));
@@ -101,8 +117,18 @@ static treeNode * addRecTree (treeNode * first, tTree tree) {
     return first;
 }
 
+<<<<<<< HEAD
 int treeList (treesADT tree) {
     diamAvg(tree);
+=======
+//function that creates a tree list in descending order of species average diameter, alphabetical order used to resolve ties
+int treeList(treesADT tree) {
+    tree->treeVect = realloc(tree->treeVect, tree->vectSize * sizeof(tTree)); // we free up unused memory
+    if(tree->treeVect == NULL) {
+        printf("No memory available\n");
+        return NO_MEM;        
+    }
+>>>>>>> 068ef9542a3cfbb366c3c5e4e70cee5fa346a7c0
     for(int i = 0; i < tree->vectSize; i++) {
         tree->firstTree = addRecTree(tree->firstTree, tree->treeVect[i]);
         if (tree->firstTree == NULL) {
@@ -116,6 +142,7 @@ int treeList (treesADT tree) {
     return OK;
 }
 
+//function to create a new treeADT
 treesADT newTree() {
     treesADT tree = calloc(1, sizeof(treesCDT));
     if(tree == NULL) return NULL;
@@ -126,7 +153,11 @@ static void prinlist(treesADT tree){
     treeNode *aux=tree->firstTree;
     while (aux!=NULL)
     {
+<<<<<<< HEAD
         printf("%f\n",aux->tree.diameterMean);
+=======
+        printf("%s\n",aux->tree.common_name);
+>>>>>>> 068ef9542a3cfbb366c3c5e4e70cee5fa346a7c0
         aux=aux->tail;
     }
     
