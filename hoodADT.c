@@ -119,19 +119,42 @@ static hoodNode * addRecHood(hoodNode * first, tHood hood, hoodNode * aux) {
     return first;
 }
 
+//function that sorts by descending order of quantity of trees, without creating new nodes
+static hoodNode * sortQty(hoodNode * first, hoodNode * sort) 
+{
+    if(first == NULL)
+    {
+        sort->tail = NULL;
+        return sort;
+    }
+    if(first->hood.treeQty < sort->hood.treeQty)
+    {
+        sort->tail = first;
+        return sort;
+    }
+    if(first->hood.treeQty == sort->hood.treeQty)
+    {
+        int c = strcmp(first->hood.hood_name, sort->hood.hood_name); //viene primero first
+        if(c < 0)
+        {
+            sort->tail = first;
+            return sort;
+        }
+    }
+    first->tail = sortQty(first->tail, sort);
+    return first;
+}
+
 int hoodList (hoodADT hood) {
     treesHab(hood); // we calculate the trees/hab
     for(int i = 0; i < hood->vecSize; i++)
     {
         hoodNode * aux; // node used to save the location of the newly created node
-        hood->firstHoodHab = addRecHood(hood->firstHoodHab, hood->vecHood[i], aux);
+        hood->firstHoodHab = addRecHood(hood->firstHoodHab, hood->vecHood[i], aux);//sorts query 2 creating new nodes
         if (hood->firstHoodHab == NULL) {
             return NO_MEM;
         }
-        hood->firstHoodQty = addRecQty(hood->firstHoodQty, aux); //HACER FUNCION QUE ORDENE POR CANT DE ARBOLES
-        if (hood->firstHoodQty == NULL) {
-            return NO_MEM;
-        }
+        hood->firstHoodQty = sortQty(hood->firstHoodQty, aux); //sorts query 1 without creating new nodes
         free(hood->vecHood[i].hood_name);
     }
     free(hood->vecHood); // we free up no longer required memory
