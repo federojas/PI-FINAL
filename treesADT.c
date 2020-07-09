@@ -28,7 +28,7 @@ typedef struct treesCDT {
 
 typedef struct treesCDT * treesADT;
 
-int addTree (treesADT tree, char * name, size_t diameter)
+int addTree (treesADT tree, char * name, float diameter)
 { 
     for(int i = 0; i < tree->vectSize; i++)
     {
@@ -39,7 +39,7 @@ int addTree (treesADT tree, char * name, size_t diameter)
             return OK;
         }
     }
-    if (tree->vectDim % BLOCK == 0) 
+    if (tree->vectSize % BLOCK == 0) 
     {
         tree->vectDim += BLOCK;
         tree->treeVect = realloc(tree->treeVect, tree->vectDim * sizeof(tTree));
@@ -75,6 +75,7 @@ static treeNode * addRecTree (treeNode * first, tTree tree) {
         if (aux == NULL) {
             return NULL;        
         }
+        aux->tree = tree;
         aux->tree.common_name = realloc(aux->tree.common_name, strlen(tree.common_name)+1);
         if (aux->tree.common_name == NULL)
             return NULL;
@@ -88,11 +89,11 @@ static treeNode * addRecTree (treeNode * first, tTree tree) {
             if (aux == NULL) {
                 return NULL;        
             }
-            aux->tree.common_name = realloc(aux->tree.common_name, strlen(tree.common_name)+1);
+            aux->tree = tree;
+            aux->tree.common_name = realloc(aux->tree.common_name, (strlen(tree.common_name)+1) * sizeof(char));
             if (aux->tree.common_name == NULL)
                 return NULL;
             strcpy(aux->tree.common_name, tree.common_name);
-
             aux->tail = first;
             return aux;
         }
@@ -102,11 +103,7 @@ static treeNode * addRecTree (treeNode * first, tTree tree) {
 }
 
 int treeList (treesADT tree) {
-    tree->treeVect = realloc(tree->treeVect, tree->vectSize * sizeof(tTree)); // we free up unused memory
-    if(tree->treeVect == NULL) {
-        printf("No memory available\n");
-        return NO_MEM;        
-    }
+    diamAvg(tree); // we calculate the diameter average of each species
     for(int i = 0; i < tree->vectSize; i++) {
         tree->firstTree = addRecTree(tree->firstTree, tree->treeVect[i]);
         if (tree->firstTree == NULL) {
@@ -151,7 +148,7 @@ int main(int argc, char const *argv[]){
             nombre=1;
         }
         if(strcmp("diametro_altura_pecho",token)==0){
-            diametro==1;
+            diametro = 1;
         }
             if(nombre==0)
                 countNombre++;
