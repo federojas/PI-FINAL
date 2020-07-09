@@ -137,6 +137,7 @@ static void prinlist(treesADT tree){
     treeNode *aux=tree->firstTree;
     while (aux!=NULL)
     {
+        printf("%s\n",aux->tree.common_name);
         aux=aux->tail;
     }
     
