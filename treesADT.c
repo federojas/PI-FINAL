@@ -3,13 +3,14 @@
 #include <ctype.h>
 #include <string.h>
 #include <stdio.h>
-
+#define OK 1
+#define NO_MEM 0
 #define BLOCK 100
 
 typedef struct tTree {
     char * common_name;             // scientific name
     float diameterSum;              // sum of all database species diameters
-    size_t qty;                     //amount of species specimens on data base
+    long qty;                     //amount of species specimens on data base
     float diameterMean;             // average diameter of tree species
 } tTree;
 
@@ -124,6 +125,15 @@ treesADT newTree() {
     return tree;
 }
 
+static void prinlist(treesADT tree){
+    treeNode *aux=tree->firstTree;
+    while (aux!=NULL)
+    {
+        printf("%ld\n",aux->tree.qty);
+        aux=aux->tail;
+    }
+    
+}
 int main(int argc, char const *argv[]){
     FILE *trees;
     trees=fopen(argv[1],"r");
@@ -133,6 +143,8 @@ int main(int argc, char const *argv[]){
     char *token;
     token=strtok(lines,"; ");
     int countNombre =0,countDiametro=0,nombre=0,diametro=0,salir=0;
+    treesADT tree=newTree();
+    //este while lo uso para saber que columnas son las que uso pero no se si hacen falta pq ya abriendo el archivo se cuales son 
     while(token!=NULL && !salir){
         if(strcmp("nombre_cientifico",token)==0)
         {
@@ -168,7 +180,7 @@ int main(int argc, char const *argv[]){
             if(j==11)
             {
                 diametro=atoi(token);
-                printf("%d\n",diametro);
+                //printf("%d\n",diametro);
 
             }
             i++;
@@ -176,8 +188,11 @@ int main(int argc, char const *argv[]){
             token=strtok(NULL,";");
 
         }
-        printf("%s\t%d\n",name,diametro);
+        addTree (tree, name,  diametro);
+        //printf("%s\t%d\n",name,diametro);
 
     }
+    treeList(tree);
+    prinlist(tree);
 
 }
