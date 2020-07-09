@@ -28,6 +28,7 @@ typedef struct treesCDT {
 
 typedef struct treesCDT * treesADT;
 
+//function that adds a tree to the trees vector 
 int addTree (treesADT tree, char * name, size_t diameter)
 { 
     for(int i = 0; i < tree->vectSize; i++)
@@ -43,17 +44,13 @@ int addTree (treesADT tree, char * name, size_t diameter)
     {
         tree->vectDim += BLOCK;
         tree->treeVect = realloc(tree->treeVect, tree->vectDim * sizeof(tTree));
-        if (tree->treeVect == NULL)
-        {
-            printf("No memory available\n");
+        if (tree->treeVect == NULL) {
             return NO_MEM;
         }
     }
     tree->treeVect[tree->vectSize].common_name = realloc(tree->treeVect[tree->vectSize].common_name, (strlen(name)+1)*sizeof(char));
-    if(tree->treeVect[tree->vectSize].common_name == NULL)
-    {
-        printf("No memory available\n");
-            return NO_MEM;        
+    if(tree->treeVect[tree->vectSize].common_name == NULL) {
+        return NO_MEM;        
     }
     strcpy(tree->treeVect[tree->vectSize].common_name, name);
     tree->treeVect[tree->vectSize].diameterSum = diameter;
@@ -62,7 +59,8 @@ int addTree (treesADT tree, char * name, size_t diameter)
     return OK;
 }
 
-void diamAvg(treesADT tree) // calculates all of the species average diameters
+//function that calculates all of the species average diameters
+void diamAvg(treesADT tree) 
 {
     float diameter;
     size_t quantity;
@@ -73,6 +71,7 @@ void diamAvg(treesADT tree) // calculates all of the species average diameters
     }
 }
 
+//aux function used to insert nodes in the tree list in descending diameter avg order, alphabetical order used to resolve ties
 static treeNode * addRecTree (treeNode * first, tTree tree) {
     if (first == NULL || first->tree.diameterMean < tree.diameterMean) {
             treeNode * aux = malloc(sizeof(treeNode));
@@ -105,6 +104,7 @@ static treeNode * addRecTree (treeNode * first, tTree tree) {
     return first;
 }
 
+//function that creates a tree list in descending order of species average diameter, alphabetical order used to resolve ties
 int treeList(treesADT tree) {
     tree->treeVect = realloc(tree->treeVect, tree->vectSize * sizeof(tTree)); // we free up unused memory
     if(tree->treeVect == NULL) {
@@ -123,13 +123,10 @@ int treeList(treesADT tree) {
     return OK;
 }
 
+//function to create a new treeADT
 treesADT newTree() {
-    treesADT tree;
-    tree = calloc(1, sizeof(treesCDT));
-    if(tree == NULL) {
-        printf("No memory available\n");
-        return NO_MEM;
-    }
+    treesADT tree = calloc(1, sizeof(treesCDT));
+    if(tree == NULL) return NULL;
     return tree;
 }
 
