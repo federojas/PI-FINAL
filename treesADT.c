@@ -9,9 +9,9 @@
 
 typedef struct tTree {
     char * common_name;             // scientific name
-    unsigned double diameterSum;              // sum of all database species diameters
-    unsigned long int qty;                     //amount of species specimens on data base
-    unsigned double diameterMean;             // average diameter of tree species
+    float diameterSum;              // sum of all database species diameters
+    long unsigned int qty;                     //amount of species specimens on data base
+    float diameterMean;             // average diameter of tree species
 } tTree;
 
 typedef struct treeNode {
@@ -28,18 +28,7 @@ typedef struct treesCDT {
 
 typedef struct treesCDT * treesADT;
 
-void diamAvg(treesADT tree) // calculates all of the species average diameters
-{
-    float diameter;
-    size_t quantity;
-    for(int i = 0; i < tree->vectSize; i++) {
-        diameter = tree->treeVect[i].diameterSum;
-        quantity = tree->treeVect[i].qty;
-        tree->treeVect[i].diameterMean = diameter/quantity;
-    }
-}
-
-int addTree (treesADT tree, char * name, float diameter)
+int addTree (treesADT tree, char * name, size_t diameter)
 { 
     for(int i = 0; i < tree->vectSize; i++)
     {
@@ -69,8 +58,18 @@ int addTree (treesADT tree, char * name, float diameter)
     return OK;
 }
 
-//aux function used to insert nodes in the tree list in descending diameter avg order, alphabetical order used to resolve ties
-treeNode * addRecTree (treeNode * first, tTree tree) {
+void diamAvg(treesADT tree) // calculates all of the species average diameters
+{
+    float diameter;
+    size_t quantity;
+    for(int i = 0; i < tree->vectSize; i++) {
+        diameter = tree->treeVect[i].diameterSum;
+        quantity = tree->treeVect[i].qty;
+        tree->treeVect[i].diameterMean = (float)(diameter/quantity);
+    }
+}
+
+static treeNode * addRecTree (treeNode * first, tTree tree) {
     if (first == NULL || first->tree.diameterMean < tree.diameterMean) {
         treeNode * aux = malloc(sizeof(treeNode));
         if (aux == NULL) {
@@ -103,7 +102,11 @@ treeNode * addRecTree (treeNode * first, tTree tree) {
 }
 
 int treeList (treesADT tree) {
-    diamAvg(tree);
+    tree->treeVect = realloc(tree->treeVect, tree->vectSize * sizeof(tTree)); // we free up unused memory
+    if(tree->treeVect == NULL) {
+        printf("No memory available\n");
+        return NO_MEM;        
+    }
     for(int i = 0; i < tree->vectSize; i++) {
         tree->firstTree = addRecTree(tree->firstTree, tree->treeVect[i]);
         if (tree->firstTree == NULL) {
@@ -112,12 +115,10 @@ int treeList (treesADT tree) {
         free(tree->treeVect[i].common_name);
     }
     free(tree->treeVect);
-    // we free up vector's memory
     tree->treeVect = NULL;
     return OK;
 }
 
-//function to create a new treeADT
 treesADT newTree() {
     treesADT tree = calloc(1, sizeof(treesCDT));
     if(tree == NULL) return NULL;
@@ -139,7 +140,7 @@ int main(int argc, char const *argv[]){
     char lines[10000];
     fgets(lines,10000, trees);
     //me fijo en donde esta la columna con nombre de arboles 
-    char * token;
+    char *token;
     token=strtok(lines,"; ");
     int countNombre =0,countDiametro=0,nombre=0,diametro=0,salir=0;
     treesADT tree=newTree();
