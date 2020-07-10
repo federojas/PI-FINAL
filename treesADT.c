@@ -76,7 +76,7 @@ static treeNode * addRecTree (treeNode * first, tTree tree) {
             return NULL;        
         }
         aux->tree = tree;
-        aux->tree.common_name = realloc(aux->tree.common_name, strlen(tree.common_name)+1);
+        aux->tree.common_name = realloc(aux->tree.common_name, sizeof(char)*(strlen(tree.common_name)+1));
         if (aux->tree.common_name == NULL)
             return NULL;
         strcpy(aux->tree.common_name, tree.common_name);
@@ -126,7 +126,8 @@ static void prinlist(treesADT tree){
     treeNode *aux=tree->firstTree;
     while (aux!=NULL)
     {
-        printf("%s\n",aux->tree.common_name);
+         printf("%s\n",aux->tree.common_name);
+        //printf("%ld\n",aux->tree.qty);
         aux=aux->tail;
     }
     
@@ -146,8 +147,8 @@ int main(int argc, char const *argv[]){
     {
         for(i=0,token=strtok(lines,";");i<12;i++)
         {
-            if(i==0){
-                registro=atoi(token);
+            if(i==0){//este no lo usamos realmente pero era pa probar algo
+                registro=atoi(token);//SACARLO DESPS
             }
             if(i==2)
             {
@@ -160,15 +161,18 @@ int main(int argc, char const *argv[]){
             if(i==11)
             {
                 diametro=atoi(token);
-                if(diametro==1)
-                {
-                    printf("%d\n",registro);
-                    return 0;
-                }
+                // if(diametro==1)
+                // {
+                //     printf("%d\n",registro);
+                //     return 0;
+                // }
             }
             token=strtok(NULL,";");
         }
-        printf("%s\t%s\t%d\n",hood,name, diametro);
+        // printf("%s\t%s\t%d\n",hood,name, diametro);
+        addTree(tree,name,diametro);
     }
+    treeList(tree);
+     prinlist(tree);
 
 }
