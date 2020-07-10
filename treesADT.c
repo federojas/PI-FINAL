@@ -15,7 +15,8 @@ typedef struct tTree {
 } tTree;
 
 typedef struct treeNode {
-    tTree tree;
+    char * common_name; 
+    float diameterMean;  
     struct treeNode * tail;
 } treeNode;
 
@@ -52,6 +53,7 @@ int addTree (treesADT tree, char * name, float diameter)
         return NO_MEM;        
     }
     strcpy(tree->treeVect[tree->vectSize].common_name, name);
+    //rintf("%s\n",tree->treeVect[tree->vectSize].common_name); BORRAR DESPS
     tree->treeVect[tree->vectSize].diameterSum = diameter;
     tree->treeVect[tree->vectSize].qty = 1;
     tree->vectSize += 1;
@@ -70,30 +72,26 @@ void diamAvg(treesADT tree) // calculates all of the species average diameters
 }
 
 static treeNode * addRecTree (treeNode * first, tTree tree) {
-    if (first == NULL || first->tree.diameterMean < tree.diameterMean) {
+    if (first == NULL || first->diameterMean < tree.diameterMean) {
         treeNode * aux = malloc(sizeof(treeNode));
         if (aux == NULL) {
             return NULL;        
         }
-        aux->tree = tree;
-        aux->tree.common_name = realloc(aux->tree.common_name, sizeof(char)*(strlen(tree.common_name)+1));
-        if (aux->tree.common_name == NULL)
-            return NULL;
-        strcpy(aux->tree.common_name, tree.common_name);
+        aux->common_name=malloc( sizeof(char)*(strlen(tree.common_name)+1));
+        aux->diameterMean=tree.diameterMean;
+        strcpy(aux->common_name,tree.common_name);    
         aux->tail = first;
         return aux;
     }
-    if (first->tree.diameterMean == tree.diameterMean) {
-        if (strcmp(first->tree.common_name, tree.common_name) > 0) {
+    if (first->diameterMean == tree.diameterMean) {
+        if (strcmp(first->common_name, tree.common_name) > 0) {
             treeNode * aux = malloc(sizeof(treeNode));
             if (aux == NULL) {
                 return NULL;        
             }
-            aux->tree = tree;
-            aux->tree.common_name = realloc(aux->tree.common_name, (strlen(tree.common_name)+1) * sizeof(char));
-            if (aux->tree.common_name == NULL)
-                return NULL;
-            strcpy(aux->tree.common_name, tree.common_name);
+            aux->common_name=malloc( sizeof(char)*(strlen(tree.common_name)+1));
+            aux->diameterMean=tree.diameterMean;
+            strcpy(aux->common_name,tree.common_name);
             aux->tail = first;
             return aux;
         }
@@ -126,8 +124,8 @@ static void prinlist(treesADT tree){
     treeNode *aux=tree->firstTree;
     while (aux!=NULL)
     {
-         printf("%s\n",aux->tree.common_name);
-        //printf("%ld\n",aux->tree.qty);
+         printf("%s\t%.2f\n",aux->common_name,aux->diameterMean);
+   
         aux=aux->tail;
     }
     
@@ -170,8 +168,9 @@ int main(int argc, char const *argv[]){
             token=strtok(NULL,";");
         }
         // printf("%s\t%s\t%d\n",hood,name, diametro);
+        if(diametro!=0)
         addTree(tree,name,diametro);
-    }
+ }
     treeList(tree);
      prinlist(tree);
 
