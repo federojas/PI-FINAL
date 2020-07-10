@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
-//CAMBIAR EL DIM DAGOS
 #define BLOCK 10
 #define NO_MATCH 5
 #define NO_MEM 0
@@ -15,7 +14,7 @@ typedef struct tHood {
     float treesPerHab;
 } tHood;
 
-typedef struct hood {
+typedef struct hoodNode {
     char * hood_name;
     size_t treeQty;
     float treesPerHab;
@@ -23,35 +22,23 @@ typedef struct hood {
 } hoodNode;
 
 typedef struct hoodCDT {
-    hoodNode * firstHoodQty; // neighborhoods in descending order by qty, alphabetical order used to resolve draws
-    hoodNode * firstHoodHab; // neighborhoods in descending order by qty/habitants, alphabetical order used to resolve draws
-    tHood * vecHood; //vector containing all of the neighborhoods
-    size_t vecSize;  //amount of neighborhoos in vector
-    size_t vecDim;   //vector's real size
-}hoodCDT;
+    hoodNode * firstHoodQty;        // neighborhoods in descending order by qty, alphabetical order used to resolve draws
+    hoodNode * firstHoodHab;        // neighborhoods in descending order by qty/habitants, alphabetical order used to resolve draws
+    tHood * vecHood;                //vector containing all of the neighborhoods
+    size_t vecSize;                 //amount of neighborhoos in vector
+} hoodCDT;
 
 typedef hoodCDT * hoodADT;
 
 hoodADT newHood() {
-    hoodADT hood;
-    if((hood = calloc(1, sizeof(hoodCDT))) == NULL) {
-        return NULL;
-    }
-    return hood;
+    return calloc(1, sizeof(hoodCDT));
 }
 //adds a neighborhood to the hood vector
-int addHood(hoodADT hood, char * name, size_t habitants)
-{
-    if(hood->vecSize % BLOCK == 0)
-    {
-        hood->vecDim += BLOCK;
-        hood->vecHood = realloc(hood->vecHood, hood->vecDim * sizeof(tHood) );
-        if(hood->vecHood == NULL)
-            return NO_MEM;   
+int addHood (hoodADT hood, char * name, size_t habitants) {
+    if(hood->vecSize % BLOCK == 0) {
+        hood->vecHood = realloc(hood->vecHood, (hood->vecSize + BLOCK) * sizeof(tHood));
     }
     hood->vecHood[hood->vecSize].hood_name = realloc(hood->vecHood[hood->vecSize].hood_name, (strlen(name)+1) * sizeof(char));
-    if(hood->vecHood[hood->vecSize].hood_name == NULL)
-        return NO_MEM;
     strcpy(hood->vecHood[hood->vecSize].hood_name, name);
     hood->vecHood[hood->vecSize].habitants = habitants;
     hood->vecHood[hood->vecSize].treeQty = 0;
@@ -64,9 +51,8 @@ int addTreeHood(hoodADT hood, char * treeHood)
 {
     for(int i = 0; i < hood->vecSize; i++)
     {
-        int c = strcmp(hood->vecHood[i].hood_name, treeHood);
-        if(c == 0)
-        {
+        int c = strcmp(hood->vecHood[i].hood_name, hoodBelongs);
+        if (c == 0) {
             hood->vecHood[i].treeQty += 1;
             return OK;
         }
@@ -148,6 +134,21 @@ static hoodNode * sortQty(hoodNode * first, hoodNode * sort)
     }
     first->tail = sortQty(first->tail, sort);
     return first;
+}
+
+static void freeRec(hoodNode hood)
+{
+    if(first == NULL)
+        return ;
+    freeRec(hood->tail);
+    free(hood->hood_name);
+    free(hood);
+}
+
+void free(hoodADT hood)
+{
+    freeRec(hood->firstHoodHab);
+    free(hood);
 }
 
 int hoodList (hoodADT hood) {
