@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
-
+//CAMBIAR EL DIM DAGOS
 #define BLOCK 10
 #define NO_MATCH 5
 
@@ -15,7 +15,9 @@ typedef struct tHood {
 } tHood;
 
 typedef struct hood {
-    tHood hood;
+    char * hood_name;
+    size_t treeQty;
+    float treesPerHab;
     struct hood * tail;
 } hoodNode;
 
@@ -85,31 +87,33 @@ static void treesHab(hoodADT hood)
 
 //function that sorts by descending order of trees per hab, creating a new node
 static hoodNode * addRecHood(hoodNode * first, tHood hood, hoodNode * aux) {
-    if (first == NULL || first->hood.treesPerHab < hood.treesPerHab) {
+    if (first == NULL || first->treesPerHab < hood.treesPerHab) {
         hoodNode * result = malloc(sizeof(hoodNode));
         if (result == NULL) {
             return NULL;        
         }
-        result->hood = hood;
-        result->hood.hood_name = realloc(result->hood.hood_name, (strlen(hood.hood_name)+1) * sizeof(char));
-        if (result->hood.hood_name == NULL)
+        result->treeQty = hood.treeQty;
+        result->treesPerHab = hood.treesPerHab;
+        result->hood_name = malloc((strlen(hood.hood_name)+1) * sizeof(char));
+        if (result->hood_name == NULL)
             return NULL;
-        strcpy(result->hood.hood_name, hood.hood_name);
+        strcpy(result->hood_name, hood.hood_name);
         result->tail = first;
         aux = result;
         return result;
     }
-    if (first->hood.treesPerHab == hood.treesPerHab) {
-        if (strcmp(first->hood.hood_name, hood.hood_name) > 0) {
+    if (first->treesPerHab == hood.treesPerHab) {
+        if (strcmp(first->hood_name, hood.hood_name) > 0) {
             hoodNode * result = malloc(sizeof(hoodNode));
         if (result == NULL) {
             return NULL;        
         }
-        result->hood = hood;
-        result->hood.hood_name = realloc(result->hood.hood_name, (strlen(hood.hood_name)+1) * sizeof(char));
-        if (result->hood.hood_name == NULL)
+        result->treeQty = hood.treeQty;
+        result->treesPerHab = hood.treesPerHab;
+        result->hood_name = malloc((strlen(hood.hood_name)+1) * sizeof(char));
+        if (result->hood_name == NULL)
             return NULL;
-        strcpy(result->hood.hood_name, hood.hood_name);
+        strcpy(result->hood_name, hood.hood_name);
         result->tail = first;
         aux = result;
         return result;
@@ -127,14 +131,14 @@ static hoodNode * sortQty(hoodNode * first, hoodNode * sort)
         sort->tail = NULL;
         return sort;
     }
-    if(first->hood.treeQty < sort->hood.treeQty)
+    if(first->treeQty < sort->treeQty)
     {
         sort->tail = first;
         return sort;
     }
-    if(first->hood.treeQty == sort->hood.treeQty)
+    if(first->treeQty == sort->treeQty)
     {
-        int c = strcmp(first->hood.hood_name, sort->hood.hood_name); //viene primero first
+        int c = strcmp(first->hood_name, sort->hood_name); //viene primero first
         if(c < 0)
         {
             sort->tail = first;
