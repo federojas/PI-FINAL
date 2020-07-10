@@ -51,7 +51,7 @@ int addTreeHood(hoodADT hood, char * treeHood)
 {
     for(int i = 0; i < hood->vecSize; i++)
     {
-        int c = strcmp(hood->vecHood[i].hood_name, hoodBelongs);
+        int c = strcmp(hood->vecHood[i].hood_name, treeHood);
         if (c == 0) {
             hood->vecHood[i].treeQty += 1;
             return OK;
