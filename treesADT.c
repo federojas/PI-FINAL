@@ -53,7 +53,6 @@ int addTree (treesADT tree, char * name, float diameter)
         return NO_MEM;        
     }
     strcpy(tree->treeVect[tree->vectSize].common_name, name);
-    //rintf("%s\n",tree->treeVect[tree->vectSize].common_name); BORRAR DESPS
     tree->treeVect[tree->vectSize].diameterSum = diameter;
     tree->treeVect[tree->vectSize].qty = 1;
     tree->vectSize += 1;
@@ -138,16 +137,12 @@ int main(int argc, char const *argv[]){
     char lines[1024];
     char name[30],hood[5];
     fgets(lines,1024, trees);
-    //printf("%s\n",lines);
     int i,diametro,registro;
     treesADT tree=newTree();
     while(fgets(lines,1024,trees))
     {
         for(i=0,token=strtok(lines,";");i<12;i++)
         {
-            if(i==0){//este no lo usamos realmente pero era pa probar algo
-                registro=atoi(token);//SACARLO DESPS
-            }
             if(i==2)
             {
                 strcpy(hood,token);
@@ -159,19 +154,13 @@ int main(int argc, char const *argv[]){
             if(i==11)
             {
                 diametro=atoi(token);
-                // if(diametro==1)
-                // {
-                //     printf("%d\n",registro);
-                //     return 0;
-                // }
             }
             token=strtok(NULL,";");
         }
-        // printf("%s\t%s\t%d\n",hood,name, diametro);
         if(diametro!=0)
-        addTree(tree,name,diametro);
+            addTree(tree,name,diametro);
  }
     treeList(tree);
-     prinlist(tree);
+    prinlist(tree);
 
 }
