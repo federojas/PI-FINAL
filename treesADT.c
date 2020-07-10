@@ -8,10 +8,10 @@
 #define BLOCK 100
 
 typedef struct tTree {
-    char * common_name;             // scientific name
-    float diameterSum;              // sum of all database species diameters
-    long unsigned int qty;                     //amount of species specimens on data base
-    float diameterMean;             // average diameter of tree species
+    char * common_name;                 // scientific name
+    float diameterSum;                  // sum of all database species diameters
+    long unsigned int qty;              // amount of species specimens on data base
+    float diameterMean;                 // average diameter of tree species
 } tTree;
 
 typedef struct treeNode {
@@ -22,11 +22,29 @@ typedef struct treeNode {
 
 typedef struct treesCDT {
     treeNode * firstTree;               // trees in descending order by average species diameter, alphabetical order used to resolve draws
-    tTree * vector;                   // Vector containing all of the tree species in the data base
-    size_t size;                    // amount of species in vector
+    tTree * vector;                     // Vector containing all of the tree species in the data base
+    size_t size;                        // amount of species in vector
 } treesCDT;
 
 typedef struct treesCDT * treesADT;
+
+treesADT newTree() {
+    return calloc(1, sizeof(treesCDT));
+}
+
+void freeRec (treeNode * first) {
+    if (first == NULL)
+        return ;
+    freeRec (first->tail);
+    free(first->common_name);
+    free(first);
+}
+
+void freeTree (treesADT tree) {
+    freeRec(tree->firstTree);
+    // reminder: cada elemento del vector es eliminado cuando se pasa a la lista
+    free(tree);
+}
 
 int addTree (treesADT tree, const char * name, const float diameter) {
     for (int i = 0; i < tree->size; i++) {
@@ -86,20 +104,15 @@ static treeNode * addRecTree (treeNode * first, tTree tree) {
 void elemToList (treesADT tree, tTree source) {
     tree->firstTree = addRecTree(tree->firstTree, source);
 }
-
+// faltaria ver donde reallocamos la memoria del vector con el size
 void vecToList (treesADT tree) {
     diamAvg(tree); // we calculate the diameter average of each species
-    for (size_t i = 0; i < tree->size; i++)
+    for (size_t i = 0; i < tree->size; i++) {
         elemToList(tree, tree->vector[i]);
+        free(tree->vector[i]);
+    }
     free(tree->vector);
-    tree->vector = NULL;
     return ;
-}
-
-treesADT newTree() {
-    treesADT tree = calloc(1, sizeof(treesCDT));
-    if(tree == NULL) return NULL;
-    return tree;
 }
 
 static void printList (treesADT tree){
@@ -142,4 +155,5 @@ int main(int argc, char const *argv[]){
     }
     vecToList(tree);
     printList(tree);
+    freeTree(tree);
 }
