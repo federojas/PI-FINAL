@@ -126,70 +126,49 @@ static void prinlist(treesADT tree){
     treeNode *aux=tree->firstTree;
     while (aux!=NULL)
     {
-        printf("%f\n",aux->tree.diameterMean);
+        printf("%s\n",aux->tree.common_name);
         aux=aux->tail;
     }
     
 }
+
 int main(int argc, char const *argv[]){
     FILE *trees;
-    trees=fopen(argv[1],"r");
-    char lines[10000];
-    fgets(lines,10000, trees);
-    //me fijo en donde esta la columna con nombre de arboles 
     char *token;
-    token=strtok(lines,"; ");
-    int countNombre =0,countDiametro=0,nombre=0,diametro=0,salir=0;
+    trees=fopen(argv[1],"r");
+    char lines[1024];
+    char name[30],hood[5];
+    fgets(lines,1024, trees);
+    //printf("%s\n",lines);
+    int i,diametro,registro;
     treesADT tree=newTree();
-    //este while lo uso para saber que columnas son las que uso pero no se si hacen falta pq ya abriendo el archivo se cuales son 
-    while(token!=NULL && !salir){
-        if(strcmp("nombre_cientifico",token)==0)
-        {
-            nombre=1;
-        }
-        if(strcmp("diametro_altura_pecho",token)==0){
-            diametro = 1;
-        }
-            if(nombre==0)
-                countNombre++;
-            if(diametro==0)
-                countDiametro++;
-            if(diametro!=0 && nombre!=0)
-                salir=1;
-        token=strtok(NULL,"; ");
-
-    }
-    printf("%d\n",countDiametro);
-    //ahora tengo el contador por lxo que tengo que guardarme esa key 
-    int i,j;
-    char name[100];
-    while(fgets(lines, 10000, trees))
+    while(fgets(lines,1024,trees))
     {
-        i=0,j=0;
-        token=strtok(lines,";");
-        while(token!=NULL){
-            if(i==countNombre)
+        for(i=0,token=strtok(lines,";");i<12;i++)
+        {
+            if(i==0){
+                registro=atoi(token);
+            }
+            if(i==2)
+            {
+                strcpy(hood,token);
+            }
+            if(i==7)
             {
                 strcpy(name,token);
-               // printf("%s\n",name);
-
             }
-            if(j==11)
+            if(i==11)
             {
                 diametro=atoi(token);
-                //printf("%d\n",diametro);
-
+                if(diametro==1)
+                {
+                    printf("%d\n",registro);
+                    return 0;
+                }
             }
-            i++;
-            j++;
             token=strtok(NULL,";");
-
         }
-        addTree (tree, name,  diametro);
-        //printf("%s\t%d\n",name,diametro);
-
+        printf("%s\t%s\t%d\n",hood,name, diametro);
     }
-    treeList(tree);
-    prinlist(tree);
 
 }
