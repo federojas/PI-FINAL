@@ -15,7 +15,8 @@ typedef struct tTree {
 } tTree;
 
 typedef struct treeNode {
-    tTree tree;
+    char * common_name; 
+    float diameterMean;  
     struct treeNode * tail;
 } treeNode;
 
@@ -70,30 +71,26 @@ void diamAvg(treesADT tree) // calculates all of the species average diameters
 }
 
 static treeNode * addRecTree (treeNode * first, tTree tree) {
-    if (first == NULL || first->tree.diameterMean < tree.diameterMean) {
+    if (first == NULL || first->diameterMean < tree.diameterMean) {
         treeNode * aux = malloc(sizeof(treeNode));
         if (aux == NULL) {
             return NULL;        
         }
-        aux->tree = tree;
-        aux->tree.common_name = realloc(aux->tree.common_name, strlen(tree.common_name)+1);
-        if (aux->tree.common_name == NULL)
-            return NULL;
-        strcpy(aux->tree.common_name, tree.common_name);
+        aux->common_name=malloc( sizeof(char)*(strlen(tree.common_name)+1));
+        aux->diameterMean=tree.diameterMean;
+        strcpy(aux->common_name,tree.common_name);    
         aux->tail = first;
         return aux;
     }
-    if (first->tree.diameterMean == tree.diameterMean) {
-        if (strcmp(first->tree.common_name, tree.common_name) > 0) {
+    if (first->diameterMean == tree.diameterMean) {
+        if (strcmp(first->common_name, tree.common_name) > 0) {
             treeNode * aux = malloc(sizeof(treeNode));
             if (aux == NULL) {
                 return NULL;        
             }
-            aux->tree = tree;
-            aux->tree.common_name = realloc(aux->tree.common_name, (strlen(tree.common_name)+1) * sizeof(char));
-            if (aux->tree.common_name == NULL)
-                return NULL;
-            strcpy(aux->tree.common_name, tree.common_name);
+            aux->common_name=malloc( sizeof(char)*(strlen(tree.common_name)+1));
+            aux->diameterMean=tree.diameterMean;
+            strcpy(aux->common_name,tree.common_name);
             aux->tail = first;
             return aux;
         }
@@ -126,69 +123,43 @@ static void prinlist(treesADT tree){
     treeNode *aux=tree->firstTree;
     while (aux!=NULL)
     {
-        printf("%f\n",aux->tree.diameterMean);
+         printf("%s\t%.2f\n",aux->common_name,aux->diameterMean);
+   
         aux=aux->tail;
     }
     
 }
+
 int main(int argc, char const *argv[]){
     FILE *trees;
-    trees=fopen(argv[1],"r");
-    char lines[10000];
-    fgets(lines,10000, trees);
-    //me fijo en donde esta la columna con nombre de arboles 
     char *token;
-    token=strtok(lines,"; ");
-    int countNombre =0,countDiametro=0,nombre=0,diametro=0,salir=0;
+    trees=fopen(argv[1],"r");
+    char lines[1024];
+    char name[30],hood[5];
+    fgets(lines,1024, trees);
+    int i,diametro,registro;
     treesADT tree=newTree();
-    //este while lo uso para saber que columnas son las que uso pero no se si hacen falta pq ya abriendo el archivo se cuales son 
-    while(token!=NULL && !salir){
-        if(strcmp("nombre_cientifico",token)==0)
-        {
-            nombre=1;
-        }
-        if(strcmp("diametro_altura_pecho",token)==0){
-            diametro = 1;
-        }
-            if(nombre==0)
-                countNombre++;
-            if(diametro==0)
-                countDiametro++;
-            if(diametro!=0 && nombre!=0)
-                salir=1;
-        token=strtok(NULL,"; ");
-
-    }
-    printf("%d\n",countDiametro);
-    //ahora tengo el contador por lxo que tengo que guardarme esa key 
-    int i,j;
-    char name[100];
-    while(fgets(lines, 10000, trees))
+    while(fgets(lines,1024,trees))
     {
-        i=0,j=0;
-        token=strtok(lines,";");
-        while(token!=NULL){
-            if(i==countNombre)
+        for(i=0,token=strtok(lines,";");i<12;i++)
+        {
+            if(i==2)
+            {
+                strcpy(hood,token);
+            }
+            if(i==7)
             {
                 strcpy(name,token);
-               // printf("%s\n",name);
-
             }
-            if(j==11)
+            if(i==11)
             {
                 diametro=atoi(token);
-                //printf("%d\n",diametro);
-
             }
-            i++;
-            j++;
             token=strtok(NULL,";");
-
         }
-        addTree (tree, name,  diametro);
-        //printf("%s\t%d\n",name,diametro);
-
-    }
+        if(diametro!=0)
+            addTree(tree,name,diametro);
+ }
     treeList(tree);
     prinlist(tree);
 
