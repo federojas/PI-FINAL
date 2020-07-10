@@ -135,6 +135,21 @@ static hoodNode * sortQty(hoodNode * first, hoodNode * sort)
     return first;
 }
 
+static void freeRec(hoodNode hood)
+{
+    if(first == NULL)
+        return ;
+    freeRec(hood->tail);
+    free(hood->hood_name);
+    free(hood);
+}
+
+void free(hoodADT hood)
+{
+    freeRec(hood->firstHoodHab);
+    free(hood);
+}
+
 int hoodList (hoodADT hood) {
     treesHab(hood); // we calculate the trees/hab
     for(int i = 0; i < hood->vecSize; i++)
