@@ -18,17 +18,20 @@ typedef struct hoodNode {
     char * hood_name;
     size_t treeQty;
     double treesPerHab;
-    struct hoodNode * tail;
+    struct hoodNode * qtyTail;
+    struct hoodNode * habTail;
 } hoodNode;
 
 typedef struct hoodCDT {
     hoodNode * firstHoodQty;        // neighborhoods in descending order by qty, alphabetical order used to resolve draws
     hoodNode * firstHoodHab;        // neighborhoods in descending order by qty/habitants, alphabetical order used to resolve draws
+    hoodNode * currentHoodQty;
+    hoodNode * currentHoodHab;
     tHood * vecHood;                //vector containing all of the neighborhoods
     size_t vecSize;                 //amount of neighborhoos in vector
 } hoodCDT;
 
-typedef hoodCDT * hoodADT;
+//typedef hoodCDT * hoodADT; //esto va en el .h ¿?
 
 hoodADT newHood() {
     return calloc(1, sizeof(hoodCDT));
@@ -86,7 +89,7 @@ static hoodNode * addRecHood(hoodNode * first, tHood hood, hoodNode * aux) {
         if (result->hood_name == NULL)
             return NULL;
         strcpy(result->hood_name, hood.hood_name);
-        result->tail = first;
+        result->habTail = first;
         aux = result;
         return result;
     }
@@ -102,26 +105,21 @@ static hoodNode * addRecHood(hoodNode * first, tHood hood, hoodNode * aux) {
         if (result->hood_name == NULL)
             return NULL;
         strcpy(result->hood_name, hood.hood_name);
-        result->tail = first;
+        result->habTail = first;
         aux = result;
         return result;
         }
     }
-    first->tail = addRecHood(first->tail, hood, aux);
+    first->habTail = addRecHood(first->habTail, hood, aux);
     return first;
 }
 
 //function that sorts by descending order of quantity of trees, without creating new nodes
 static hoodNode * sortQty(hoodNode * first, hoodNode * sort) 
 {
-    if(first == NULL)
+    if(first == NULL || first->treeQty < sort->treeQty)
     {
-        sort->tail = NULL;
-        return sort;
-    }
-    if(first->treeQty < sort->treeQty)
-    {
-        sort->tail = first;
+        sort->qtyTail = NULL;
         return sort;
     }
     if(first->treeQty == sort->treeQty)
@@ -129,11 +127,11 @@ static hoodNode * sortQty(hoodNode * first, hoodNode * sort)
         int c = strcmp(first->hood_name, sort->hood_name); //viene primero first
         if(c < 0)
         {
-            sort->tail = first;
+            sort->qtyTail = first;
             return sort;
         }
     }
-    first->tail = sortQty(first->tail, sort);
+    first->qtyTail = sortQty(first->qtyTail, sort);
     return first;
 }
 
@@ -176,37 +174,70 @@ static void printList(hoodADT hood){
         aux=aux->tail;
     }
 }
-int main(int argc, char const *argv[]){ //lo voy a hacer para bsas primero 
-    FILE *hoods,*trees;
-    char *token;
-    hoodADT hood=newHood();
-    hoods=fopen(argv[1],"r");
-    trees=fopen(argv[2],"r");
-    char linesHood[1024], linesTree[1024];
-    int i,habitantes;
-    char name[1024];
-    fgets(linesHood,1024,hoods);//skip the first line 
-    while(fgets(linesHood,1024,hoods)){
-        token=strtok(linesHood,";\r\t\n");
-        strcpy(name,token);
-        token=strtok(NULL,";\r\t\n");
-        habitantes=atoi(token);
-        addHood(hood,name,habitantes);
-    }
-  
-    fgets(linesTree,1024,trees);//skip first line
-    token=strtok(linesTree,";\r\t\n");
-    while(fgets(linesTree,1024,trees)){
-        for(i=0, token=strtok(linesTree,";\r\t\n");i<3;i++){
-            if(i==2)
-                strcpy(name,token);
-            token=strtok(NULL,";\r\t\n");
-        }
-        addTreeHood(hood,name);
-    }
-    // for(int i=0;i<15;i++){
-    //     printf("%s\t%ld\n",hood->vecHood[i].hood_name,hood->vecHood[i].habitants);
-    // }
-    hoodList(hood);
-    printList(hood);
+
+void toBeginHoodHab(hoodADT hood){
+    hood->currentHoodHab = hood->firstHoodHab;
 }
+int hasNextHoodHab(hoodADT hood){
+    return hood->currentHoodHab != NULL;
+}
+
+hoodNode * nextHoodHab(hoodADT hood)
+{
+    if(hasNextHoodHab(hood) == 0)
+        return NULL;
+    hoodNode * result = hood->currentHoodHab;
+    hood->currentHoodHab = hood->currentHoodHab->habTail;
+    return result;
+}
+
+void toBeginQty(hoodADT hood){
+    hood->currentHoodQty = hood->firstHoodQty;
+}
+int hasNextHoodQty(hoodADT hood){
+    return hood->currentHoodQty != NULL;
+}
+
+hoodNode * nextHoodQty(hoodADT hood)
+{
+    if(hasNextHoodQty(hood) == 0)
+        return NULL;
+    hoodNode * result = hood->currentHoodQty;
+    hood->currentHoodQty = hood->currentHoodQty->qtyTail;
+    return result;
+}
+
+// int main(int argc, char const *argv[]){ //lo voy a hacer para bsas primero 
+//     FILE *hoods,*trees;
+//     char *token;
+//     hoodADT hood=newHood();
+//     hoods=fopen(argv[1],"r");
+//     trees=fopen(argv[2],"r");
+//     char linesHood[1024], linesTree[1024];
+//     int i,habitantes;
+//     char name[1024];
+//     fgets(linesHood,1024,hoods);//skip the first line 
+//     while(fgets(linesHood,1024,hoods)){
+//         token=strtok(linesHood,";\r\t\n");
+//         strcpy(name,token);
+//         token=strtok(NULL,";\r\t\n");
+//         habitantes=atoi(token);
+//         addHood(hood,name,habitantes);
+//     }
+  
+//     fgets(linesTree,1024,trees);//skip first line
+//     token=strtok(linesTree,";\r\t\n");
+//     while(fgets(linesTree,1024,trees)){
+//         for(i=0, token=strtok(linesTree,";\r\t\n");i<3;i++){
+//             if(i==2)
+//                 strcpy(name,token);
+//             token=strtok(NULL,";\r\t\n");
+//         }
+//         addTreeHood(hood,name);
+//     }
+//     // for(int i=0;i<15;i++){
+//     //     printf("%s\t%ld\n",hood->vecHood[i].hood_name,hood->vecHood[i].habitants);
+//     // }
+//     hoodList(hood);
+//     printList(hood);
+// }
