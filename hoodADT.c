@@ -139,7 +139,7 @@ static void freeRec(hoodNode *hood)
 {
     if(hood == NULL)
         return ;
-    freeRec(hood->tail);
+    freeRec(hood->qtyTail);
     free(hood->hood_name);
     free(hood);
 }
@@ -170,8 +170,8 @@ int hoodList (hoodADT hood) {
 static void printList(hoodADT hood){
     hoodNode * aux=hood->firstHoodHab;
     while(aux!=NULL){
-        printf("%s\t%ld\t%f\n",aux->hood_name, aux->treeQty, aux->treesPerHab);
-        aux=aux->tail;
+        printf("%s\t%ld\t%.2f\n",aux->hood_name, aux->treeQty, aux->treesPerHab);
+        aux=aux->qtyTail;
     }
 }
 
