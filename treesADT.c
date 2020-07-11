@@ -17,6 +17,7 @@ typedef struct treeNode {
 
 typedef struct treesCDT {
     treeNode * firstTree;               // trees in descending order by average species diameter, alphabetical order used to resolve draws
+    treeNode *current;
     tTree * vector;                     // Vector containing all of the tree species in the data base
     size_t size;                        // amount of species in vector
 } treesCDT;
@@ -119,6 +120,13 @@ void vecToList (treesADT tree) {
         printf("%s\t%.2f\n",aux->common_name,aux->diameterMean);
         aux = aux->tail;
     }
+}
+
+void toBegin(treesADT tree){
+    tree->current=tree->firstTree;
+}
+int hasNext(treesADT tree){
+    return tree->current!=NULL;
 }
 
 // int main(int argc, char const *argv[]){

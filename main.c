@@ -52,7 +52,7 @@ int main(int argc, char const *argv[]){
     
     int size=hoodAmount(tree);
     for(int i=0,i<size;i++ ){
-
+        
     }
     
 }
