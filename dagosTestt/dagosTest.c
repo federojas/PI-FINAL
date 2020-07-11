@@ -9,7 +9,7 @@
 
 typedef struct tTree {
     char * common_name;                 // scientific name
-    char * hood_name;
+    //char * hood_name;
     float diameterSum;                  // sum of all database species diameters
     long unsigned int qty;              // amount of species specimens on data base
     float diameterMean;                 // average diameter of tree species
@@ -32,23 +32,23 @@ typedef struct hoodNode {
     char * hood_name;
     size_t treeQty;
     float treesPerHab;
-    struct hood * tail;
+    struct hoodNode * tail;
 } hoodNode;
 
 typedef struct forestControlCDT {
     treeNode * firstTree;
+    hoodNode * firstHoodByQty;
+    hoodNode * firstHoodByTPP;
     tTree * treeVector;
-    size_t treeSize;
-    tHood * firstHoodByQty;
-    tHood * firstHoodByTPP;
     tHood * hoodVector;
     size_t hoodSize;
+    size_t treeSize;
 } forestControlCDT;
 
 typedef struct forestControlCDT * forestControlADT;
 
 forestControlADT newForestControl() {
-    return calloc(1, sizeof(forestControlADT));
+    return calloc(1, sizeof(forestControlCDT));
 }
 
 /*void freeRec (treeNode * first) {
@@ -65,32 +65,17 @@ void freeTree (forestControlADT tree) {
     free(tree);
 }*/
 
-void addTree (forestControlADT fc, const char * commonName, const char * hoodName, const float diameter) {
-    int salir1 = 0;
-    for (size_t i = 0; i < fc->treeSize && !salir1; i++) {
+void addTree (forestControlADT fc, const char * commonName, const float diameter) {
+    for (size_t i = 0; i < fc->treeSize; i++) {
         if (strcmp(fc->treeVector[i].common_name, commonName) == 0) {
             fc->treeVector[i].diameterSum += diameter;
             fc->treeVector[i].qty++;
-            salir1 = 1;
+            return ;
         }
     }
-    
-    int salir2 = 0;
-    for (size_t i = 0; i < fc->hoodSize && !salir2; i++) {
-        if (strcmp(fc->hoodVector[i].hood_name, hoodName) == 0) {
-            fc->hoodVector[i].treeQty++;
-            salir2 = 1;
-        }
-    }
-    
-    if (salir1 && salir2)
-        return ;
     
     if (fc->treeSize % BLOCK == 0) {
         fc->treeVector = realloc(fc->treeVector, (fc->treeSize + BLOCK) * sizeof(tTree));
-    }
-    if (fc->hoodSize % BLOCK == 0) {
-        fc->hoodVector = realloc(fc->hoodVector, (fc->hoodSize + BLOCK) * sizeof(tHood));
     }
     
     fc->treeVector[fc->treeSize].common_name = realloc(fc->treeVector[fc->treeSize].common_name, strlen(commonName)+1);
@@ -98,6 +83,21 @@ void addTree (forestControlADT fc, const char * commonName, const char * hoodNam
     fc->treeVector[fc->treeSize].diameterSum = diameter;
     fc->treeVector[fc->treeSize].qty = 1;
     fc->treeSize++;
+    return ;
+    
+}
+
+void addTreeHood (forestControlADT fc, const char * hoodName) {
+    for (size_t i = 0; i < fc->hoodSize; i++) {
+        if (strcmp(fc->hoodVector[i].hood_name, hoodName) == 0) {
+            fc->hoodVector[i].treeQty++;
+            return ;
+        }
+    }
+    
+    if (fc->hoodSize % BLOCK == 0) {
+        fc->hoodVector = realloc(fc->hoodVector, (fc->hoodSize + BLOCK) * sizeof(tHood));
+    }
     
     fc->hoodVector[fc->hoodSize].hood_name = realloc(fc->hoodVector[fc->hoodSize].hood_name, strlen(hoodName)+1);
     strcpy(fc->hoodVector[fc->hoodSize].hood_name, hoodName);
@@ -106,33 +106,34 @@ void addTree (forestControlADT fc, const char * commonName, const char * hoodNam
     fc->hoodSize++;
 }
 
+
 void diamAvg (forestControlADT fc) {
 // calculates all of the species average diameters
     float diameter;
     long unsigned int quantity;
-    for (int i = 0; i < fc->treeSize; i++) {
+    for (size_t i = 0; i < fc->treeSize; i++) {
         diameter = fc->treeVector[i].diameterSum;
         quantity = fc->treeVector[i].qty;
         fc->treeVector[i].diameterMean = (float)(diameter/quantity);
     }
 }
 
-// hay que cambiar el compare este
-static float compare1 (size_t diamMean1, size_t diamMean2) {
+/*tatic float compare1 (float diamMean1, float diamMean2) {
     return diamMean1 - diamMean2;
-}
+    (c = compare1(first->diameterMean, tree.diameterMean)) < 0;
+}*/
 
 static treeNode * addTreeRec (treeNode * first, tTree tree) {
     int c;
-    if (first == NULL || (c = compare1(first->diameterMean, tree.diameterMean)) < 0) {
+    if (first == NULL || first->diameterMean < tree.diameterMean) {
         treeNode * aux = malloc(sizeof(treeNode));
-        aux->common_name = malloc(sizeof(char)*(strlen(tree.common_name)+1));
+        aux->common_name = malloc(sizeof(char) * (strlen(tree.common_name)+1));
         aux->diameterMean = tree.diameterMean;
         strcpy(aux->common_name,tree.common_name);    
         aux->tail = first;
         return aux;
     }
-    if (c == 0) {
+    if (first->diameterMean == tree.diameterMean) {
         if (strcmp(first->common_name, tree.common_name) > 0) {
             treeNode * aux = malloc(sizeof(treeNode));
             aux->common_name = malloc(sizeof(char) * (strlen(tree.common_name)+1));
@@ -205,28 +206,34 @@ void addHood (forestControlADT fc, const char * hoodName, size_t habitants) {
     for (size_t i = 0; i < fc->hoodSize; i++) {
         if (strcmp(fc->hoodVector[i].hood_name, hoodName) == 0) {
             fc->hoodVector[i].habitants += habitants;
+            return ;
         }
     }
+    return ;
 }
-// en caso de que algun barrio pasado de los arboles.csv no este en barrios.csv, tomamos que su poblacion es cero
 
 void treesPerHab (forestControlADT fc) {
-    
     size_t habs;
     size_t treeQty;
     for (int i = 0; i < fc->hoodSize; i++) {
         habs = fc->hoodVector[i].habitants;
         treeQty = fc->hoodVector[i].treeQty;
-        fc->hoodVector[i].treesPerHab = (float)(treeQty/habs);
+        if (habs == 0) {
+            fc->hoodVector[i].treesPerHab = 0;
+        }
+        else
+            fc->hoodVector[i].treesPerHab = ((float)treeQty/(float)habs);
     }
 }
-static int compare3 (size_t tpp1, size_t tpp2) {
+/*static int compare3 (size_t tpp1, size_t tpp2) {
     return tpp1 - tpp2;
-}
+    (c = compare3(first->treesPerHab, hood.treesPerHab)) < 0
+}*/
 // pa mi queda mejor el struct con tHood y tTree
+
 static hoodNode * addHoodByTPP (hoodNode * first, tHood hood) {
     int c;
-    if (first == NULL || (c = compare3(first->treesPerHab, hood.treesPerHab)) < 0) {
+    if (first == NULL || first->treesPerHab < hood.treesPerHab) {
         hoodNode * aux = malloc(sizeof(hoodNode));
         aux->hood_name = malloc(sizeof(char) * (strlen(hood.hood_name)+1));
         strcpy(aux->hood_name, hood.hood_name);
@@ -235,7 +242,7 @@ static hoodNode * addHoodByTPP (hoodNode * first, tHood hood) {
         aux->tail = first;
         return aux;
     }
-    if (c == 0) {
+    if (first->treesPerHab == hood.treesPerHab) {
         if (strcmp(first->hood_name, hood.hood_name) > 0) {
             hoodNode * aux = malloc(sizeof(hoodNode));
             aux->hood_name = malloc(sizeof(char) * (strlen(hood.hood_name)+1));
@@ -251,32 +258,59 @@ static hoodNode * addHoodByTPP (hoodNode * first, tHood hood) {
 }
 
 void hoodToHoodListByTPP (forestControlADT fc, tHood source) {
-    fc->firstHoodByTPP = addHoodByTPP (fc->firstHoodByTPP, source);
+    fc->firstHoodByTPP = addHoodByTPP(fc->firstHoodByTPP, source);
+    return ;
 }
 
 void hoodVecToHoodListByTPP (forestControlADT fc) {
+    treesPerHab(fc);
     for (size_t i = 0; i < fc->hoodSize; i++) 
         hoodToHoodListByTPP(fc, fc->hoodVector[i]);
     return ;
 }
-    
-static void printTreeList (forestControlADT fc){
-    treeNode * aux = fc->firstTree;
+
+void printHoodQtyList (forestControlADT fc) {
+    hoodNode * aux = fc->firstHoodByQty;
     while (aux != NULL) {
-        printf("%s\t%.2f\n", aux->common_name, aux->diameterMean);
+        printf("%2s;%ld\n", aux->hood_name, aux->treeQty);
+        aux = aux->tail;
+    }
+    return ;
+}
+
+void printHoodTPPList (forestControlADT fc) {
+    hoodNode * aux = fc->firstHoodByTPP;
+    while (aux != NULL) {
+        printf("%2s;%f\n", aux->hood_name, aux->treesPerHab);
         aux = aux->tail;
     }
 }
 
+static void printTreeList (forestControlADT fc){
+    treeNode * aux = fc->firstTree;
+    while (aux != NULL) {
+        printf("%15s\t%.2f\n", aux->common_name, aux->diameterMean);
+        aux = aux->tail;
+    }
+}
 
+void printVectorHabs (const tHood * vec, size_t dim) {
+    for (size_t i = 0; i < dim; i++) {
+        printf("%s;", vec[i].hood_name);
+        printf("%ld;", vec[i].treeQty);
+        printf("%f;", vec[i].treesPerHab);
+        printf("%ld\n", vec[i].habitants);
+    }
+    return ;
+}
 int main(int argc, char const *argv[]) {
     FILE * trees;
     char * token;
     trees = fopen(argv[1],"r");
     char lines[MAX_BUFFER];
-    char name[30], hood[30];
-    fgets(lines,1024, trees);
-    int i,registro;
+    char name[30], hood[15];
+    fgets(lines, MAX_BUFFER, trees);
+    int i;
     float diametro;
     forestControlADT fc = newForestControl();
     
@@ -297,8 +331,46 @@ int main(int argc, char const *argv[]) {
             token=strtok(NULL,";");
         }
         if(diametro != 0)
-            addTree(fc, name, hood, diametro);
+            addTree(fc, name, diametro);
+            addTreeHood(fc, hood);
     }
     treeVecToTreeList(fc);
     printTreeList(fc);
+    printf("------------------------------------------\n");
+    hoodVecToHoodListByQty(fc);
+    printHoodQtyList(fc);
+    printf("-------------------------------------------\n");
+
+    //printVectorHabs(fc->hoodVector, fc->hoodSize);
+
+    FILE * hoods;
+    char * token2;
+    hoods = fopen(argv[2], "r");
+    char lines2[MAX_BUFFER];
+    char hood2[15];
+    fgets(lines2, MAX_BUFFER, hoods);
+    int j;
+    long int poblacion;
+    
+    /*while(fgets(lines, MAX_BUFFER, hoods)) {
+        for(j = 0, token2 = strtok(lines,";"); j < 2; j++)
+        {
+            if (j == 0) {
+                strcpy(hood2, token);
+                printf("%s", hood2);
+            }
+            if (j == 1)
+                poblacion = atol(token);
+            token = strtok(NULL,";");
+        }
+    
+        if(poblacion != 0)
+            addHood(fc, hood2, poblacion);
+    }*/
+
+    addHood(fc, hood2, 59);
+    treesPerHab(fc);
+    printVectorHabs(fc->hoodVector, fc->hoodSize);
+    hoodVecToHoodListByQty(fc);
+    printHoodTPPList(fc);
 }

@@ -170,7 +170,7 @@ int hoodList (hoodADT hood) {
 static void printList(hoodADT hood){
     hoodNode * aux=hood->firstHoodHab;
     while(aux!=NULL){
-        printf("%s\t%ld\t%f\n",aux->hood_name, aux->treeQty, aux->treesPerHab);
+        printf("%s\t%ld\t%.2f\n",aux->hood_name, aux->treeQty, aux->treesPerHab);
         aux=aux->qtyTail;
     }
 }
