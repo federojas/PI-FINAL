@@ -26,13 +26,13 @@ typedef struct treesCDT {
     size_t size;                        // amount of species in vector
 } treesCDT;
 
-typedef struct treesCDT * treesADT;
+typedef struct treesCDT * treesADT; //esto va en el .h ¿?
 
 treesADT newTree() {
     return calloc(1, sizeof(treesCDT));
 }
 
-void freeRec (treeNode * first) {
+static void freeRec (treeNode * first) {
     if (first == NULL)
         return ;
     freeRec (first->tail);
@@ -67,7 +67,10 @@ int addTree (treesADT tree, const char * name, const float diameter) {
     return OK;
 }
 
-void diamAvg (treesADT tree) // calculates all of the species average diameters
+int hoodAmount(treesADT tree){
+    return tree->size;
+}
+static void diamAvg (treesADT tree) // calculates all of the species average diameters
 {
     float diameter;
     long unsigned int quantity;

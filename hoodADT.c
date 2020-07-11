@@ -28,7 +28,7 @@ typedef struct hoodCDT {
     size_t vecSize;                 //amount of neighborhoos in vector
 } hoodCDT;
 
-typedef hoodCDT * hoodADT;
+typedef hoodCDT * hoodADT; //esto va en el .h ¿?
 
 hoodADT newHood() {
     return calloc(1, sizeof(hoodCDT));
@@ -176,6 +176,9 @@ static void printList(hoodADT hood){
         aux=aux->tail;
     }
 }
+
+
+
 int main(int argc, char const *argv[]){ //lo voy a hacer para bsas primero 
     FILE *hoods,*trees;
     char *token;
