@@ -21,7 +21,7 @@ int main(int argc, char const *argv[]){
     query3=fopen("query3.csv","w"); //we open the file with "write" permissions in order to work 
     trees = fopen(argv[1],"r");
     char lines[1024];
-    char treeName[30],hood[5];
+    char treeName[30],hoodName[5];
     fgets(lines,1024, trees);//we skip the first line 
     int i,diameter;
     //we already know that the hoods are in the third column, the tree name in the 7th and the diameter in the 12th and
@@ -31,7 +31,7 @@ int main(int argc, char const *argv[]){
         {
             if(i==2)
             {
-                strcpy(hood,token);
+                strcpy(hoodName,token);
             }
             if(i==7)
             {
@@ -43,16 +43,16 @@ int main(int argc, char const *argv[]){
             }
             token=strtok(NULL,";");
         }
-        if(diametro!=0)
-            addTree(tree,name,diametro);
+        if(diameter!=0)
+            addTree(tree,treeName,diameter);
     }
         vecToList(tree);
         //printList(tree);
-        //freeTree(tree);
-    }
-    // int size=hoodAmount(tree);
-    // for(int i=0,i<size;i++ ){
+        freeTree(tree);
+    
+    int size=hoodAmount(tree);
+    for(int i=0,i<size;i++ ){
 
-    // }
+    }
     
 }

@@ -7,12 +7,7 @@
 #define NO_MEM 0
 #define BLOCK 100
 
-typedef struct tTree {
-    char * common_name;                 // scientific name
-    float diameterSum;                  // sum of all database species diameters
-    long unsigned int qty;              // amount of species specimens on data base
-    float diameterMean;                 // average diameter of tree species
-} tTree;
+
 
 typedef struct treeNode {
     char * common_name; 
@@ -26,7 +21,7 @@ typedef struct treesCDT {
     size_t size;                        // amount of species in vector
 } treesCDT;
 
-typedef struct treesCDT * treesADT; //esto va en el .h ¿?
+
 
 treesADT newTree() {
     return calloc(1, sizeof(treesCDT));
@@ -112,13 +107,13 @@ void vecToList (treesADT tree) {
     diamAvg(tree); // we calculate the diameter average of each species
     for (size_t i = 0; i < tree->size; i++) {
         elemToList(tree, tree->vector[i]);
-        free(tree->vector[i]);
+        free(tree->vector[i].common_name);
     }
     free(tree->vector);
     return ;
 }
 
-static void printList (treesADT tree){
+ void printList (treesADT tree){
     treeNode *aux=tree->firstTree;
     while (aux != NULL) {
         printf("%s\t%.2f\n",aux->common_name,aux->diameterMean);
@@ -126,37 +121,37 @@ static void printList (treesADT tree){
     }
 }
 
-int main(int argc, char const *argv[]){
-    FILE *trees;
-    char *token;
-    trees = fopen(argv[1],"r");
-    char lines[1024];
-    char name[30],hood[5];
-    fgets(lines,1024, trees);
-    int i,diametro,registro;
-    treesADT tree=newTree();
-    while(fgets(lines,1024,trees))
-    {
-        for(i=0,token=strtok(lines,";");i<12;i++)
-        {
-            if(i==2)
-            {
-                strcpy(hood,token);
-            }
-            if(i==7)
-            {
-                strcpy(name,token);
-            }
-            if(i==11)
-            {
-                diametro=atoi(token);
-            }
-            token=strtok(NULL,";");
-        }
-        if(diametro!=0)
-            addTree(tree,name,diametro);
-    }
-    vecToList(tree);
-    printList(tree);
-    freeTree(tree);
-}
+// int main(int argc, char const *argv[]){
+//     FILE *trees;
+//     char *token;
+//     trees = fopen(argv[1],"r");
+//     char lines[1024];
+//     char name[30],hood[5];
+//     fgets(lines,1024, trees);
+//     int i,diametro,registro;
+//     treesADT tree=newTree();
+//     while(fgets(lines,1024,trees))
+//     {
+//         for(i=0,token=strtok(lines,";");i<12;i++)
+//         {
+//             if(i==2)
+//             {
+//                 strcpy(hood,token);
+//             }
+//             if(i==7)
+//             {
+//                 strcpy(name,token);
+//             }
+//             if(i==11)
+//             {
+//                 diametro=atoi(token);
+//             }
+//             token=strtok(NULL,";");
+//         }
+//         if(diametro!=0)
+//             addTree(tree,name,diametro);
+//     }
+//     vecToList(tree);
+//     printList(tree);
+//     freeTree(tree);
+// }
