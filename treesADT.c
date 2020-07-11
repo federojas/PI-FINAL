@@ -127,15 +127,17 @@ void toBegin(treesADT tree){
 }
 int hasNext(treesADT tree){
     return tree->current != NULL;
-}
+} 
 
-treeNode * next(treesADT tree)
+float next(treesADT tree, char *name )
 {
+    float  diameter;
     if(hasNext(tree) == 0)
-        return NULL;
-    treeNode * result = tree->current;
+        return 0;
+    diameter=tree->current->diameterMean;
+    strcpy(name,tree->current->common_name);
     tree->current = tree->current->tail;
-    return result;
+    return diameter;
 }
 
 // int main(int argc, char const *argv[]){

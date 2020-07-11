@@ -16,5 +16,7 @@ int addTree (treesADT tree, const char * name, const float diameter);
 void elemToList (treesADT tree, tTree source);
 void vecToList (treesADT tree);
 void printList (treesADT tree); //esta capaz la saque desps
-
+void toBegin(treesADT tree);
+int hasNext(treesADT tree);
+float next(treesADT tree, char *name );
 #endif
