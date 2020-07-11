@@ -39,8 +39,8 @@ typedef struct forestControlCDT {
     treeNode * firstTree;
     tTree * treeVector;
     size_t treeSize;
-    tHood * firstHoodByQty;
-    tHood * firstHoodByTPP;
+    hoodNode * firstHoodByQty;
+    hoodNode * firstHoodByTPP;
     tHood * hoodVector;
     size_t hoodSize;
 } forestControlCDT;
@@ -268,6 +268,12 @@ static void printTreeList (forestControlADT fc){
     }
 }
 
+void printVector (const tHood * vec, size_t dim) {
+    for (size_t i = 0; i < dim; i++) {
+        printf("%s:", vec[i].hood_name);
+        printf("%d\n", vec[i].treeQty);
+    }
+}
 
 int main(int argc, char const *argv[]) {
     FILE * trees;
@@ -301,4 +307,7 @@ int main(int argc, char const *argv[]) {
     }
     treeVecToTreeList(fc);
     printTreeList(fc);
+    printf("------------------------------------------\n");
+    printVector(fc->hoodVector, fc->hoodSize);
+    
 }
