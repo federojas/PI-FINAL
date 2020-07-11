@@ -134,7 +134,7 @@ static hoodNode * sortQty(hoodNode * first, hoodNode * sort)
 {
     if(first == NULL || first->treeQty < sort->treeQty)
     {
-        sort->qtyTail = NULL;
+        sort->qtyTail = first;
         return sort;
     }
     if(first->treeQty == sort->treeQty)
@@ -154,11 +154,12 @@ int hoodList (hoodADT hood) {
     treesHab(hood); // we calculate the trees/hab
     for(int i = 0; i < hood->vecSize; i++)
     {
-        hoodNode * aux; // node used to save the location of the newly created node
-        hood->firstHoodHab = addRecHood(hood->firstHoodHab, hood->vecHood[i], aux);//sorts query 2 creating new nodes
-        printf("%ld\n", aux->treeQty);    
-       // hood->firstHoodQty = sortQty(hood->firstHoodQty, &aux); //sorts query 1 without creating new nodes
+        hoodNode * aux; // pointer used to save the location of the newly created node
+        aux = malloc(sizeof(hoodNode));
+        hood->firstHoodHab = addRecHood(hood->firstHoodHab, hood->vecHood[i], aux);//sorts query 2 creating new nodes  
+        hood->firstHoodQty = sortQty(hood->firstHoodQty, aux); //sorts query 1 without creating new nodes
         free(hood->vecHood[i].hood_name);
+        free(aux);
     }
     free(hood->vecHood); // we free up no longer required memory
     hood->vecHood = NULL;
@@ -177,7 +178,7 @@ static void printList2(hoodADT hood){
     hoodNode * aux=hood->firstHoodQty;
     while(aux!=NULL){
         printf("%s\t%ld\n",aux->hood_name, aux->treeQty);
-        aux=aux->habTail;
+        aux=aux->qtyTail;
     }
 }
 
