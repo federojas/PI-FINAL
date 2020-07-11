@@ -5,7 +5,8 @@
 #include <string.h>
 #define BLOCK 10
 #define NO_MATCH 5
-
+#define NO_MEM 0
+#define OK 1
 typedef struct tHood {
     char * hood_name;
     size_t habitants;
@@ -16,8 +17,8 @@ typedef struct tHood {
 typedef struct hoodNode {
     char * hood_name;
     size_t treeQty;
-    float treesPerHab;
-    struct hood * tail;
+    double treesPerHab;
+    struct hoodNode * tail;
 } hoodNode;
 
 typedef struct hoodCDT {
@@ -41,16 +42,16 @@ int addHood (hoodADT hood, char * name, size_t habitants) {
     strcpy(hood->vecHood[hood->vecSize].hood_name, name);
     hood->vecHood[hood->vecSize].habitants = habitants;
     hood->vecHood[hood->vecSize].treeQty = 0;
-    hood->vectSize += 1;
+    hood->vecSize += 1;
     return OK;
 }
 
 //Adds the tree to the tree quantity of its neighborhood
-int addTreeHood(hoodADT hood, char * hoodBelongs)
+int addTreeHood(hoodADT hood, char * treeHood)
 {
     for(int i = 0; i < hood->vecSize; i++)
     {
-        int c = strcmp(hood->vecHood[i].hood_name, hoodBelongs);
+        int c = strcmp(hood->vecHood[i].hood_name, treeHood);
         if (c == 0) {
             hood->vecHood[i].treeQty += 1;
             return OK;
@@ -67,7 +68,8 @@ static void treesHab(hoodADT hood)
     for(int i = 0; i < hood->vecSize; i++) {
         habitants = hood->vecHood[i].habitants;
         trees = hood->vecHood[i].treeQty;
-        hood->vecHood[i].treesPerHab = (float)(trees/habitants);
+        hood->vecHood[i].treesPerHab = ((double)trees/(double)habitants);
+        //printf("%f\n", hood->vecHood[i].treesPerHab );
     }
 }
 
@@ -135,16 +137,16 @@ static hoodNode * sortQty(hoodNode * first, hoodNode * sort)
     return first;
 }
 
-static void freeRec(hoodNode hood)
+static void freeRec(hoodNode *hood)
 {
-    if(first == NULL)
+    if(hood == NULL)
         return ;
     freeRec(hood->tail);
     free(hood->hood_name);
     free(hood);
 }
 
-void free(hoodADT hood)
+void freeHood(hoodADT hood)
 {
     freeRec(hood->firstHoodHab);
     free(hood);
@@ -159,7 +161,7 @@ int hoodList (hoodADT hood) {
         if (hood->firstHoodHab == NULL) {
             return NO_MEM;
         }
-        hood->firstHoodQty = sortQty(hood->firstHoodQty, aux); //sorts query 1 without creating new nodes
+       //hood->firstHoodQty = sortQty(hood->firstHoodQty, aux); //sorts query 1 without creating new nodes
         free(hood->vecHood[i].hood_name);
     }
     free(hood->vecHood); // we free up no longer required memory
@@ -167,4 +169,44 @@ int hoodList (hoodADT hood) {
     return OK;
 }
 
-
+static void printList(hoodADT hood){
+    hoodNode * aux=hood->firstHoodHab;
+    while(aux!=NULL){
+        printf("%s\t%ld\t%f\n",aux->hood_name, aux->treeQty, aux->treesPerHab);
+        aux=aux->tail;
+    }
+}
+int main(int argc, char const *argv[]){ //lo voy a hacer para bsas primero 
+    FILE *hoods,*trees;
+    char *token;
+    hoodADT hood=newHood();
+    hoods=fopen(argv[1],"r");
+    trees=fopen(argv[2],"r");
+    char linesHood[1024], linesTree[1024];
+    int i,habitantes;
+    char name[1024];
+    fgets(linesHood,1024,hoods);//skip the first line 
+    while(fgets(linesHood,1024,hoods)){
+        token=strtok(linesHood,";\r\t\n");
+        strcpy(name,token);
+        token=strtok(NULL,";\r\t\n");
+        habitantes=atoi(token);
+        addHood(hood,name,habitantes);
+    }
+  
+    fgets(linesTree,1024,trees);//skip first line
+    token=strtok(linesTree,";\r\t\n");
+    while(fgets(linesTree,1024,trees)){
+        for(i=0, token=strtok(linesTree,";\r\t\n");i<3;i++){
+            if(i==2)
+                strcpy(name,token);
+            token=strtok(NULL,";\r\t\n");
+        }
+        addTreeHood(hood,name);
+    }
+    // for(int i=0;i<15;i++){
+    //     printf("%s\t%ld\n",hood->vecHood[i].hood_name,hood->vecHood[i].habitants);
+    // }
+    hoodList(hood);
+    printList(hood);
+}
