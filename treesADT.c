@@ -126,7 +126,16 @@ void toBegin(treesADT tree){
     tree->current=tree->firstTree;
 }
 int hasNext(treesADT tree){
-    return tree->current!=NULL;
+    return tree->current != NULL;
+}
+
+treeNode * next(treesADT tree)
+{
+    if(hasNext(tree) == 0)
+        return NULL;
+    treeNode * result = tree->current;
+    tree->current = tree->current->tail;
+    return result;
 }
 
 // int main(int argc, char const *argv[]){
