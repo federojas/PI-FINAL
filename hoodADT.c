@@ -37,7 +37,7 @@ hoodADT newHood() {
     hood = calloc(1, sizeof(hoodCDT));
     if(errno == ENOMEM)
     {
-        perror(Error);
+        perror("");
         return NULL;
     }
     return hood;
@@ -48,14 +48,14 @@ int addHood (hoodADT hood, char * name, size_t habitants) {
         hood->vecHood = realloc(hood->vecHood, (hood->vecSize + BLOCK) * sizeof(tHood));
         if(errno == ENOMEM)
         {
-            perror(Error);
+            perror("");
             return ENOMEM;
         }
     }
     hood->vecHood[hood->vecSize].hood_name = malloc((strlen(name)+1) * sizeof(char));
     if(errno == ENOMEM)
     {
-        perror(Error);
+        perror("");
         return ENOMEM;
     }
     strcpy(hood->vecHood[hood->vecSize].hood_name, name);
@@ -133,7 +133,7 @@ static hoodNode * addRec(hoodNode * first, tHood hood, hoodADT neighborhood){
         hoodNode * result = malloc(sizeof(hoodNode));
         if(errno == ENOMEM)
         {
-            perror(Error);
+            perror("");
             return NULL;
         }
         result->treeQty = hood.treeQty;
@@ -141,7 +141,7 @@ static hoodNode * addRec(hoodNode * first, tHood hood, hoodADT neighborhood){
         result->hood_name = malloc((strlen(hood.hood_name)+1) * sizeof(char));
         if(errno == ENOMEM)
         {
-            perror(Error);
+            perror("");
             return NULL;
         }
         strcpy(result->hood_name, hood.hood_name);
@@ -155,7 +155,7 @@ static hoodNode * addRec(hoodNode * first, tHood hood, hoodADT neighborhood){
             hoodNode * result = malloc(sizeof(hoodNode));
             if(errno == ENOMEM)
             {
-                perror(Error);
+                perror("");
                 return NULL;
             }
             result->treeQty = hood.treeQty;
@@ -163,7 +163,7 @@ static hoodNode * addRec(hoodNode * first, tHood hood, hoodADT neighborhood){
             result->hood_name = malloc((strlen(hood.hood_name)+1) * sizeof(char));
             if(errno == ENOMEM)
             {
-                perror(Error);
+                perror("");
                 return NULL;
             }
             strcpy(result->hood_name, hood.hood_name);
