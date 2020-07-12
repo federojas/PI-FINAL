@@ -188,21 +188,6 @@ int hoodList (hoodADT hood) {
     return OK;
 }
 
-// static void printList(hoodADT hood){
-//     hoodNode * aux=hood->firstHoodHab;
-//     while(aux!=NULL){
-//         printf("%s\t%ld\t%.2f\n",aux->hood_name, aux->treeQty, aux->treesPerHab);
-//         aux=aux->habTail;
-//     }
-// }
-
-// static void printList2(hoodADT hood){
-//     hoodNode * aux=hood->firstHoodQty;
-//     while(aux!=NULL){
-//         printf("%s\t%ld\n",aux->hood_name, aux->treeQty);
-//         aux=aux->qtyTail;
-//     }
-// }
 
 void toBeginHoodHab(hoodADT hood){
     hood->currentHoodHab = hood->firstHoodHab;
@@ -239,43 +224,3 @@ void nextHoodQty(hoodADT hood, int *cant, char *hoodName)//me devuelve  trees pe
     hood->currentHoodQty = hood->currentHoodQty->qtyTail;
     
 }
-
-// int main(int argc, char const *argv[]){ //lo voy a hacer para bsas primero 
-//      FILE *hoods,*trees;
-//      char *token;
-//      hoodADT hood=newHood();
-//      hoods=fopen(argv[1],"r");
-//      trees=fopen(argv[2],"r");
-//      char linesHood[1024], linesTree[1024];
-//      int i,habitantes;
-//      char name[1024];
-//      fgets(linesHood,1024,hoods);//skip the first line 
-//      while(fgets(linesHood,1024,hoods)){
-//          token=strtok(linesHood,";\r\t\n");
-//         strcpy(name,token);
-//         token=strtok(NULL,";\r\t\n");
-//         habitantes=atoi(token);
-//         addHood(hood,name,habitantes);
-//     }
-  
-//     fgets(linesTree,1024,trees);//skip first line
-//     token=strtok(linesTree,";\r\t\n");
-//     while(fgets(linesTree,1024,trees)){
-//         for(i=0, token=strtok(linesTree,";\r\t\n");i<3;i++){
-//             if(i==2)
-//                 strcpy(name,token);
-//             token=strtok(NULL,";\r\t\n");
-//         }
-//         addTreeHood(hood,name);
-//     }
-//     // for(int i=0;i<15;i++)
-//     // {
-//     //    printf("%s\t%ld\n",hood->vecHood[i].hood_name,hood->vecHood[i].habitants);
-//     // }
-//     hoodList(hood);
-//     printf("CANTIDAD DE ARBOLES/HABITANTE\n");
-//     printList(hood);
-//     printf("CANTIDAD DE ARBOLES\n");
-//     printList2(hood);
-//     freeHood(hood);
-// }

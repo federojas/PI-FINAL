@@ -64,7 +64,7 @@ int main(int argc, char const *argv[]){
 
     while(fgets(linesTrees,1024, trees))
     {
-        for(i=0,token=strtok(linesTrees,";");i<12;i++)
+        for(i=0,token=strtok(linesTrees,";");i<16;i++)
         {
             if(i==12)
             {
@@ -73,6 +73,7 @@ int main(int argc, char const *argv[]){
             if(i==4)
             {
                 strcpy(treeName,token);
+
             }
             if(i==15)
             {
