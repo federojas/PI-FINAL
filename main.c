@@ -89,6 +89,11 @@ int main(int argc, char const *argv[]){
             diameter=next(tree,name);
             fprintf(query3,"%s;%f\n",name,diameter);
         }
+        fclose(query1);
+        fclose(query2);
+        fclose(query3);
+        fclose(trees);
+        fclose(hoods);
         freeHood(hood);
         freeTree(tree);
     
