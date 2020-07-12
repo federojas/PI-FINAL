@@ -84,7 +84,6 @@ void addTree (forestControlADT fc, const char * commonName, const float diameter
     fc->treeVector[fc->treeSize].qty = 1;
     fc->treeSize++;
     return ;
-    
 }
 
 void addTreeHood (forestControlADT fc, const char * hoodName) {
@@ -94,7 +93,7 @@ void addTreeHood (forestControlADT fc, const char * hoodName) {
             return ;
         }
     }
-    
+
     if (fc->hoodSize % BLOCK == 0) {
         fc->hoodVector = realloc(fc->hoodVector, (fc->hoodSize + BLOCK) * sizeof(tHood));
     }
@@ -304,7 +303,7 @@ void printVectorHabs (const tHood * vec, size_t dim) {
     return ;
 }
 int main(int argc, char const *argv[]) {
-    FILE * trees;
+    /*FILE * trees;
     char * token;
     trees = fopen(argv[1],"r");
     char lines[MAX_BUFFER];
@@ -352,7 +351,7 @@ int main(int argc, char const *argv[]) {
     int j;
     long int poblacion;
     
-    /*while(fgets(lines, MAX_BUFFER, hoods)) {
+    while(fgets(lines, MAX_BUFFER, hoods)) {
         for(j = 0, token2 = strtok(lines,";"); j < 2; j++)
         {
             if (j == 0) {
@@ -366,11 +365,38 @@ int main(int argc, char const *argv[]) {
     
         if(poblacion != 0)
             addHood(fc, hood2, poblacion);
-    }*/
+    }
 
     addHood(fc, hood2, 59);
     treesPerHab(fc);
     printVectorHabs(fc->hoodVector, fc->hoodSize);
     hoodVecToHoodListByQty(fc);
     printHoodTPPList(fc);
+
+    */
+
+   FILE * hoods;
+    char * token2;
+    hoods = fopen(argv[2], "r");
+    char lines2[MAX_BUFFER];
+    char hood2[15];
+    fgets(lines2, MAX_BUFFER, hoods);
+    int j;
+    long int poblacion;
+    
+    while(fgets(lines, MAX_BUFFER, hoods)) {
+        for(j = 0, token2 = strtok(lines,";"); j < 2; j++)
+        {
+            if (j == 0) {
+                strcpy(hood2, token);
+                printf("%s", hood2);
+            }
+            if (j == 1)
+                poblacion = atol(token);
+            token = strtok(NULL,";");
+        }
+    
+        if(poblacion != 0)
+            addHood(fc, hood2, poblacion);
+    }
 }
