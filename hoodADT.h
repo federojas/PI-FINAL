@@ -27,7 +27,7 @@ void toBeginHoodHab(hoodADT hood);
 int hasNextHoodHab(hoodADT hood);
 
 //advances the current iterator to the next node in descending order of trees / habitant
-double nextHoodHab(hoodADT hood);
+double nextHoodHab(hoodADT hood, char *hoodName);
 
 //sets the current iterator to the beginning of the list in descending order of amount of trees
 void toBeginQty(hoodADT hood);
