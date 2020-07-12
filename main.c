@@ -10,7 +10,7 @@
 
 int main(int argc, char const *argv[]){
     if (argc!=3){
-        printf("cantidad de argumentos incorrecta\n");
+        printf("Incorrect amount of arguments introduced\n");
         return ARG_ERR;
     }
     
