@@ -11,15 +11,36 @@ int main(int argc, char const *argv[]){
         printf("cantidad de argumentos incorrecta\n");
         return ARG_ERR;
     }
+    
     treesADT  tree=newTree();
     hoodADT hood=newHood();
     FILE *trees, *hoods,*query3,*query1,*query2;
+    trees = fopen(argv[1],"r");
+    hoods=fopen(argv[2],"r");
+    if(trees==NULL|| hoods==NULL){
+        printf("error in files input");
+        return ARG_ERR;
+    }
+    // fseek (trees, 0, SEEK_END);
+    // fseek (hoods, 0, SEEK_END);
+    // int size1 = ftell(trees);
+    // int size2 = ftell(hoods);
+    // if(size1==0 || size2==0){
+    //     printf("at least one of the files is empty");
+    //     return ARG_ERR;
+    // }
+    
+
+    if (0 == size) {
+        printf("file is empty\n");
+    }
+}
     char *token;
     query1=fopen("query1.csv","w"); //the file is opened with "write" permissions so that it can be used to work
     query2=fopen("query2.csv","w"); //the file is opened with "write" permissions so that it can be used to work
     query3=fopen("query3.csv","w"); //the file is opened with "write" permissions so that it can be used to work
-    trees = fopen(argv[1],"r");
-    hoods=fopen(argv[2],"r");
+    
+
     char linesTrees[1024],linesHoods[1024];
     char treeName[80],hoodName[5];
     fgets(linesHoods,1024, hoods);//the first line is skipped
