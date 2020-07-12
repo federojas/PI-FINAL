@@ -3,7 +3,8 @@
 #include <string.h>
 #include "treesADT.h"
 #include "hoodADT.h"
-//FALTA CHEQUIAR ERRNO MEMORIA
+#include <errno.h>
+
 #define ARG_ERR 0;
 #define OK 1;
 
