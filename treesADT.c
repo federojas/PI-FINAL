@@ -139,37 +139,37 @@ float next(treesADT tree, char *name )
     return diameter;
 }
 
-int main(int argc, char const *argv[]){
-    FILE *trees;
-    char *token;
-    trees = fopen(argv[1],"r");
-    char lines[1024];
-    char name[80],hood[5];
-    fgets(lines,1024, trees);
-    int i,diametro;
-    treesADT tree=newTree();
-    while(fgets(lines,1024,trees))
-    {
-        for(i=0,token=strtok(lines,";");i<12;i++)
-        {
-            if(i==2)
-            {
-                strcpy(hood,token);
-            }
-            if(i==7)
-            {
-                strcpy(name,token);
-            }
-            if(i==11)
-            {
-                diametro=atoi(token);
-            }
-            token=strtok(NULL,";");
-        }
-        if(diametro!=0)
-            addTree(tree,name,diametro);
-    }
-    vecToList(tree);
-    printList(tree);
-    //freeTree(tree);
-}
+// int main(int argc, char const *argv[]){
+//     FILE *trees;
+//     char *token;
+//     trees = fopen(argv[1],"r");
+//     char lines[1024];
+//     char name[80],hood[5];
+//     fgets(lines,1024, trees);
+//     int i,diametro;
+//     treesADT tree=newTree();
+//     while(fgets(lines,1024,trees))
+//     {
+//         for(i=0,token=strtok(lines,";");i<12;i++)
+//         {
+//             if(i==2)
+//             {
+//                 strcpy(hood,token);
+//             }
+//             if(i==7)
+//             {
+//                 strcpy(name,token);
+//             }
+//             if(i==11)
+//             {
+//                 diametro=atoi(token);
+//             }
+//             token=strtok(NULL,";");
+//         }
+//         if(diametro!=0)
+//             addTree(tree,name,diametro);
+//     }
+//     vecToList(tree);
+//     printList(tree);
+//     //freeTree(tree);
+// }
