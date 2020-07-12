@@ -28,10 +28,6 @@ int main(int argc, char const *argv[]){
     //     return ARG_ERR;
     // }
     
-
-    if (0 == size) {
-        printf("file is empty\n");
-    }
 }
     char *token;
     query1=fopen("query1.csv","w"); //the file is opened with "write" permissions so that it can be used to work
