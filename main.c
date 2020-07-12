@@ -4,9 +4,7 @@
 #include <string.h>
 #include "treesADT.h"
 #include "hoodADT.h"
-//INCLUIR HOODADT.H Y TREESADT.H
 #define OK 0 // poner en el .H
-//(este es el main de buenos aires) 
 enum errors {ARG_ERR = 1, NO_MEM, }; // poner en el .H
 int main(int argc, char const *argv[]){
     if (argc!=3){ 
@@ -29,6 +27,10 @@ int main(int argc, char const *argv[]){
     int i;
     long pop;
     float diameter;
+    fprintf(query1,"neigbourhoods;trees Qty\n");
+    fprintf(query2,"neigbourhoods;trees/hab\n");
+    fprintf(query3,"tree name;diameter mean\n");
+
     //we already know that the hoods are in the third column, the tree name in the 7th and the diameter in the 12th 
     while(fgets(linesHoods,1024, hoods)){
         token=strtok(linesHoods,";");//we already know that the first column goes for the hood and the second for the population
@@ -87,7 +89,8 @@ int main(int argc, char const *argv[]){
             diameter=next(tree,name);
             fprintf(query3,"%s;%f\n",name,diameter);
         }
-
+        freeHood(hood);
+        freeTree(tree);
     
     
 }
