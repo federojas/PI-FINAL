@@ -3,6 +3,8 @@
 #ifndef hoodADT_h
 #define hoodADT_h
 
+enum errors {OK = 1, NO_MATCH, ARG_ERR};
+
 typedef struct hoodCDT * hoodADT;
 
 //creates a new hoodADT

@@ -1,17 +1,15 @@
 #include "hoodADT.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <ctype.h>
 #include <string.h>
+
 #define BLOCK 10
-#define NO_MATCH 5
-#define NO_MEM 0
-#define OK 1
+
 typedef struct tHood {
-    char * hood_name;
-    size_t habitants;
-    size_t treeQty;
-    float treesPerHab;
+    char * hood_name; //neighborhood name
+    size_t habitants; //neighborhood population
+    size_t treeQty; //neighborhood tree quantity
+    float treesPerHab; //amount of trees per habitant in neighborhood
 } tHood;
 
 typedef struct hoodNode {
@@ -70,7 +68,6 @@ static void treesHab(hoodADT hood)
         habitants = hood->vecHood[i].habitants;
         trees = hood->vecHood[i].treeQty;
         hood->vecHood[i].treesPerHab = ((double)trees/(double)habitants);
-        //printf("%f\n", hood->vecHood[i].treesPerHab );
     }
 }
 

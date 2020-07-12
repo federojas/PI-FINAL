@@ -1,13 +1,9 @@
 #include "treesADT.h"
 #include <stdlib.h>
-#include <ctype.h>
 #include <string.h>
 #include <stdio.h>
-#define OK 1
-#define NO_MEM 0
+
 #define BLOCK 100
-
-
 
 typedef struct treeNode {
     char * common_name; 
@@ -22,7 +18,13 @@ typedef struct treesCDT {
     size_t size;                        // amount of species in vector
 } treesCDT;
 
-
+typedef struct tTree
+{
+    char * common_name; //scientific name
+    float diameter_sum; //sum of species specimen diameters in database
+    long unsigned int qty; //amont of species specimnes in database
+    float diameterMean; //average diameter of tree species
+}tTree;
 
 treesADT newTree() {
     return calloc(1, sizeof(treesCDT));
@@ -38,7 +40,6 @@ static void freeRec (treeNode * first) {
 
 void freeTree (treesADT tree) {
     freeRec(tree->firstTree);
-    // reminder: cada elemento del vector es eliminado cuando se pasa a la lista
     free(tree);
 }
 
