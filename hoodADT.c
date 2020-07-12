@@ -188,6 +188,21 @@ int hoodList (hoodADT hood) {
     return OK;
 }
 
+// static void printList(hoodADT hood){
+//     hoodNode * aux=hood->firstHoodHab;
+//     while(aux!=NULL){
+//         printf("%s\t%ld\t%.2f\n",aux->hood_name, aux->treeQty, aux->treesPerHab);
+//         aux=aux->habTail;
+//     }
+// }
+
+// static void printList2(hoodADT hood){
+//     hoodNode * aux=hood->firstHoodQty;
+//     while(aux!=NULL){
+//         printf("%s\t%ld\n",aux->hood_name, aux->treeQty);
+//         aux=aux->qtyTail;
+//     }
+// }
 
 void toBeginHoodHab(hoodADT hood){
     hood->currentHoodHab = hood->firstHoodHab;
