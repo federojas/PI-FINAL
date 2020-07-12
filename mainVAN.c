@@ -16,7 +16,7 @@ int main(int argc, char const *argv[]){
     
     treesADT  tree=newTree();
     hoodADT hood=newHood();
-    FILE *trees, *hoods,*query3,*query1,*query2;
+    FILE *trees, *hoods,*query3VAN,*query1VAN,*query2VAN;
     trees = fopen(argv[1],"r");
     hoods=fopen(argv[2],"r");
     if(trees==NULL|| hoods==NULL){
@@ -35,9 +35,9 @@ int main(int argc, char const *argv[]){
     fseek (hoods, 0, SEEK_SET);
     
     char *token;
-    query1=fopen("query1.csv","w"); //the file is opened with "write" permissions so that it can be used to work
-    query2=fopen("query2.csv","w"); //the file is opened with "write" permissions so that it can be used to work
-    query3=fopen("query3.csv","w"); //the file is opened with "write" permissions so that it can be used to work
+    query1VAN=fopen("query1VAN.csv","w"); //the file is opened with "write" permissions so that it can be used to work
+    query2VAN=fopen("query2VAN.csv","w"); //the file is opened with "write" permissions so that it can be used to work
+    query3VAN=fopen("query3VAN.csv","w"); //the file is opened with "write" permissions so that it can be used to work
     
 
     char linesTrees[1024],linesHoods[1024];
@@ -47,9 +47,9 @@ int main(int argc, char const *argv[]){
     int i;
     long pop;
     float diameter;
-    fprintf(query1,"neigbourhoods;trees Qty\n");
-    fprintf(query2,"neigbourhoods;trees/hab\n");
-    fprintf(query3,"tree name;diameter mean\n");
+    fprintf(query1VAN,"neigbourhoods;trees Qty\n");
+    fprintf(query2VAN,"neigbourhoods;trees/hab\n");
+    fprintf(query3VAN,"tree name;diameter mean\n");
 
     //we already know that the hoods are in the third column, the tree name in the 7th and the diameter in the 12th 
     while(fgets(linesHoods,1024, hoods)){
@@ -66,15 +66,15 @@ int main(int argc, char const *argv[]){
     {
         for(i=0,token=strtok(linesTrees,";");i<12;i++)
         {
-            if(i==2)
+            if(i==12)
             {
                 strcpy(hoodName,token);
             }
-            if(i==7)
+            if(i==4)
             {
                 strcpy(treeName,token);
             }
-            if(i==11)
+            if(i==15)
             {
                 diameter=atoi(token);
                 
@@ -94,7 +94,7 @@ int main(int argc, char const *argv[]){
 
         while(hasNextHoodQty(hood)){
             nextHoodQty(hood, &qty, hoodName);
-            fprintf(query1,"%s;%d\n",hoodName,qty);
+            fprintf(query1VAN,"%s;%d\n",hoodName,qty);
         }
       
         //query 1 es arboles por barrio - necesito barrios y cant de arboles 
@@ -103,17 +103,17 @@ int main(int argc, char const *argv[]){
         double TreesXHab;
         while(hasNextHoodHab(hood)){
            TreesXHab= nextHoodHab(hood,hoodName);
-           fprintf(query2,"%s;%g\n",hoodName,TreesXHab);
+           fprintf(query2VAN,"%s;%g\n",hoodName,TreesXHab);
 
         }
         char name[100];
         while(hasNext(tree)){
             diameter=next(tree,name);
-            fprintf(query3,"%s;%f\n",name,diameter);
+            fprintf(query3VAN,"%s;%f\n",name,diameter);
         }
-        fclose(query1);
-        fclose(query2);
-        fclose(query3);
+        fclose(query1VAN);
+        fclose(query2VAN);
+        fclose(query3VAN);
         fclose(trees);
         fclose(hoods);
         freeHood(hood);
