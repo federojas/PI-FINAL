@@ -173,14 +173,16 @@ int hasNextHoodHab(hoodADT hood){
     return hood->currentHoodHab != NULL;
 }
 
-// nextHoodHab(hoodADT hood)
-// {
-//     if(hasNextHoodHab(hood) == 0)
-//         return NULL;
-//     hoodNode * result = hood->currentHoodHab;
-//     hood->currentHoodHab = hood->currentHoodHab->habTail;
-//     return result;
-// }
+double nextHoodHab(hoodADT hood, char *hoodName)
+{
+    if(hasNextHoodHab(hood) == 0)
+        return 0;
+    hoodNode * result = hood->currentHoodHab;
+    strcpy(hoodName,result->hood_name);
+    double resp=result->treesPerHab;
+    hood->currentHoodHab = hood->currentHoodHab->habTail;
+    return resp;
+}
 
 void toBeginQty(hoodADT hood){
     hood->currentHoodQty = hood->firstHoodQty;
@@ -237,5 +239,5 @@ void nextHoodQty(hoodADT hood, int *cant, char *hoodName)//me devuelve  trees pe
 //     printList(hood);
 //     printf("CANTIDAD DE ARBOLES\n");
 //     printList2(hood);
-//     //freeHood(hood);
+//     freeHood(hood);
 // }
