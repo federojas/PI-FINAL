@@ -157,6 +157,7 @@ int hoodList (hoodADT hood) {
         hoodNode * aux; // pointer used to save the location of the newly created node
         aux = malloc(sizeof(hoodNode));
         hood->firstHoodHab = addRecHood(hood->firstHoodHab, hood->vecHood[i], aux);//sorts query 2 creating new nodes  
+        printf("%ld\n", aux->treeQty);
         hood->firstHoodQty = sortQty(hood->firstHoodQty, aux); //sorts query 1 without creating new nodes
         free(hood->vecHood[i].hood_name);
         free(aux);
@@ -248,5 +249,5 @@ int main(int argc, char const *argv[]){ //lo voy a hacer para bsas primero
     // }
     hoodList(hood);
     //printList(hood);
-    printList2(hood);
+    //printList2(hood);
 }
