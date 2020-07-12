@@ -113,13 +113,13 @@ void vecToList (treesADT tree) {
     return ;
 }
 
- void printList (treesADT tree){
-    treeNode *aux=tree->firstTree;
-    while (aux != NULL) {
-        printf("%s\t%.2f\n",aux->common_name,aux->diameterMean);
-        aux = aux->tail;
-    }
-}
+//  void printList (treesADT tree){
+//     treeNode *aux=tree->firstTree;
+//     while (aux != NULL) {
+//         printf("%s\t%.2f\n",aux->common_name,aux->diameterMean);
+//         aux = aux->tail;
+//     }
+// }
 
 void toBegin(treesADT tree){
     tree->current=tree->firstTree;

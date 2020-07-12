@@ -17,8 +17,8 @@ int main(int argc, char const *argv[]){
     hoodADT hood=newHood();
     FILE *trees, *hoods,*query3,*query1,*query2;
     char *token;
-    query1=fopen("query3.csv","w"); //we open the file with "write" permissions in order to work 
-    query2=fopen("query3.csv","w"); //we open the file with "write" permissions in order to work 
+    query1=fopen("query1.csv","w"); //we open the file with "write" permissions in order to work 
+    query2=fopen("query2.csv","w"); //we open the file with "write" permissions in order to work 
     query3=fopen("query3.csv","w"); //we open the file with "write" permissions in order to work 
     trees = fopen(argv[1],"r");
     hoods=fopen(argv[2],"r");
