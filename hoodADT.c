@@ -41,7 +41,7 @@ int addHood (hoodADT hood, char * name, size_t habitants) {
     if(hood->vecSize % BLOCK == 0) {
         hood->vecHood = realloc(hood->vecHood, (hood->vecSize + BLOCK) * sizeof(tHood));
     }
-    hood->vecHood[hood->vecSize].hood_name = realloc(hood->vecHood[hood->vecSize].hood_name, (strlen(name)+1) * sizeof(char));
+    hood->vecHood[hood->vecSize].hood_name = malloc((strlen(name)+1) * sizeof(char));
     strcpy(hood->vecHood[hood->vecSize].hood_name, name);
     hood->vecHood[hood->vecSize].habitants = habitants;
     hood->vecHood[hood->vecSize].treeQty = 0;
@@ -80,7 +80,7 @@ static void freeRec(hoodNode *hood)
 {
     if(hood == NULL)
         return ;
-    freeRec(hood->qtyTail);
+    freeRec(hood->habTail);
     free(hood->hood_name);
     free(hood);
 }
@@ -202,41 +202,42 @@ void nextHoodQty(hoodADT hood, int *cant, char *hoodName)//me devuelve  trees pe
     
 }
 
-// int main(int argc, char const *argv[]){ //lo voy a hacer para bsas primero 
-//      FILE *hoods,*trees;
-//      char *token;
-//      hoodADT hood=newHood();
-//      hoods=fopen(argv[1],"r");
-//      trees=fopen(argv[2],"r");
-//      char linesHood[1024], linesTree[1024];
-//      int i,habitantes;
-//      char name[1024];
-//      fgets(linesHood,1024,hoods);//skip the first line 
-//      while(fgets(linesHood,1024,hoods)){
-//          token=strtok(linesHood,";\r\t\n");
-//         strcpy(name,token);
-//         token=strtok(NULL,";\r\t\n");
-//         habitantes=atoi(token);
-//         addHood(hood,name,habitantes);
-//     }
+int main(int argc, char const *argv[]){ //lo voy a hacer para bsas primero 
+     FILE *hoods,*trees;
+     char *token;
+     hoodADT hood=newHood();
+     hoods=fopen(argv[1],"r");
+     trees=fopen(argv[2],"r");
+     char linesHood[1024], linesTree[1024];
+     int i,habitantes;
+     char name[1024];
+     fgets(linesHood,1024,hoods);//skip the first line 
+     while(fgets(linesHood,1024,hoods)){
+         token=strtok(linesHood,";\r\t\n");
+        strcpy(name,token);
+        token=strtok(NULL,";\r\t\n");
+        habitantes=atoi(token);
+        addHood(hood,name,habitantes);
+    }
   
-//     fgets(linesTree,1024,trees);//skip first line
-//     token=strtok(linesTree,";\r\t\n");
-//     while(fgets(linesTree,1024,trees)){
-//         for(i=0, token=strtok(linesTree,";\r\t\n");i<3;i++){
-//             if(i==2)
-//                 strcpy(name,token);
-//             token=strtok(NULL,";\r\t\n");
-//         }
-//         addTreeHood(hood,name);
-//     }
-//     // for(int i=0;i<15;i++)
-//     // {
-//     //    printf("%s\t%ld\n",hood->vecHood[i].hood_name,hood->vecHood[i].habitants);
-//     // }
-//     hoodList(hood);
-//     printf("CANTIDAD DE ARBOLES/HABITANTE\n");
-//     printList(hood);
-//     printf("CANTIDAD DE ARBOLES\n");
-//     printList2(hood);
-// }
+    fgets(linesTree,1024,trees);//skip first line
+    token=strtok(linesTree,";\r\t\n");
+    while(fgets(linesTree,1024,trees)){
+        for(i=0, token=strtok(linesTree,";\r\t\n");i<3;i++){
+            if(i==2)
+                strcpy(name,token);
+            token=strtok(NULL,";\r\t\n");
+        }
+        addTreeHood(hood,name);
+    }
+    // for(int i=0;i<15;i++)
+    // {
+    //    printf("%s\t%ld\n",hood->vecHood[i].hood_name,hood->vecHood[i].habitants);
+    // }
+    hoodList(hood);
+    printf("CANTIDAD DE ARBOLES/HABITANTE\n");
+    printList(hood);
+    printf("CANTIDAD DE ARBOLES\n");
+    printList2(hood);
+    //freeHood(hood);
+}
