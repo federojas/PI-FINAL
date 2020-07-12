@@ -3,6 +3,9 @@
 #include <string.h>
 #include "treesADT.h"
 #include "hoodADT.h"
+//FALTA CHEQUIAR ERRNO MEMORIA
+#define ARG_ERR 0;
+#define OK 1;
 
 int main(int argc, char const *argv[]){
     if (argc!=3){
@@ -108,6 +111,5 @@ int main(int argc, char const *argv[]){
         fclose(hoods);
         freeHood(hood);
         freeTree(tree);
-    
-    
+    return OK;
 }

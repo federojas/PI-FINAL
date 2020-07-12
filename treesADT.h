@@ -2,8 +2,6 @@
 #ifndef treesADT_h
 #define treesADT_h
 
-enum errors {OK = 1, NO_MATCH, ARG_ERR};
-
 typedef struct treesCDT * treesADT; 
 
 //creates a new treeADT

@@ -4,6 +4,8 @@
 #include <string.h>
 
 #define BLOCK 10
+#define NO_MATCH 2
+#define OK 1
 
 typedef struct tHood {
     char * hood_name; //neighborhood name

@@ -4,6 +4,7 @@
 #include <stdio.h>
 
 #define BLOCK 100
+#define OK 1
 
 typedef struct treeNode {
     char * common_name; 
