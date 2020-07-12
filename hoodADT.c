@@ -116,14 +116,9 @@ static hoodNode * sortQty(hoodNode * first, hoodNode * sort)
 static hoodNode * addRec(hoodNode * first, tHood hood, hoodADT neighborhood){
     if (first == NULL || first->treesPerHab < hood.treesPerHab) {
         hoodNode * result = malloc(sizeof(hoodNode));
-        if (result == NULL) {
-            return NULL;        
-        }
         result->treeQty = hood.treeQty;
         result->treesPerHab = hood.treesPerHab;
         result->hood_name = malloc((strlen(hood.hood_name)+1) * sizeof(char));
-        if (result->hood_name == NULL)
-            return NULL;
         strcpy(result->hood_name, hood.hood_name);
         result->habTail = first;
         neighborhood->firstHoodQty = sortQty(neighborhood->firstHoodQty, result);
