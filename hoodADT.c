@@ -91,8 +91,29 @@ void freeHood(hoodADT hood)
     free(hood);
 }
 
-//function that sorts by descending order of trees per hab, creating a new node
-static hoodNode * addRecHood(hoodNode * first, tHood hood, hoodNode * aux) {
+//function that sorts by descending order of quantity of trees, without creating new nodes
+static hoodNode * sortQty(hoodNode * first, hoodNode * sort) 
+{
+    if(first == NULL || first->treeQty < sort->treeQty)
+    {
+        sort->qtyTail = first;
+        return sort;
+    }
+    if(first->treeQty == sort->treeQty)
+    {
+        int c = strcmp(first->hood_name, sort->hood_name);
+        if(c > 0)
+        {
+            sort->qtyTail = first;
+            return sort;
+        }
+    }
+    first->qtyTail = sortQty(first->qtyTail, sort);
+    return first;
+}
+
+//function that sorts by descending order of trees per hab, creating a new node and sorts the list by amount of trees per neighborhood without creating new nodes
+static hoodNode * addRec(hoodNode * first, tHood hood, hoodADT neighborhood){
     if (first == NULL || first->treesPerHab < hood.treesPerHab) {
         hoodNode * result = malloc(sizeof(hoodNode));
         if (result == NULL) {
@@ -105,48 +126,22 @@ static hoodNode * addRecHood(hoodNode * first, tHood hood, hoodNode * aux) {
             return NULL;
         strcpy(result->hood_name, hood.hood_name);
         result->habTail = first;
-        *aux = *result;
+        neighborhood->firstHoodQty = sortQty(neighborhood->firstHoodQty, result);
         return result;
     }
     if (first->treesPerHab == hood.treesPerHab) {
         if (strcmp(first->hood_name, hood.hood_name) > 0) {
             hoodNode * result = malloc(sizeof(hoodNode));
-        if (result == NULL) {
-            return NULL;        
-        }
         result->treeQty = hood.treeQty;
         result->treesPerHab = hood.treesPerHab;
         result->hood_name = malloc((strlen(hood.hood_name)+1) * sizeof(char));
-        if (result->hood_name == NULL)
-            return NULL;
         strcpy(result->hood_name, hood.hood_name);
         result->habTail = first;
-        *aux = *result;
+        neighborhood->firstHoodQty = sortQty(neighborhood->firstHoodQty, result);
         return result;
         }
     }
-    first->habTail = addRecHood(first->habTail, hood, aux);
-    return first;
-}
-
-//function that sorts by descending order of quantity of trees, without creating new nodes
-static hoodNode * sortQty(hoodNode * first, hoodNode * sort) 
-{
-    if(first == NULL || first->treeQty < sort->treeQty)
-    {
-        sort->qtyTail = first;
-        return sort;
-    }
-    if(first->treeQty == sort->treeQty)
-    {
-        int c = strcmp(first->hood_name, sort->hood_name); //viene primero first
-        if(c < 0)
-        {
-            sort->qtyTail = first;
-            return sort;
-        }
-    }
-    first->qtyTail = sortQty(first->qtyTail, sort);
+    first->habTail = addRec(first->habTail, hood, neighborhood);
     return first;
 }
 
@@ -154,26 +149,21 @@ int hoodList (hoodADT hood) {
     treesHab(hood); // we calculate the trees/hab
     for(int i = 0; i < hood->vecSize; i++)
     {
-        hoodNode * aux; // pointer used to save the location of the newly created node
-        aux = malloc(sizeof(hoodNode));
-        hood->firstHoodHab = addRecHood(hood->firstHoodHab, hood->vecHood[i], aux);//sorts query 2 creating new nodes  
-        printf("%ld\n", aux->treeQty);
-        hood->firstHoodQty = sortQty(hood->firstHoodQty, aux); //sorts query 1 without creating new nodes
+        hood->firstHoodHab = addRec(hood->firstHoodHab, hood->vecHood[i], hood); //sorts both queries creating only one list
         free(hood->vecHood[i].hood_name);
-        free(aux);
     }
     free(hood->vecHood); // we free up no longer required memory
     hood->vecHood = NULL;
     return OK;
 }
 
-/*static void printList(hoodADT hood){
+static void printList(hoodADT hood){
     hoodNode * aux=hood->firstHoodHab;
     while(aux!=NULL){
         printf("%s\t%ld\t%.2f\n",aux->hood_name, aux->treeQty, aux->treesPerHab);
         aux=aux->habTail;
     }
-}*/
+}
 
 static void printList2(hoodADT hood){
     hoodNode * aux=hood->firstHoodQty;
@@ -248,6 +238,8 @@ int main(int argc, char const *argv[]){ //lo voy a hacer para bsas primero
     //    printf("%s\t%ld\n",hood->vecHood[i].hood_name,hood->vecHood[i].habitants);
     // }
     hoodList(hood);
-    //printList(hood);
-    //printList2(hood);
+    printf("CANTIDAD DE ARBOLES/HABITANTE\n");
+    printList(hood);
+    printf("CANTIDAD DE ARBOLES\n");
+    printList2(hood);
 }
