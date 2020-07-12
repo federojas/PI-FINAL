@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <errno.h>
 
 #define BLOCK 100
 #define OK 1
@@ -28,7 +29,14 @@ typedef struct treesCDT {
 } treesCDT;
 
 treesADT newTree() {
-    return calloc(1, sizeof(treesCDT));
+    treesADT tree;
+    tree = calloc(1, sizeof(treesCDT));
+    if(errno == ENOMEM)
+    {
+        perror(Error);
+        return NULL;
+    }
+    return tree;
 }
 
 static void freeRec (treeNode * first) {
@@ -55,8 +63,18 @@ int addTree (treesADT tree, const char * name, const float diameter) {
     
     if (tree->size % BLOCK == 0) {
         tree->vector = realloc(tree->vector, (tree->size + BLOCK) * sizeof(tTree));
+        if(errno == ENOMEM)
+            {
+                perror(Error);
+                return ENOMEM;
+            }
     }
     tree->vector[tree->size].common_name = malloc((strlen(name)+1)*sizeof(char));
+    if(errno == ENOMEM)
+    {
+        perror(Error);
+        return ENOMEM;
+    }
     strcpy(tree->vector[tree->size].common_name, name);
     tree->vector[tree->size].diameterSum = diameter;
     tree->vector[tree->size].qty = 1;
@@ -78,7 +96,17 @@ static void diamAvg (treesADT tree) // calculates all of the species average dia
 static treeNode * addRecTree (treeNode * first, tTree tree) {
     if (first == NULL || first->diameterMean < tree.diameterMean) {
         treeNode * aux = malloc(sizeof(treeNode));
+        if(errno == ENOMEM)
+        {
+            perror(Error);
+            return NULL;
+         }
         aux->common_name = malloc((strlen(tree.common_name)+1)*sizeof(char));
+         if(errno == ENOMEM)
+         {
+            perror(Error);
+            return NULL;
+         }
         aux->diameterMean = tree.diameterMean;
         strcpy(aux->common_name,tree.common_name);    
         aux->tail = first;
@@ -87,7 +115,17 @@ static treeNode * addRecTree (treeNode * first, tTree tree) {
     if (first->diameterMean == tree.diameterMean) {
         if (strcmp(first->common_name, tree.common_name) > 0) {
             treeNode * aux = malloc(sizeof(treeNode));
+            if(errno == ENOMEM)
+            {
+                perror(Error);
+                return NULL;
+            }
             aux->common_name = malloc((strlen(tree.common_name)+1)*sizeof(char));
+            if(errno == ENOMEM)
+            {
+                perror(Error);
+                return NULL;
+            }
             aux->diameterMean=tree.diameterMean;
             strcpy(aux->common_name, tree.common_name);
             aux->tail = first;
