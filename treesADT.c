@@ -33,7 +33,7 @@ treesADT newTree() {
     tree = calloc(1, sizeof(treesCDT));
     if(errno == ENOMEM)
     {
-        perror("");
+        perror("Error");
         return NULL;
     }
     return tree;
@@ -65,14 +65,14 @@ int addTree (treesADT tree, const char * name, const float diameter) {
         tree->vector = realloc(tree->vector, (tree->size + BLOCK) * sizeof(tTree));
         if(errno == ENOMEM)
             {
-                perror("");
+                perror("Error");
                 return ENOMEM;
             }
     }
     tree->vector[tree->size].common_name = malloc((strlen(name)+1)*sizeof(char));
     if(errno == ENOMEM)
     {
-        perror("");
+        perror("Error");
         return ENOMEM;
     }
     strcpy(tree->vector[tree->size].common_name, name);
@@ -98,13 +98,13 @@ static treeNode * addRecTree (treeNode * first, tTree tree) {
         treeNode * aux = malloc(sizeof(treeNode));
         if(errno == ENOMEM)
         {
-            perror("");
+            perror("Error");
             return NULL;
          }
         aux->common_name = malloc((strlen(tree.common_name)+1)*sizeof(char));
          if(errno == ENOMEM)
          {
-            perror("");
+            perror("Error");
             return NULL;
          }
         aux->diameterMean = tree.diameterMean;
@@ -117,13 +117,13 @@ static treeNode * addRecTree (treeNode * first, tTree tree) {
             treeNode * aux = malloc(sizeof(treeNode));
             if(errno == ENOMEM)
             {
-                perror("");
+                perror("Error");
                 return NULL;
             }
             aux->common_name = malloc((strlen(tree.common_name)+1)*sizeof(char));
             if(errno == ENOMEM)
             {
-                perror("");
+                perror("Error");
                 return NULL;
             }
             aux->diameterMean=tree.diameterMean;
