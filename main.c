@@ -1,12 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <ctype.h>
 #include <string.h>
 #include "treesADT.h"
 #include "hoodADT.h"
-#define OK 0 // poner en el .H
 //(este es el main de buenos aires) 
-enum errors {ARG_ERR = 1, NO_MEM, }; // poner en el .H
+
 int main(int argc, char const *argv[]){
     if (argc!=3){
         printf("cantidad de argumentos incorrecta\n");
