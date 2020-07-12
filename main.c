@@ -29,6 +29,7 @@ int main(int argc, char const *argv[]){
     int i;
     long pop;
     float diameter;
+    char prueba[]="la concha de tu madre all boys";
     //we already know that the hoods are in the third column, the tree name in the 7th and the diameter in the 12th and
     while(fgets(linesHoods,1024, hoods)){
         token=strtok(linesHoods,";");//we already know that the first column goes for the hood and the second for the population
@@ -69,11 +70,14 @@ int main(int argc, char const *argv[]){
         toBeginHoodHab(hood);
         toBeginQty(hood);
         int qty;
+        //fprintf(query1,"%s\n",prueba);
+
         while(hasNextHoodQty(hood)){
             nextHoodQty(hood, &qty, hoodName);
-            fprintf(query1,"la tenes adentro\n");
-            //fprintf(query1,"%s;%d\n",hoodName,qty);
+            //fprintf(query1,"%s\n",prueba);
+            fprintf(query1,"%s;%d\n",hoodName,qty);
         }
+      
         //query 1 es arboles por barrio - necesito barrios y cant de arboles 
         //query 2 es total de arboles por habitante - necesito barrios y arboles por hab
         //query 3 es diametro promedio por especie de arbol - necesito nombre del arbol y promedio del diametro 
