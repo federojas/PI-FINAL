@@ -31,8 +31,6 @@ typedef struct hoodCDT {
     size_t vecSize;                 //amount of neighborhoos in vector
 } hoodCDT;
 
-//typedef hoodCDT * hoodADT; //esto va en el .h ¿?
-
 hoodADT newHood() {
     return calloc(1, sizeof(hoodCDT));
 }

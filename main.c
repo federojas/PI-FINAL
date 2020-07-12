@@ -7,7 +7,7 @@
 #define OK 0 // poner en el .H
 enum errors {ARG_ERR = 1, NO_MEM, }; // poner en el .H
 int main(int argc, char const *argv[]){
-    if (argc!=3){ 
+    if (argc!=3){
         printf("cantidad de argumentos incorrecta\n");
         return ARG_ERR;
     }
@@ -15,15 +15,15 @@ int main(int argc, char const *argv[]){
     hoodADT hood=newHood();
     FILE *trees, *hoods,*query3,*query1,*query2;
     char *token;
-    query1=fopen("query1.csv","w"); //we open the file with "write" permissions in order to work 
-    query2=fopen("query2.csv","w"); //we open the file with "write" permissions in order to work 
-    query3=fopen("query3.csv","w"); //we open the file with "write" permissions in order to work 
+    query1=fopen("query1.csv","w"); //the file is opened with "write" permissions so that it can be used to work
+    query2=fopen("query2.csv","w"); //the file is opened with "write" permissions so that it can be used to work
+    query3=fopen("query3.csv","w"); //the file is opened with "write" permissions so that it can be used to work
     trees = fopen(argv[1],"r");
     hoods=fopen(argv[2],"r");
     char linesTrees[1024],linesHoods[1024];
     char treeName[80],hoodName[5];
-    fgets(linesHoods,1024, hoods);//we skip the first line 
-    fgets(linesTrees,1024, trees);//we skip the first line 
+    fgets(linesHoods,1024, hoods);//the first line is skipped
+    fgets(linesTrees,1024, trees);//the first line is skipped 
     int i;
     long pop;
     float diameter;
@@ -71,15 +71,12 @@ int main(int argc, char const *argv[]){
         toBeginHoodHab(hood);
         toBeginQty(hood);
         int qty;
+
         while(hasNextHoodQty(hood)){
             nextHoodQty(hood, &qty, hoodName);
             fprintf(query1,"%s;%d\n",hoodName,qty);
         }
-        double treesxHab;
-        while(hasNextHoodHab(hood)){
-            treesxHab=nextHoodHab(hood, hoodName);
-            fprintf(query2,"%s;%g\n",hoodName,treesxHab);
-        }
+      
         //query 1 es arboles por barrio - necesito barrios y cant de arboles 
         //query 2 es total de arboles por habitante - necesito barrios y arboles por hab
         //query 3 es diametro promedio por especie de arbol - necesito nombre del arbol y promedio del diametro 
