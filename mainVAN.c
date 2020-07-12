@@ -41,7 +41,7 @@ int main(int argc, char const *argv[]){
     
 
     char linesTrees[1024],linesHoods[1024];
-    char treeName[80],hoodName[5];
+    char treeName[80],hoodName[80];
     fgets(linesHoods,1024, hoods);//the first line is skipped
     fgets(linesTrees,1024, trees);//the first line is skipped 
     int i;
@@ -103,13 +103,12 @@ int main(int argc, char const *argv[]){
         double TreesXHab;
         while(hasNextHoodHab(hood)){
            TreesXHab= nextHoodHab(hood,hoodName);
-           fprintf(query2VAN,"%s;%g\n",hoodName,TreesXHab);
-
+           fprintf(query2VAN,"%s;%.2g\n",hoodName,TreesXHab);
         }
         char name[100];
         while(hasNext(tree)){
             diameter=next(tree,name);
-            fprintf(query3VAN,"%s;%f\n",name,diameter);
+            fprintf(query3VAN,"%s;%.2g\n",name,diameter);
         }
         fclose(query1VAN);
         fclose(query2VAN);
