@@ -9,4 +9,8 @@ int addHood (hoodADT hood, char * name, size_t habitants);
 int addTreeHood(hoodADT hood, char * treeHood);
 void freeHood(hoodADT hood);
 int hoodList (hoodADT hood);
+void toBeginHoodHab(hoodADT hood);
+int hasNextHoodHab(hoodADT hood);
+hoodNode * nextHoodHab(hoodADT hood);
+void toBeginQty(hoodADT hood);
 #endif
