@@ -62,9 +62,6 @@ int addTree (treesADT tree, const char * name, const float diameter) {
     return OK;
 }
 
-int hoodAmount(treesADT tree){
-    return tree->size;
-}
 static void diamAvg (treesADT tree) // calculates all of the species average diameters
 {
     float diameter;
@@ -99,14 +96,11 @@ static treeNode * addRecTree (treeNode * first, tTree tree) {
     return first;
 }
 
-void elemToList (treesADT tree, tTree source) {
-    tree->firstTree = addRecTree(tree->firstTree, source);
-}
 // faltaria ver donde reallocamos la memoria del vector con el size
 void vecToList (treesADT tree) {
     diamAvg(tree); // we calculate the diameter average of each species
     for (size_t i = 0; i < tree->size; i++) {
-        elemToList(tree, tree->vector[i]);
+        tree->firstTree = addRecTree(tree->firstTree, source);
         free(tree->vector[i].common_name);
     }
     free(tree->vector);
