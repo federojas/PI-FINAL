@@ -22,14 +22,16 @@ int main(int argc, char const *argv[]){
         printf("error in files input");
         return ARG_ERR;
     }
-    // fseek (trees, 0, SEEK_END);
-    // fseek (hoods, 0, SEEK_END);
-    // int size1 = ftell(trees);
-    // int size2 = ftell(hoods);
-    // if(size1==0 || size2==0){
-    //     printf("at least one of the files is empty");
-    //     return ARG_ERR;
-    // }
+    fseek (trees, 0, SEEK_END);
+    fseek (hoods, 0, SEEK_END);
+    int size1 = ftell(trees);
+    int size2 = ftell(hoods);
+    if(size1==0 || size2==0){
+        printf("at least one of the files is empty");
+        return ARG_ERR;
+    }
+    fseek (trees, 0, SEEK_SET);
+    fseek (hoods, 0, SEEK_SET);
     
     char *token;
     query1=fopen("query1.csv","w"); //the file is opened with "write" permissions so that it can be used to work
@@ -97,7 +99,12 @@ int main(int argc, char const *argv[]){
         //query 1 es arboles por barrio - necesito barrios y cant de arboles 
         //query 2 es total de arboles por habitante - necesito barrios y arboles por hab
         //query 3 es diametro promedio por especie de arbol - necesito nombre del arbol y promedio del diametro 
+        double TreesXHab;
+        while(hasNextHoodHab(hood)){
+           TreesXHab= nextHoodHab(hood,hoodName);
+           fprintf(query2,"%s;%g\n",hoodName,TreesXHab);
 
+        }
         char name[100];
         while(hasNext(tree)){
             diameter=next(tree,name);
