@@ -16,7 +16,7 @@ typedef struct treeNode {
 typedef struct
 {
     char * common_name; //scientific name
-    float diameter_sum; //sum of species specimen diameters in database
+    float diameterSum; //sum of species specimen diameters in database
     long unsigned int qty; //amont of species specimnes in database
     float diameterMean; //average diameter of tree species
 }tTree;
@@ -140,7 +140,7 @@ static treeNode * addRecTree (treeNode * first, tTree tree) {
 void vecToList (treesADT tree) {
     diamAvg(tree); // we calculate the diameter average of each species
     for (size_t i = 0; i < tree->size; i++) {
-        tree->firstTree = addRecTree(tree->firstTree, source);
+        tree->firstTree = addRecTree(tree->firstTree, tree->vector[i]);
         free(tree->vector[i].common_name);
     }
     free(tree->vector);
