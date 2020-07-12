@@ -12,20 +12,20 @@ typedef struct treeNode {
     struct treeNode * tail;
 } treeNode;
 
-typedef struct treesCDT {
-    treeNode * firstTree;               // trees in descending order by average species diameter, alphabetical order used to resolve draws
-    treeNode *current;
-    tTree * vector;                     // Vector containing all of the tree species in the data base
-    size_t size;                        // amount of species in vector
-} treesCDT;
-
-typedef struct tTree
+typedef struct
 {
     char * common_name; //scientific name
     float diameter_sum; //sum of species specimen diameters in database
     long unsigned int qty; //amont of species specimnes in database
     float diameterMean; //average diameter of tree species
 }tTree;
+
+typedef struct treesCDT {
+    treeNode * firstTree;               // trees in descending order by average species diameter, alphabetical order used to resolve draws
+    treeNode *current;
+    tTree * vector;                     // Vector containing all of the tree species in the data base
+    size_t size;                        // amount of species in vector
+} treesCDT;
 
 treesADT newTree() {
     return calloc(1, sizeof(treesCDT));
