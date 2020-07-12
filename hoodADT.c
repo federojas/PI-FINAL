@@ -180,14 +180,14 @@ int hasNextHoodHab(hoodADT hood){
     return hood->currentHoodHab != NULL;
 }
 
-nextHoodHab(hoodADT hood)
-{
-    if(hasNextHoodHab(hood) == 0)
-        return NULL;
-    hoodNode * result = hood->currentHoodHab;
-    hood->currentHoodHab = hood->currentHoodHab->habTail;
-    return result;
-}
+// nextHoodHab(hoodADT hood)
+// {
+//     if(hasNextHoodHab(hood) == 0)
+//         return NULL;
+//     hoodNode * result = hood->currentHoodHab;
+//     hood->currentHoodHab = hood->currentHoodHab->habTail;
+//     return result;
+// }
 
 void toBeginQty(hoodADT hood){
     hood->currentHoodQty = hood->firstHoodQty;
@@ -196,17 +196,15 @@ int hasNextHoodQty(hoodADT hood){
     return hood->currentHoodQty != NULL;
 }
 
-double nextHoodQty(hoodADT hood, int *cant, char *hoodName)
+void nextHoodQty(hoodADT hood, int *cant, char *hoodName)//me devuelve  trees per hab, el nombre del barrio y qty 
 {
     if(hasNextHoodQty(hood) == 0)
-        return 0;
-    double treesXHab;
+        return;
     hoodNode * result = hood->currentHoodQty;
     strcpy(hoodName,result->hood_name);
-    treesXHab=result->treesPerHab;
-    *cant=result->
+    *cant=result->treeQty;
     hood->currentHoodQty = hood->currentHoodQty->qtyTail;
-    return result;
+    
 }
 
 // int main(int argc, char const *argv[]){ //lo voy a hacer para bsas primero 

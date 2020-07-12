@@ -11,6 +11,8 @@ void freeHood(hoodADT hood);
 int hoodList (hoodADT hood);
 void toBeginHoodHab(hoodADT hood);
 int hasNextHoodHab(hoodADT hood);
-hoodNode * nextHoodHab(hoodADT hood);
+//hoodNode * nextHoodHab(hoodADT hood);
 void toBeginQty(hoodADT hood);
+int hasNextHoodQty(hoodADT hood);
+void nextHoodQty(hoodADT hood, int *cant, char *hoodName);
 #endif
