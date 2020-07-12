@@ -30,7 +30,6 @@ int main(int argc, char const *argv[]){
     //     return ARG_ERR;
     // }
     
-}
     char *token;
     query1=fopen("query1.csv","w"); //the file is opened with "write" permissions so that it can be used to work
     query2=fopen("query2.csv","w"); //the file is opened with "write" permissions so that it can be used to work
