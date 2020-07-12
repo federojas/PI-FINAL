@@ -23,7 +23,8 @@ int main(int argc, char const *argv[]){
     char lines[1024];
     char treeName[30],hoodName[5];
     fgets(lines,1024, trees);//we skip the first line 
-    int i,diameter;
+    int i;
+    float diameter;
     //we already know that the hoods are in the third column, the tree name in the 7th and the diameter in the 12th and
     while(fgets(lines,1024, trees))
     {
@@ -47,12 +48,14 @@ int main(int argc, char const *argv[]){
             addTree(tree,treeName,diameter);
     }
         vecToList(tree);
-        //printList(tree);
-        freeTree(tree);
+        //freeTree(tree);
+        toBegin(tree);
+        char name[100];
+        while(hasNext(tree)){
+            diameter=next(tree,name);
+            fprintf(query3,"%s;%f\n",name,diameter);
+        }
+
     
-    int size=hoodAmount(tree);
-    for(int i=0;i<size;i++){
-        
-    }
     
 }
