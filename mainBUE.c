@@ -102,13 +102,13 @@ int main(int argc, char const *argv[]){
         double TreesXHab;
         while(hasNextHoodHab(hood)){
            TreesXHab= nextHoodHab(hood,hoodName);
-           fprintf(query2BUE,"%s;%g\n",hoodName,TreesXHab);
+           fprintf(query2BUE,"%s;%.2g\n",hoodName,TreesXHab);
 
         }
         char name[100];
         while(hasNext(tree)){
             diameter=next(tree,name);
-            fprintf(query3BUE,"%s;%g\n",name,diameter);
+            fprintf(query3BUE,"%s;%g.2\n",name,diameter);
         }
         fclose(query1BUE);
         fclose(query2BUE);
