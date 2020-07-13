@@ -5,31 +5,30 @@
 #include "hoodADT.h"
 #include <errno.h>
 
-#define ARG_ERR 0;
-#define OK 1;
+#define MAX_BUFFER 1024
 
 int main(int argc, char const *argv[]){
-    if (argc!=3){
-        printf("Incorrect amount of arguments introduced\n");
-        return ARG_ERR;
+    if (argc != 3){
+        fprintf(stderr, "Incorrect amount of arguments introduced\n");
+        return EXIT_FAILURE;
     }
     
-    treesADT  tree=newTree();
-    hoodADT hood=newHood();
+    treesADT tree = newTree();
+    hoodADT hood = newHood();
     FILE *trees, *hoods,*query3BUE,*query1BUE,*query2BUE;
     trees = fopen(argv[1],"r");
     hoods=fopen(argv[2],"r");
-    if(trees==NULL|| hoods==NULL){
-        printf("error in files input");
-        return ARG_ERR;
+    if (trees==NULL|| hoods==NULL){
+        fprintf(stderr, "Error in files input\n");
+        return EXIT_FAILURE;
     }
     fseek (trees, 0, SEEK_END);
     fseek (hoods, 0, SEEK_END);
     int size1 = ftell(trees);
     int size2 = ftell(hoods);
     if(size1==0 || size2==0){
-        printf("at least one of the files is empty");
-        return ARG_ERR;
+        fprintf(stderr, "At least one of the files is empty\n");
+        return EXIT_FAILURE;
     }
     fseek (trees, 0, SEEK_SET);
     fseek (hoods, 0, SEEK_SET);
@@ -40,10 +39,10 @@ int main(int argc, char const *argv[]){
     query3BUE=fopen("query3BUE.csv","w"); //the file is opened with "write" permissions so that it can be used to work
     
 
-    char linesTrees[1024],linesHoods[1024];
+    char linesTrees[MAX_BUFFER],linesHoods[MAX_BUFFER];
     char treeName[80],hoodName[5];
-    fgets(linesHoods,1024, hoods);//the first line is skipped
-    fgets(linesTrees,1024, trees);//the first line is skipped 
+    fgets(linesHoods, MAX_BUFFER, hoods);//the first line is skipped
+    fgets(linesTrees, MAX_BUFFER, trees);//the first line is skipped 
     int i;
     long pop;
     float diameter;
@@ -52,7 +51,7 @@ int main(int argc, char const *argv[]){
     fprintf(query3BUE,"tree name;diameter mean\n");
 
     //we already know that the hoods are in the third column, the tree name in the 7th and the diameter in the 12th 
-    while(fgets(linesHoods,1024, hoods)){
+    while(fgets(linesHoods, MAX_BUFFER, hoods)){
         token=strtok(linesHoods,";");//we already know that the first column goes for the hood and the second for the population
         strcpy(hoodName,token);
         token = strtok(NULL,";");
@@ -62,7 +61,7 @@ int main(int argc, char const *argv[]){
         
     }
 
-    while(fgets(linesTrees,1024, trees))
+    while(fgets(linesTrees, MAX_BUFFER, trees))
     {
         for(i=0,token=strtok(linesTrees,";");i<12;i++)
         {
@@ -103,13 +102,13 @@ int main(int argc, char const *argv[]){
         double TreesXHab;
         while(hasNextHoodHab(hood)){
            TreesXHab= nextHoodHab(hood,hoodName);
-           fprintf(query2BUE,"%s;%g\n",hoodName,TreesXHab);
+           fprintf(query2BUE,"%s;%.2g\n",hoodName,TreesXHab);
 
         }
         char name[100];
         while(hasNext(tree)){
             diameter=next(tree,name);
-            fprintf(query3BUE,"%s;%g\n",name,diameter);
+            fprintf(query3BUE,"%s;%g.2\n",name,diameter);
         }
         fclose(query1BUE);
         fclose(query2BUE);
@@ -118,5 +117,5 @@ int main(int argc, char const *argv[]){
         fclose(hoods);
         freeHood(hood);
         freeTree(tree);
-    return OK;
+    return EXIT_SUCCESS;
 }

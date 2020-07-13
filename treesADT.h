@@ -11,7 +11,7 @@ treesADT newTree();
 void freeTree (treesADT tree);
 
 //adds a tree to the tree vector
-int addTree (treesADT tree, const char * name, const float diameter);
+int addTree (treesADT tree, const char * name, const double diameter);
 
 //creates a list in descending order of tree species diameter average. Alphabetical order used as secondary sorting criteria.
 void vecToList (treesADT tree);
@@ -23,6 +23,6 @@ void toBegin(treesADT tree);
 int hasNext(treesADT tree);
 
 //advances the current iterator to the next node
-float next(treesADT tree, char *name );
+double next(treesADT tree, char *name );
 
 #endif
