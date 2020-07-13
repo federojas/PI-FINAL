@@ -20,7 +20,7 @@ int main(int argc, char const *argv[]){
     trees = fopen(argv[1],"r");
     hoods=fopen(argv[2],"r");
     if(trees==NULL|| hoods==NULL){
-        printf("error in files input");
+        printf("Error in files input");
         return ARG_ERR;
     }
     fseek (trees, 0, SEEK_END);
@@ -28,7 +28,7 @@ int main(int argc, char const *argv[]){
     int size1 = ftell(trees);
     int size2 = ftell(hoods);
     if(size1==0 || size2==0){
-        printf("at least one of the files is empty");
+        printf("At least one of the files is empty");
         return ARG_ERR;
     }
     fseek (trees, 0, SEEK_SET);
@@ -82,7 +82,7 @@ int main(int argc, char const *argv[]){
             }
             token=strtok(NULL,";");
         }
-        if(diameter!=0)
+        if(diameter!=0) // If the diameter is 0 then the diameter was not recorded in the database so we do not include the sample in our diameter average calculation
             addTree(tree,treeName,diameter);
         addTreeHood(hood, hoodName);
     }
