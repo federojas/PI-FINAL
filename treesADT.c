@@ -8,19 +8,18 @@
 #define BLOCK 100
 #define OK 1
 
+typedef struct {
+    char * common_name; //scientific name
+    double diameterSum; //sum of species specimen diameters in database
+    long unsigned int qty; //amont of species specimnes in database
+    double diameterMean; //average diameter of tree species
+} tTree;
+
 typedef struct treeNode {
     char * common_name; 
     double diameterMean;  
     struct treeNode * tail;
 } treeNode;
-
-typedef struct
-{
-    char * common_name; //scientific name
-    double diameterSum; //sum of species specimen diameters in database
-    long unsigned int qty; //amont of species specimnes in database
-    double diameterMean; //average diameter of tree species
-}tTree;
 
 typedef struct treesCDT {
     treeNode * firstTree;               // trees in descending order by average species diameter, alphabetical order used to resolve draws
@@ -29,14 +28,19 @@ typedef struct treesCDT {
     size_t size;                        // amount of species in vector
 } treesCDT;
 
+int availableMem2 (void) {
+    if (errno != ENOMEM)
+        return OK;
+    perror("Error:");
+    errno = 0;
+    return !OK;
+}
+
 treesADT newTree() {
     treesADT tree;
     tree = calloc(1, sizeof(treesCDT));
-    if(errno == ENOMEM)
-    {
-        perror("Error");
-        return NULL;
-    }
+    if (!availableMem2())
+        return !OK;
     return tree;
 }
 
@@ -64,18 +68,12 @@ int addTree (treesADT tree, const char * name, const double diameter) {
     
     if (tree->size % BLOCK == 0) {
         tree->vector = realloc(tree->vector, (tree->size + BLOCK) * sizeof(tTree));
-        if(errno == ENOMEM)
-            {
-                perror("Error");
-                return ENOMEM;
-            }
+        if (!availableMem2())
+            return !OK;
     }
     tree->vector[tree->size].common_name = malloc((strlen(name)+1)*sizeof(char));
-    if(errno == ENOMEM)
-    {
-        perror("Error");
-        return ENOMEM;
-    }
+    if (!availableMem2())
+        return !OK;
     strcpy(tree->vector[tree->size].common_name, name);
     tree->vector[tree->size].diameterSum = diameter;
     tree->vector[tree->size].qty = 1;
@@ -98,17 +96,11 @@ static void diamAvg (treesADT tree) // calculates all of the species average dia
 static treeNode * addRecTree (treeNode * first, tTree tree) {
     if (first == NULL || first->diameterMean < tree.diameterMean) {
         treeNode * aux = malloc(sizeof(treeNode));
-        if(errno == ENOMEM)
-        {
-            perror("Error");
+        if (!availableMem2())
             return NULL;
-         }
         aux->common_name = malloc((strlen(tree.common_name)+1)*sizeof(char));
-         if(errno == ENOMEM)
-         {
-            perror("Error");
+        if (!availableMem2())
             return NULL;
-         }
         aux->diameterMean = tree.diameterMean;
         strcpy(aux->common_name,tree.common_name);    
         aux->tail = first;
@@ -117,17 +109,11 @@ static treeNode * addRecTree (treeNode * first, tTree tree) {
     if (first->diameterMean == tree.diameterMean) {
         if (strcmp(first->common_name, tree.common_name) > 0) {
             treeNode * aux = malloc(sizeof(treeNode));
-            if(errno == ENOMEM)
-            {
-                perror("Error");
+            if (!availableMem2())
                 return NULL;
-            }
             aux->common_name = malloc((strlen(tree.common_name)+1)*sizeof(char));
-            if(errno == ENOMEM)
-            {
-                perror("Error");
+            if (!availableMem2())
                 return NULL;
-            }
             aux->diameterMean=tree.diameterMean;
             strcpy(aux->common_name, tree.common_name);
             aux->tail = first;
