@@ -9,4 +9,3 @@ VAN: mainVAN.c
 BUE: OUTPUT_FILE=finalBUE
 BUE: mainBUE.c
 	$(COMPILER) -o $(OUTPUT_FILE) mainBUE.c treesADT.c hoodADT.c $(FLAGS)
-
