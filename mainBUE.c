@@ -27,7 +27,7 @@ int main(int argc, char const *argv[]){
     int size1 = ftell(trees);
     int size2 = ftell(hoods);
     if(size1==0 || size2==0){
-        fprintf(stderr, "at least one of the files is empty"\n);
+        fprintf(stderr, "At least one of the files is empty\n");
         return EXIT_FAILURE;
     }
     fseek (trees, 0, SEEK_SET);
