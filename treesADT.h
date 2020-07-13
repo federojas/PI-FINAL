@@ -14,7 +14,7 @@ void freeTree (treesADT tree);
 int addTree (treesADT tree, const char * name, const double diameter);
 
 //creates a list in descending order of tree species diameter average. Alphabetical order used as secondary sorting criteria.
-void vecToList (treesADT tree);
+void vecToTreeList (treesADT tree);
 
 //sets the current iterator to the beginning of the list
 void toBegin(treesADT tree);

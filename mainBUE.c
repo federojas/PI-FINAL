@@ -6,6 +6,8 @@
 #include <errno.h>
 
 #define MAX_BUFFER 1024
+#define TREE_NAME_BUFFER 80
+#define HOOD_NAME_BUFFER 5
 
 int main(int argc, char const *argv[]){
     if (argc != 3){
@@ -17,8 +19,8 @@ int main(int argc, char const *argv[]){
     hoodADT hood = newHood();
     FILE *trees, *hoods,*query3BUE,*query1BUE,*query2BUE;
     trees = fopen(argv[1],"r");
-    hoods=fopen(argv[2],"r");
-    if (trees==NULL|| hoods==NULL){
+    hoods = fopen(argv[2],"r");
+    if (trees==NULL|| hoods==NULL) {
         fprintf(stderr, "Error in files input\n");
         return EXIT_FAILURE;
     }
@@ -26,6 +28,7 @@ int main(int argc, char const *argv[]){
     fseek (hoods, 0, SEEK_END);
     int size1 = ftell(trees);
     int size2 = ftell(hoods);
+    //printf("%d\n%d\n", size1, size2);
     if(size1==0 || size2==0){
         fprintf(stderr, "At least one of the files is empty\n");
         return EXIT_FAILURE;
@@ -40,10 +43,10 @@ int main(int argc, char const *argv[]){
     
 
     char linesTrees[MAX_BUFFER],linesHoods[MAX_BUFFER];
-    char treeName[80],hoodName[5];
-    fgets(linesHoods, MAX_BUFFER, hoods);//the first line is skipped
-    fgets(linesTrees, MAX_BUFFER, trees);//the first line is skipped 
-    int i;
+    char treeName[TREE_NAME_BUFFER], hoodName[HOOD_NAME_BUFFER];
+    fgets(linesHoods, MAX_BUFFER, hoods);   //the first line is skipped
+    fgets(linesTrees, MAX_BUFFER, trees);   //the first line is skipped 
+
     long pop;
     float diameter;
     fprintf(query1BUE,"neigbourhoods;trees Qty\n");
@@ -51,19 +54,19 @@ int main(int argc, char const *argv[]){
     fprintf(query3BUE,"tree name;diameter mean\n");
 
     //we already know that the hoods are in the third column, the tree name in the 7th and the diameter in the 12th 
-    while(fgets(linesHoods, MAX_BUFFER, hoods)){
+    while (fgets(linesHoods, MAX_BUFFER, hoods)) {
         token=strtok(linesHoods,";");//we already know that the first column goes for the hood and the second for the population
         strcpy(hoodName,token);
         token = strtok(NULL,";");
         pop = atol(token);
-        if(pop != 0)
-            addHood(hood,hoodName,pop);
-        
+        if (pop > 0)
+            addHood(hood, hoodName, pop);
     }
 
-    while(fgets(linesTrees, MAX_BUFFER, trees))
+    int i;
+    while (fgets(linesTrees, MAX_BUFFER, trees))
     {
-        for(i=0,token=strtok(linesTrees,";");i<12;i++)
+        for(i=0, token=strtok(linesTrees,";"); i<12; i++)
         {
             if(i==2)
             {
@@ -80,18 +83,18 @@ int main(int argc, char const *argv[]){
             }
             token=strtok(NULL,";");
         }
-        if(diameter!=0)
-            addTree(tree,treeName,diameter);
+        if(diameter > 0)
+            addTree(tree, treeName, diameter);
         addTreeHood(hood, hoodName);
     }
-        hoodList(hood);
-        vecToList(tree);
+        vecToHoodList(hood);                
+        vecToTreeList(tree);                
         toBegin(tree);
         toBeginHoodHab(hood);
         toBeginQty(hood);
         int qty;
 
-        while(hasNextHoodQty(hood)){
+        while(hasNextHoodQty(hood)) {
             nextHoodQty(hood, &qty, hoodName);
             fprintf(query1BUE,"%s;%d\n",hoodName,qty);
         }
@@ -99,13 +102,13 @@ int main(int argc, char const *argv[]){
         //query 1 es arboles por barrio - necesito barrios y cant de arboles 
         //query 2 es total de arboles por habitante - necesito barrios y arboles por hab
         //query 3 es diametro promedio por especie de arbol - necesito nombre del arbol y promedio del diametro 
-        double TreesXHab;
+        double treesPerHab;
         while(hasNextHoodHab(hood)){
-           TreesXHab= nextHoodHab(hood,hoodName);
-           fprintf(query2BUE,"%s;%.2g\n",hoodName,TreesXHab);
+           treesPerHab = nextHoodHab(hood,hoodName);
+           fprintf(query2BUE, "%s;%.2g\n",hoodName, treesPerHab);
 
         }
-        char name[100];
+        char name[TREE_NAME_BUFFER];
         while(hasNext(tree)){
             diameter=next(tree,name);
             fprintf(query3BUE,"%s;%g.2\n",name,diameter);

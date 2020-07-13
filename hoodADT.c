@@ -165,7 +165,7 @@ static hoodNode * addRec(hoodNode * first, tHood hood, hoodADT neighborhood){
     return first;
 }
 
-int hoodList (hoodADT hood) {
+int vecToHoodList (hoodADT hood) {
     treesHab(hood); // we calculate the trees/hab
     for(int i = 0; i < hood->vecSize; i++)
     {
