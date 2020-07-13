@@ -10,16 +10,16 @@
 
 typedef struct treeNode {
     char * common_name; 
-    double diameterMean;  
+    float diameterMean;  
     struct treeNode * tail;
 } treeNode;
 
 typedef struct
 {
     char * common_name; //scientific name
-    double diameterSum; //sum of species specimen diameters in database
+    float diameterSum; //sum of species specimen diameters in database
     long unsigned int qty; //amont of species specimnes in database
-    double diameterMean; //average diameter of tree species
+    float diameterMean; //average diameter of tree species
 }tTree;
 
 typedef struct treesCDT {
@@ -53,7 +53,7 @@ void freeTree (treesADT tree) {
     free(tree);
 }
 
-int addTree (treesADT tree, const char * name, const double diameter) {
+int addTree (treesADT tree, const char * name, const float diameter) {
     for (int i = 0; i < tree->size; i++) {
         if (strcmp(tree->vector[i].common_name, name) == 0) {
             tree->vector[i].diameterSum += diameter;
@@ -85,12 +85,16 @@ int addTree (treesADT tree, const char * name, const double diameter) {
 
 static void diamAvg (treesADT tree) // calculates all of the species average diameters
 {
-    double diameter;
+    float diameter;
     long unsigned int quantity;
     for (int i = 0; i < tree->size; i++) {
         diameter = tree->vector[i].diameterSum;
         quantity = tree->vector[i].qty;
+<<<<<<< HEAD
         double diameterAvg = __floorf( (diameter/(double)quantity) * 100) / 100;
+=======
+        float diameterAvg = floorf( ((float)diameter/(float)quantity) * 100) / 100;
+>>>>>>> parent of 53ae985... Trunqueo resuelto - todas las queries funcionando
         tree->vector[i].diameterMean = diameterAvg;
     }
 }
@@ -157,9 +161,9 @@ int hasNext(treesADT tree){
     return tree->current != NULL;
 } 
 
-double next(treesADT tree, char *name )
+float next(treesADT tree, char *name )
 {
-    double  diameter;
+    float  diameter;
     if(hasNext(tree) == 0)
         return 0;
     diameter=tree->current->diameterMean;
