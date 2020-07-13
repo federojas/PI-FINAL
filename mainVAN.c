@@ -70,7 +70,7 @@ int main(int argc, char const *argv[]){
             {
                 strcpy(hoodName,token);
             }
-            if(i==4)
+            if(i==6)
             {
                 strcpy(treeName,token);
 
