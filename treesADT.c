@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <errno.h>
+#include <math.h>
 
 #define BLOCK 100
 #define OK 1
@@ -89,7 +90,8 @@ static void diamAvg (treesADT tree) // calculates all of the species average dia
     for (int i = 0; i < tree->size; i++) {
         diameter = tree->vector[i].diameterSum;
         quantity = tree->vector[i].qty;
-        tree->vector[i].diameterMean = (float)(diameter/quantity);
+        float diameterAvg = floorf( ((float)diameter/(float)quantity) * 100) / 100;
+        tree->vector[i].diameterMean = diameterAvg;
     }
 }
 

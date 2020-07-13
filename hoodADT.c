@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
+#include <math.h>
 
 #define BLOCK 10
 #define NO_MATCH 2
@@ -87,7 +88,8 @@ static void treesHab(hoodADT hood)
     for(int i = 0; i < hood->vecSize; i++) {
         habitants = hood->vecHood[i].habitants;
         trees = hood->vecHood[i].treeQty;
-        hood->vecHood[i].treesPerHab = ((double)trees/(double)habitants);
+        float treesHab = floorf( ((double)trees/(double)habitants) * 100) / 100;
+        hood->vecHood[i].treesPerHab = treesHab;
     }
 }
 
