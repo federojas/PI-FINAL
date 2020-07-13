@@ -90,11 +90,7 @@ static void diamAvg (treesADT tree) // calculates all of the species average dia
     for (int i = 0; i < tree->size; i++) {
         diameter = tree->vector[i].diameterSum;
         quantity = tree->vector[i].qty;
-<<<<<<< HEAD
-        double diameterAvg = __floorf( (diameter/(double)quantity) * 100) / 100;
-=======
         float diameterAvg = floorf( ((float)diameter/(float)quantity) * 100) / 100;
->>>>>>> parent of 53ae985... Trunqueo resuelto - todas las queries funcionando
         tree->vector[i].diameterMean = diameterAvg;
     }
 }
