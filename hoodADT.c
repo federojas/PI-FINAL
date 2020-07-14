@@ -87,7 +87,7 @@ static void treesHab(hoodADT hood)
     for(int i = 0; i < hood->vecSize; i++) {
         habitants = hood->vecHood[i].habitants;
         trees = hood->vecHood[i].treeQty;
-        float treesHab = floorf( ((double)trees/(double)habitants) * 100) / 100;
+        double treesHab = ((int)(((double)trees/(double)habitants) * 100))/100.0;//(double)(( (int)( (trees/habitants) * 100) ) / 100.0);
         hood->vecHood[i].treesPerHab = treesHab;
     }
 }

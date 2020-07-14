@@ -60,7 +60,11 @@ Styphnolobium japonicum;39.77.2
 Cedrela angustifolia;39.5.2
 Erythryna poepiggiana;39.2
 Salix nigra;39.2
+<<<<<<< HEAD
 Agathis robusta;38.8.2
+=======
+Agathis robusta;38.79.2
+>>>>>>> 8e6491ce260641ccaf96f837f04b1ad4c35cb0a3
 Cinnamonum glanduliferum;38.21.2
 Celtis laevigata;38.2
 Cordia trichotoma;38.2
@@ -75,7 +79,11 @@ Cedrela fissilis;36.58.2
 Abies alba;36.16.2
 Cordia myxa;36.2
 Ficus altissima;35.83.2
+<<<<<<< HEAD
 Yucca gloriosa;35.8.2
+=======
+Yucca gloriosa;35.79.2
+>>>>>>> 8e6491ce260641ccaf96f837f04b1ad4c35cb0a3
 Ficus benjamina;35.48.2
 Carya illinoensis;35.14.2
 Enterolobium contortisiliquum;35.03.2
@@ -101,7 +109,11 @@ Washingtonia filifera;33.12.2
 Pinus halepensis;33.1.2
 Salix viminalis;33.2
 Taxodium distichum;33.2
+<<<<<<< HEAD
 Parapiptadenia rigida;32.8.2
+=======
+Parapiptadenia rigida;32.79.2
+>>>>>>> 8e6491ce260641ccaf96f837f04b1ad4c35cb0a3
 Styphnolobium japonicum pendula;32.57.2
 Ficus retusa;32.5.2
 Melia azedarach  var. umbraculifera;32.39.2
@@ -265,7 +277,11 @@ Thuja occidentalis;18.94.2
 Persea americana;18.81.2
 Blepharocalyx salicifolius;18.77.2
 Euphorbia tirucalli;18.57.2
+<<<<<<< HEAD
 Viburnum suspensum;18.4.2
+=======
+Viburnum suspensum;18.39.2
+>>>>>>> 8e6491ce260641ccaf96f837f04b1ad4c35cb0a3
 Acer pseudoplatanus;18.32.2
 Ligustrum lucidum f. aureovariegata;18.32.2
 Rhapis excelsa;18.28.2

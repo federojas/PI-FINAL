@@ -88,7 +88,7 @@ static void diamAvg (treesADT tree) // calculates all of the species average dia
     for (int i = 0; i < tree->size; i++) {
         diameter = tree->vector[i].diameterSum;
         quantity = tree->vector[i].qty;
-        double diameterAvg = floorf( (diameter/(double)quantity) * 100) / 100;
+        double diameterAvg = ((int)((diameter/(double)quantity) * 100)) / 100.0;//(double)(( (int)( (diameter/quantity) * 100)) / 100.0);
         tree->vector[i].diameterMean = diameterAvg;
     }
 }
