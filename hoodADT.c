@@ -33,6 +33,7 @@ typedef struct hoodCDT {
     size_t vecSize;                 //amount of neighborhoos in vector
 } hoodCDT;
 
+//function that checks if there is available memory
 static int availableMem (void) {
     if (errno != ENOMEM)
         return OK;
@@ -49,6 +50,7 @@ hoodADT newHood() {
     return hood;
 }
 
+//frees up the nodes
 static void freeRec(hoodNode *hood)
 {
     if(hood == NULL)
@@ -137,6 +139,8 @@ static hoodNode * sortQty(hoodNode * first, hoodNode * sort)
 }
 
 //function that sorts by descending order of trees per hab, creating a new node and sorts the list by amount of trees per neighborhood without creating new nodes
+//if there is a memory error, first is returned so that the list doesn't break
+//if a node is succesfuly created, added = 1
 static hoodNode * addRec(hoodNode * first, tHood hood, hoodADT neighborhood, int * added){
     if (first == NULL || first->treesPerHab < hood.treesPerHab) {
         hoodNode * result = malloc(sizeof(hoodNode));
@@ -175,6 +179,8 @@ static hoodNode * addRec(hoodNode * first, tHood hood, hoodADT neighborhood, int
     return first;
 }
 
+//creates the hood list and frees up the hood vector
+//if a node is succefully created, added = 1, if not added = 0
 int hoodList (hoodADT hood) {
     treesPerHab(hood); // we calculate the trees/hab
     for(int i = 0; i < hood->vecSize; i++)

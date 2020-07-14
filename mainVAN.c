@@ -8,6 +8,8 @@
 #define MAX_BUFFER 1024
 #define TREE_N_HOOD_NAME_BUFFER 80
 
+//If there is a memory error, we free up all the memory used by the program and we return EXIT_FAILURE.
+
 int main(int argc, char const *argv[]){
     if (argc != 3){
         fprintf(stderr, "Incorrect amount of arguments introduced\n");

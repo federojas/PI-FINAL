@@ -10,6 +10,7 @@ treesADT newTree();
 //frees up all used memory
 void freeTree (treesADT tree);
 
+//function used exclusively to free the tree vector if there is a memory error.
 void freeVecTree (treesADT tree);
 
 //adds a tree to the tree vector

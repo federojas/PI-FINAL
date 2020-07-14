@@ -9,6 +9,8 @@
 #define TREE_NAME_BUFFER 80
 #define HOOD_NAME_BUFFER 5
 
+//If there is a memory error, we free up all memory used by the program and we return EXIT_FAILURE.
+
 int main(int argc, char const *argv[]){
     if (argc != 3) {
         fprintf(stderr, "Incorrect amount of arguments introduced\n");
@@ -123,6 +125,7 @@ int main(int argc, char const *argv[]){
         freeVecTree(tree);
         freeHood(hood);
         freeTree(tree);
+        //Note: freeVecHood is not used because the hood vector has already been freed up in hoodList
         return EXIT_FAILURE;
     }
 
