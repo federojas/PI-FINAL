@@ -98,7 +98,7 @@ static void diamAvg (treesADT tree)
     for (int i = 0; i < tree->size; i++) {
         diameter = tree->vector[i].diameterSum;
         quantity = tree->vector[i].qty;
-        double diameterAvg = ((int)((diameter/(double)quantity) * 100)) / 100.0;//(double)(( (int)( (diameter/quantity) * 100)) / 100.0);
+        double diameterAvg = ((int)((diameter/(double)quantity) * 100)) / 100.0;//this line calculates the tree average diameter and truncates the result with two decimal places
         tree->vector[i].diameterMean = diameterAvg;
     }
 }

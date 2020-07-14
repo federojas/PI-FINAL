@@ -113,7 +113,12 @@ static void treesPerHab(hoodADT hood)
     for(int i = 0; i < hood->vecSize; i++) {
         habitants = hood->vecHood[i].habitants;
         trees = hood->vecHood[i].treeQty;
-        double treesHab = ((int)(((double)trees/(double)habitants) * 100))/100.0;//(double)(( (int)( (trees/habitants) * 100) ) / 100.0);
+        double treesHab;
+        if(habitants == 0)
+            treesHab = 0;
+        else 
+            treesHab = ((int)(((double)trees/(double)habitants) * 100))/100.0; //this line calculates the trees/hab and truncates the result with two decimal places
+        
         hood->vecHood[i].treesPerHab = treesHab;
     }
 }
