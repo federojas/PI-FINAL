@@ -5,7 +5,13 @@ all: VAN BUE
 VAN: OUTPUT_FILE=finalVAN
 VAN: mainVAN.c
 	$(COMPILER) -o $(OUTPUT_FILE) mainVAN.c treesADT.c hoodADT.c $(FLAGS)
+	@echo Compilation success!
 
 BUE: OUTPUT_FILE=finalBUE
 BUE: mainBUE.c
 	$(COMPILER) -o $(OUTPUT_FILE) mainBUE.c treesADT.c hoodADT.c $(FLAGS)
+	@echo Compilation success!
+
+clean: 
+	rm -r finalVAN finalBUE
+	@echo Clean success!
