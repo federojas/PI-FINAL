@@ -28,6 +28,7 @@ typedef struct treesCDT {
     size_t size;                        // amount of species in vector
 } treesCDT;
 
+//function that checks if there is available memory
 static int availableMem2 (void) {
     if (errno != ENOMEM)
         return OK;
@@ -44,6 +45,7 @@ treesADT newTree() {
     return tree;
 }
 
+//frees up the nodes
 static void freeRec (treeNode * first) {
     if (first == NULL)
         return ;
@@ -88,18 +90,21 @@ int addTree (treesADT tree, const char * name, const double diameter) {
     return OK;
 }
 
-static void diamAvg (treesADT tree) // calculates all of the species average diameters
+//calculates all of the species average diameters
+static void diamAvg (treesADT tree)
 {
     double diameter;
     long unsigned int quantity;
     for (int i = 0; i < tree->size; i++) {
         diameter = tree->vector[i].diameterSum;
         quantity = tree->vector[i].qty;
-        double diameterAvg = ((int)((diameter/(double)quantity) * 100)) / 100.0;//(double)(( (int)( (diameter/quantity) * 100)) / 100.0);
+        double diameterAvg = ((int)((diameter/(double)quantity) * 100)) / 100.0;//this line calculates the tree average diameter and truncates the result with two decimal places
         tree->vector[i].diameterMean = diameterAvg;
     }
 }
-
+//function that sorts by descending order of average species diameter creatig new nodes
+//if there is a memory error, first is returned so that the list doesn't break
+//if a node is succesfuly created, added = 1
 static treeNode * addRecTree (treeNode * first, tTree tree, int * added) {
     if (first == NULL || first->diameterMean < tree.diameterMean) {
         treeNode * aux = malloc(sizeof(treeNode));
@@ -133,7 +138,8 @@ static treeNode * addRecTree (treeNode * first, tTree tree, int * added) {
     return first;
 }
 
-
+//creates the tree list and frees up the tree vector
+//if a node is succefully created, added = 1, if not added = 0
 int treeList (treesADT tree) {
     diamAvg(tree); // we calculate the diameter average of each species
     for (size_t i = 0; i < tree->size; i++) {
