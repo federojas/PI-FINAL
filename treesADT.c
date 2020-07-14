@@ -77,7 +77,7 @@ int addTree (treesADT tree, const char * name, const double diameter) {
     
     if (tree->size % BLOCK == 0) {
         tree->vector = realloc(tree->vector, (tree->size + BLOCK) * sizeof(tTree));
-        if (!availableMem2())
+        if (!availableMem2()) 
             return !OK;
     }
     tree->vector[tree->size].common_name = malloc((strlen(name)+1)*sizeof(char));
@@ -111,8 +111,10 @@ static treeNode * addRecTree (treeNode * first, tTree tree, int * added) {
         if (!availableMem2())
             return first;
         aux->common_name = malloc((strlen(tree.common_name)+1)*sizeof(char));
-        if (!availableMem2())
+        if (!availableMem2()) {
+            free(aux);
             return first;
+        }
         aux->diameterMean = tree.diameterMean;
         strcpy(aux->common_name,tree.common_name);    
         aux->tail = first;
@@ -125,8 +127,10 @@ static treeNode * addRecTree (treeNode * first, tTree tree, int * added) {
             if (!availableMem2())
                 return first;
             aux->common_name = malloc((strlen(tree.common_name)+1)*sizeof(char));
-            if (!availableMem2())
+            if (!availableMem2()) {
+                free(aux);
                 return first;
+            }
             aux->diameterMean=tree.diameterMean;
             strcpy(aux->common_name, tree.common_name);
             aux->tail = first;
