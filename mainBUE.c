@@ -20,7 +20,7 @@ int main(int argc, char const *argv[]){
     FILE *trees, *hoods,*query3BUE,*query1BUE,*query2BUE;
     trees = fopen(argv[1], "r");
     hoods = fopen(argv[2], "r");
-    if (trees == NULL|| hoods == NULL) {
+    if (trees == NULL || hoods == NULL) {
         fprintf(stderr, "Error in files input\n");
         freeHood(hood);
         freeTree(tree);
@@ -61,7 +61,7 @@ int main(int argc, char const *argv[]){
     //we already know that the hoods are in the third column, the tree name in the 7th and the diameter in the 12th 
     while (fgets(linesHoods, MAX_BUFFER, hoods)) {
         token=strtok(linesHoods,";");//we already know that the first column goes for the hood and the second for the population
-        strcpy(hoodName,token);
+        strcpy(hoodName, token);
         token = strtok(NULL,";");
         pop = atol(token);
         if (pop > 0)
@@ -92,7 +92,6 @@ int main(int argc, char const *argv[]){
             if(i==11)
             {
                 diameter = atoi(token);
-                
             }
             token=strtok(NULL,";");
         }
