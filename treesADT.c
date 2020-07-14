@@ -125,7 +125,7 @@ static treeNode * addRecTree (treeNode * first, tTree tree) {
 }
 
 
-void vecToTreeList (treesADT tree) {
+void treeList (treesADT tree) {
     diamAvg(tree); // we calculate the diameter average of each species
     for (size_t i = 0; i < tree->size; i++) {
         tree->firstTree = addRecTree(tree->firstTree, tree->vector[i]);
