@@ -19,3 +19,5 @@ cat query3BUE.csv
 cat query1VAN.csv
 cat query2VAN.csv
 cat query3VAN.csv
+
+Se puede utilizar make clean para eliminar los ejecutables.
