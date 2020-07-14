@@ -36,8 +36,8 @@ int main(int argc, char const *argv[]){
     
     char *token;
     query1VAN=fopen("query1VAN.csv","w"); //the file is opened with "write" permissions so that it can be used to work
-    query2VAN=fopen("query2VAN.csv","w"); //the file is opened with "write" permissions so that it can be used to work
-    query3VAN=fopen("query3VAN.csv","w"); //the file is opened with "write" permissions so that it can be used to work
+    query2VAN=fopen("query2VAN.csv","w"); 
+    query3VAN=fopen("query3VAN.csv","w"); 
     
 
     char linesTrees[1024],linesHoods[1024];
@@ -86,37 +86,37 @@ int main(int argc, char const *argv[]){
             addTree(tree,treeName,diameter);
         addTreeHood(hood, hoodName);
     }
-        hoodList(hood);
-        treeList(tree);
-        toBegin(tree);
-        toBeginHoodHab(hood);
-        toBeginQty(hood);
-        int qty;
+    hoodList(hood);
+    treeList(tree);
+    toBegin(tree);
+    toBeginHoodHab(hood);
+    toBeginQty(hood);
+    int qty;
 
-        while(hasNextHoodQty(hood)){
-            nextHoodQty(hood, &qty, hoodName);
-            fprintf(query1VAN,"%s;%d\n",hoodName,qty);
-        }
+    while(hasNextHoodQty(hood)){
+        nextHoodQty(hood, &qty, hoodName);
+        fprintf(query1VAN,"%s;%d\n",hoodName,qty);
+    }
       
-        //query 1 es arboles por barrio - necesito barrios y cant de arboles 
-        //query 2 es total de arboles por habitante - necesito barrios y arboles por hab
-        //query 3 es diametro promedio por especie de arbol - necesito nombre del arbol y promedio del diametro 
-        double TreesXHab;
-        while(hasNextHoodHab(hood)){
-           TreesXHab= nextHoodHab(hood,hoodName);
-           fprintf(query2VAN,"%s;%g\n",hoodName,TreesXHab);
-        }
-        char name[100];
-        while(hasNext(tree)){
-            diameter=next(tree,name);
-            fprintf(query3VAN,"%s;%g\n",name,diameter);
-        }
-        fclose(query1VAN);
-        fclose(query2VAN);
-        fclose(query3VAN);
-        fclose(trees);
-        fclose(hoods);
-        freeHood(hood);
-        freeTree(tree);
+    //query 1 es arboles por barrio - necesito barrios y cant de arboles 
+    //query 2 es total de arboles por habitante - necesito barrios y arboles por hab
+    //query 3 es diametro promedio por especie de arbol - necesito nombre del arbol y promedio del diametro 
+    double TreesXHab;
+    while(hasNextHoodHab(hood)){
+        TreesXHab= nextHoodHab(hood,hoodName);
+        fprintf(query2VAN,"%s;%g\n",hoodName,TreesXHab);
+    }
+    char name[100];
+    while(hasNext(tree)){
+        diameter=next(tree,name);
+        fprintf(query3VAN,"%s;%g\n",name,diameter);
+    }
+    fclose(query1VAN);
+    fclose(query2VAN);
+    fclose(query3VAN);
+    fclose(trees);
+    fclose(hoods);
+    freeHood(hood);
+    freeTree(tree);
     return OK;
 }
