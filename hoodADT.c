@@ -155,8 +155,10 @@ static hoodNode * addRec(hoodNode * first, tHood hood, hoodADT neighborhood, int
         result->treeQty = hood.treeQty;
         result->treesPerHab = hood.treesPerHab;
         result->hood_name = malloc((strlen(hood.hood_name)+1) * sizeof(char));
-        if (!availableMem())
+        if (!availableMem()) {
+            free(result);
             return first;
+        }
         strcpy(result->hood_name, hood.hood_name);
         result->habTail = first;
         neighborhood->firstHoodQty = sortQty(neighborhood->firstHoodQty, result);
@@ -172,8 +174,10 @@ static hoodNode * addRec(hoodNode * first, tHood hood, hoodADT neighborhood, int
             result->treeQty = hood.treeQty;
             result->treesPerHab = hood.treesPerHab;
             result->hood_name = malloc((strlen(hood.hood_name)+1) * sizeof(char));
-            if (!availableMem())
+            if (!availableMem()) {
+                free(result);
                 return first;
+            }
             strcpy(result->hood_name, hood.hood_name);
             result->habTail = first;
             neighborhood->firstHoodQty = sortQty(neighborhood->firstHoodQty, result);
@@ -195,9 +199,9 @@ int hoodList (hoodADT hood) {
         hood->firstHoodHab = addRec(hood->firstHoodHab, hood->vecHood[i], hood, &added); //sorts both queries creating only one list
         if(added == 0) //memory error
             return !OK;
-        free(hood->vecHood[i].hood_name);
+        free(hood->vecHood[i].hood_name);          
     }
-    free(hood->vecHood); // we free up no longer required memory
+    free(hood->vecHood); // we free up no longer required memory from hood vector
     return OK;
 }
 
@@ -205,6 +209,7 @@ int hoodList (hoodADT hood) {
 void toBeginHoodHab(hoodADT hood){
     hood->currentHoodHab = hood->firstHoodHab;
 }
+
 int hasNextHoodHab(hoodADT hood){
     return hood->currentHoodHab != NULL;
 }
@@ -212,7 +217,7 @@ int hasNextHoodHab(hoodADT hood){
 double nextHoodHab(hoodADT hood, char *hoodName)
 {
     if(hasNextHoodHab(hood) == 0)
-        return 0;
+        return !OK;
     hoodNode * result = hood->currentHoodHab;
     strcpy(hoodName,result->hood_name);
     double resp=result->treesPerHab;
@@ -235,5 +240,4 @@ void nextHoodQty(hoodADT hood, int *cant, char *hoodName)
     strcpy(hoodName,result->hood_name);
     *cant=result->treeQty;
     hood->currentHoodQty = hood->currentHoodQty->qtyTail;
-    
 }
