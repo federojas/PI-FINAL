@@ -87,8 +87,8 @@ int main(int argc, char const *argv[]){
             addTree(tree, treeName, diameter);
         addTreeHood(hood, hoodName);
     }
-        vecToHoodList(hood);                
-        vecToTreeList(tree);                
+        hoodList(hood);                
+        treeList(tree);                
         toBegin(tree);
         toBeginHoodHab(hood);
         toBeginQty(hood);
