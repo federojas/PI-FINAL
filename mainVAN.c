@@ -117,6 +117,7 @@ int main(int argc, char const *argv[]){
         freeVecTree(tree);
         freeHood(hood);
         freeTree(tree);
+        //Note: freeVecHood is not used because the hood vector has already been freed up in hoodList
         return EXIT_FAILURE;
     }
     toBegin(tree);
