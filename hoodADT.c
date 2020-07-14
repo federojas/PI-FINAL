@@ -33,32 +33,31 @@ typedef struct hoodCDT {
     size_t vecSize;                 //amount of neighborhoos in vector
 } hoodCDT;
 
+int availableMem (void) {
+    if (errno != ENOMEM)
+        return OK;
+    perror("Error:");
+    errno = 0;
+    return !OK;
+}
+
 hoodADT newHood() {
     hoodADT hood;
     hood = calloc(1, sizeof(hoodCDT));
-    if(errno == ENOMEM)
-    {
-        perror("Error");
+    if (!availableMem())
         return NULL;
-    }
     return hood;
 }
 //adds a neighborhood to the hood vector
 int addHood (hoodADT hood, char * name, size_t habitants) {
     if(hood->vecSize % BLOCK == 0) {
         hood->vecHood = realloc(hood->vecHood, (hood->vecSize + BLOCK) * sizeof(tHood));
-        if(errno == ENOMEM)
-        {
-            perror("Error");
-            return ENOMEM;
-        }
+        if (!availableMem())
+            return !OK;
     }
     hood->vecHood[hood->vecSize].hood_name = malloc((strlen(name)+1) * sizeof(char));
-    if(errno == ENOMEM)
-    {
-        perror("Error");
-        return ENOMEM;
-    }
+    if (!availableMem())
+        return !OK;
     strcpy(hood->vecHood[hood->vecSize].hood_name, name);
     hood->vecHood[hood->vecSize].habitants = habitants;
     hood->vecHood[hood->vecSize].treeQty = 0;
@@ -88,7 +87,7 @@ static void treesHab(hoodADT hood)
     for(int i = 0; i < hood->vecSize; i++) {
         habitants = hood->vecHood[i].habitants;
         trees = hood->vecHood[i].treeQty;
-        double treesHab = ((int)(((double)trees/(double)habitants) * 100))/100.0;//(double)(( (int)( (trees/habitants) * 100) ) / 100.0);
+        float treesHab = floorf( ((double)trees/(double)habitants) * 100) / 100;
         hood->vecHood[i].treesPerHab = treesHab;
     }
 }
@@ -133,19 +132,13 @@ static hoodNode * sortQty(hoodNode * first, hoodNode * sort)
 static hoodNode * addRec(hoodNode * first, tHood hood, hoodADT neighborhood){
     if (first == NULL || first->treesPerHab < hood.treesPerHab) {
         hoodNode * result = malloc(sizeof(hoodNode));
-        if(errno == ENOMEM)
-        {
-            perror("Error");
+        if (!availableMem())
             return NULL;
-        }
         result->treeQty = hood.treeQty;
         result->treesPerHab = hood.treesPerHab;
         result->hood_name = malloc((strlen(hood.hood_name)+1) * sizeof(char));
-        if(errno == ENOMEM)
-        {
-            perror("Error");
+        if (!availableMem())
             return NULL;
-        }
         strcpy(result->hood_name, hood.hood_name);
         result->habTail = first;
         neighborhood->firstHoodQty = sortQty(neighborhood->firstHoodQty, result);
@@ -155,19 +148,13 @@ static hoodNode * addRec(hoodNode * first, tHood hood, hoodADT neighborhood){
         if (strcmp(first->hood_name, hood.hood_name) > 0)
         {
             hoodNode * result = malloc(sizeof(hoodNode));
-            if(errno == ENOMEM)
-            {
-                perror("Error");
+            if (!availableMem())
                 return NULL;
-            }
             result->treeQty = hood.treeQty;
             result->treesPerHab = hood.treesPerHab;
             result->hood_name = malloc((strlen(hood.hood_name)+1) * sizeof(char));
-            if(errno == ENOMEM)
-            {
-                perror("Error");
+            if (!availableMem())
                 return NULL;
-            }
             strcpy(result->hood_name, hood.hood_name);
             result->habTail = first;
             neighborhood->firstHoodQty = sortQty(neighborhood->firstHoodQty, result);
@@ -186,7 +173,6 @@ int hoodList (hoodADT hood) {
         free(hood->vecHood[i].hood_name);
     }
     free(hood->vecHood); // we free up no longer required memory
-    hood->vecHood = NULL;
     return OK;
 }
 
