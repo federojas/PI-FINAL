@@ -17,6 +17,8 @@ int addTreeHood(hoodADT hood, char * treeHood);
 //frees up all used memory
 void freeHood(hoodADT hood);
 
+void freeVecHood (hoodADT hood);
+
 //creates a single neighborhood list sorted by two different criteria. Criteria 1: descending order of trees / habitant. Criteria 2: descending order of amount of trees. Both criteria use aphabetical order as a secondary sort criteria.
 int hoodList (hoodADT hood);
 

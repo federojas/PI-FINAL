@@ -66,9 +66,13 @@ int main(int argc, char const *argv[]){
         pop = atol(token);
         if (pop > 0)
         {
-           mem = addHood(hood, hoodName, pop);
-           if(mem == 0) 
+            mem = addHood(hood, hoodName, pop);
+            if(mem == 0) {
+                freeVecHood(hood);
+                freeHood(hood);
+                freeTree(tree);
                 return EXIT_FAILURE;
+            }
         }
     }
 
@@ -87,7 +91,7 @@ int main(int argc, char const *argv[]){
             }
             if(i==11)
             {
-                diameter=atoi(token);
+                diameter = atoi(token);
                 
             }
             token=strtok(NULL,";");
@@ -95,18 +99,33 @@ int main(int argc, char const *argv[]){
         if(diameter > 0)
         {
             mem = addTree(tree, treeName, diameter);
-            if(mem == 0)
+            if(mem == 0) {
+                freeVecTree(tree);
+                freeVecHood(hood);
+                freeHood(hood);
+                freeTree(tree);
                 return EXIT_FAILURE;
+            }
         }    
         addTreeHood(hood, hoodName);
     }
     
     mem = hoodList(hood); //we use the hoods present in the vector in order to create a list sorted by to criterias (trees per hood and amount of trees per habitant )                
-    if(mem == 0)
+    if(mem == 0) {
+        freeVecTree(tree);
+        freeVecHood(hood);
+        freeHood(hood);
+        freeTree(tree);
         return EXIT_FAILURE;
+    }
     mem = treeList(tree); //we use the trees names present in the vector of trees in order to create a list ordered  by the criteria diameter mean per tree spercies         
-    if(mem == 0)
+    if(mem == 0) {
+        freeVecTree(tree);
+        freeHood(hood);
+        freeTree(tree);
         return EXIT_FAILURE;
+    }
+
     toBegin(tree);
     toBeginHoodHab(hood);
     toBeginQty(hood);
@@ -123,13 +142,13 @@ int main(int argc, char const *argv[]){
     double treesPerHab;
     while(hasNextHoodHab(hood)){
         treesPerHab = nextHoodHab(hood,hoodName);
-       fprintf(query2BUE, "%s;%.2g\n",hoodName, treesPerHab);
+       fprintf(query2BUE, "%s;%g\n",hoodName, treesPerHab);
 
     }
     char name[TREE_NAME_BUFFER];
     while(hasNext(tree)){
         diameter=next(tree,name);
-        fprintf(query3BUE,"%s;%g.2\n",name,diameter);
+        fprintf(query3BUE,"%s;%g\n",name,diameter);
     }
     fclose(query1BUE);
     fclose(query2BUE);

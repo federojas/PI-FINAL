@@ -48,6 +48,29 @@ hoodADT newHood() {
         return NULL;
     return hood;
 }
+
+static void freeRec(hoodNode *hood)
+{
+    if(hood == NULL)
+        return ;
+    freeRec(hood->habTail);
+    free(hood->hood_name);
+    free(hood);
+}
+
+void freeHood(hoodADT hood)
+{
+    freeRec(hood->firstHoodHab);
+    free(hood);
+}
+
+void freeVecHood (hoodADT hood) {
+    for (size_t i = 0; i < hood->vecSize; i++) {
+        free(hood->vecHood[i].hood_name);
+    }
+    free(hood->vecHood);
+}
+
 //adds a neighborhood to the hood vector
 int addHood (hoodADT hood, char * name, size_t habitants) {
     if(hood->vecSize % BLOCK == 0) {
@@ -80,7 +103,7 @@ int addTreeHood(hoodADT hood, char * treeHood)
 }
 
 //aux function that calculates the amount of trees per habitant in each neighborhood
-static void treesHab(hoodADT hood)
+static void treesPerHab(hoodADT hood)
 {
     size_t habitants;
     size_t trees;
@@ -90,21 +113,6 @@ static void treesHab(hoodADT hood)
         double treesHab = ((int)(((double)trees/(double)habitants) * 100))/100.0;//(double)(( (int)( (trees/habitants) * 100) ) / 100.0);
         hood->vecHood[i].treesPerHab = treesHab;
     }
-}
-
-static void freeRec(hoodNode *hood)
-{
-    if(hood == NULL)
-        return ;
-    freeRec(hood->habTail);
-    free(hood->hood_name);
-    free(hood);
-}
-
-void freeHood(hoodADT hood)
-{
-    freeRec(hood->firstHoodHab);
-    free(hood);
 }
 
 //function that sorts by descending order of quantity of trees, without creating new nodes
@@ -168,7 +176,7 @@ static hoodNode * addRec(hoodNode * first, tHood hood, hoodADT neighborhood, int
 }
 
 int hoodList (hoodADT hood) {
-    treesHab(hood); // we calculate the trees/hab
+    treesPerHab(hood); // we calculate the trees/hab
     for(int i = 0; i < hood->vecSize; i++)
     {
         int added = 0;
@@ -178,7 +186,6 @@ int hoodList (hoodADT hood) {
         free(hood->vecHood[i].hood_name);
     }
     free(hood->vecHood); // we free up no longer required memory
-    hood->vecHood = NULL;
     return OK;
 }
 

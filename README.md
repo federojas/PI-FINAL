@@ -1,5 +1,5 @@
 # PI-FINAL
- Final de Prograacion Imperativa ITBA Primer Cuatrimestre 2020
+ Final de Programacion Imperativa ITBA Primer Cuatrimestre 2020
  
 Integrantes: Federico Gustavo Rojas Pelliccia - Roberto Franco Rodriguez Tulasne - Leonardo Agustín D'Agostino
 

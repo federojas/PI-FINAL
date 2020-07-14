@@ -10,6 +10,8 @@ treesADT newTree();
 //frees up all used memory
 void freeTree (treesADT tree);
 
+void freeVecTree (treesADT tree);
+
 //adds a tree to the tree vector
 int addTree (treesADT tree, const char * name, const double diameter);
 

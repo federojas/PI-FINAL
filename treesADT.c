@@ -14,17 +14,16 @@ typedef struct treeNode {
     struct treeNode * tail;
 } treeNode;
 
-typedef struct
-{
+typedef struct tTree {
     char * common_name; //scientific name
     double diameterSum; //sum of species specimen diameters in database
     long unsigned int qty; //amont of species specimnes in database
     double diameterMean; //average diameter of tree species
-}tTree;
+} tTree;
 
 typedef struct treesCDT {
     treeNode * firstTree;               // trees in descending order by average species diameter, alphabetical order used to resolve draws
-    treeNode *current;
+    treeNode * current;
     tTree * vector;                     // Vector containing all of the tree species in the data base
     size_t size;                        // amount of species in vector
 } treesCDT;
@@ -56,6 +55,13 @@ static void freeRec (treeNode * first) {
 void freeTree (treesADT tree) {
     freeRec(tree->firstTree);
     free(tree);
+}
+
+void freeVecTree (treesADT tree) {
+    for (size_t i = 0; i < tree->size; i++) {
+        free(tree->vector[i].common_name);
+    }
+    free(tree->vector);
 }
 
 int addTree (treesADT tree, const char * name, const double diameter) {
@@ -149,8 +155,7 @@ int hasNext(treesADT tree){
     return tree->current != NULL;
 } 
 
-double next(treesADT tree, char *name )
-{
+double next(treesADT tree, char *name ) {
     double  diameter;
     if(hasNext(tree) == 0)
         return 0;
@@ -159,4 +164,3 @@ double next(treesADT tree, char *name )
     tree->current = tree->current->tail;
     return diameter;
 }
-
