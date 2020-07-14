@@ -42,8 +42,8 @@ int main(int argc, char const *argv[]){
 
     char linesTrees[1024],linesHoods[1024];
     char treeName[80],hoodName[80];
-    fgets(linesHoods,1024, hoods);//the first line is skipped
-    fgets(linesTrees,1024, trees);//the first line is skipped 
+    fgets(linesHoods,1024, hoods);//the first lines of both .csv are skipped
+    fgets(linesTrees,1024, trees);
     int i;
     long pop;
     float diameter;
@@ -86,8 +86,8 @@ int main(int argc, char const *argv[]){
             addTree(tree,treeName,diameter);
         addTreeHood(hood, hoodName);
     }
-    hoodList(hood);
-    treeList(tree);
+    hoodList(hood);//we use the hoods present in the vector in order to create a list sorted by to criterias (trees per hood and amount of trees per habitant )  
+    treeList(tree); //we use the trees names present in the vector of trees in order to create a list ordered  by the criteria diameter mean per tree spercies
     toBegin(tree);
     toBeginHoodHab(hood);
     toBeginQty(hood);
@@ -98,9 +98,9 @@ int main(int argc, char const *argv[]){
         fprintf(query1VAN,"%s;%d\n",hoodName,qty);
     }
       
-    //query 1 es arboles por barrio - necesito barrios y cant de arboles 
-    //query 2 es total de arboles por habitante - necesito barrios y arboles por hab
-    //query 3 es diametro promedio por especie de arbol - necesito nombre del arbol y promedio del diametro 
+    //query 1 goes for trees per hood - we need hood names and tree qty 
+    //query 2 goes for amount of trees per habitant - we need hoods and trees
+    //query 3 goes for diameter mean per tree spercies - we need tree name and diameter means 
     double TreesXHab;
     while(hasNextHoodHab(hood)){
         TreesXHab= nextHoodHab(hood,hoodName);

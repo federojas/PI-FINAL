@@ -28,7 +28,7 @@ int main(int argc, char const *argv[]){
     fseek (hoods, 0, SEEK_END);
     int size1 = ftell(trees);
     int size2 = ftell(hoods);
-    //printf("%d\n%d\n", size1, size2);
+   
     if(size1==0 || size2==0){
         fprintf(stderr, "At least one of the files is empty\n");
         return EXIT_FAILURE;
@@ -38,14 +38,14 @@ int main(int argc, char const *argv[]){
     
     char *token;
     query1BUE=fopen("query1BUE.csv","w"); //the file is opened with "write" permissions so that it can be used to work
-    query2BUE=fopen("query2BUE.csv","w"); //the file is opened with "write" permissions so that it can be used to work
-    query3BUE=fopen("query3BUE.csv","w"); //the file is opened with "write" permissions so that it can be used to work
+    query2BUE=fopen("query2BUE.csv","w");
+    query3BUE=fopen("query3BUE.csv","w"); 
     
 
     char linesTrees[MAX_BUFFER],linesHoods[MAX_BUFFER];
     char treeName[TREE_NAME_BUFFER], hoodName[HOOD_NAME_BUFFER];
-    fgets(linesHoods, MAX_BUFFER, hoods);   //the first line is skipped
-    fgets(linesTrees, MAX_BUFFER, trees);   //the first line is skipped 
+    fgets(linesHoods, MAX_BUFFER, hoods); //the first lines of both .csv are skipped
+    fgets(linesTrees, MAX_BUFFER, trees);    
 
     long pop;
     float diameter;
@@ -87,39 +87,39 @@ int main(int argc, char const *argv[]){
             addTree(tree, treeName, diameter);
         addTreeHood(hood, hoodName);
     }
-        hoodList(hood);                
-        treeList(tree);                
-        toBegin(tree);
-        toBeginHoodHab(hood);
-        toBeginQty(hood);
-        int qty;
+    hoodList(hood); //we use the hoods present in the vector in order to create a list sorted by to criterias (trees per hood and amount of trees per habitant )                
+    treeList(tree); //we use the trees names present in the vector of trees in order to create a list ordered  by the criteria diameter mean per tree spercies         
+    toBegin(tree);
+    toBeginHoodHab(hood);
+    toBeginQty(hood);
+    int qty;
 
-        while(hasNextHoodQty(hood)) {
-            nextHoodQty(hood, &qty, hoodName);
-            fprintf(query1BUE,"%s;%d\n",hoodName,qty);
-        }
+    while(hasNextHoodQty(hood)) {
+        nextHoodQty(hood, &qty, hoodName);
+        fprintf(query1BUE,"%s;%d\n",hoodName,qty);
+    }
       
-        //query 1 es arboles por barrio - necesito barrios y cant de arboles 
-        //query 2 es total de arboles por habitante - necesito barrios y arboles por hab
-        //query 3 es diametro promedio por especie de arbol - necesito nombre del arbol y promedio del diametro 
-        double treesPerHab;
-        while(hasNextHoodHab(hood)){
-           treesPerHab = nextHoodHab(hood,hoodName);
-           fprintf(query2BUE, "%s;%.2g\n",hoodName, treesPerHab);
+    //query 1 goes for trees per hood - we need hood names and tree qty 
+    //query 2 goes for amount of trees per habitant - we need hoods and trees
+    //query 3 goes for diameter mean per tree spercies - we need tree name and diameter means 
+    double treesPerHab;
+    while(hasNextHoodHab(hood)){
+        treesPerHab = nextHoodHab(hood,hoodName);
+       fprintf(query2BUE, "%s;%.2g\n",hoodName, treesPerHab);
 
-        }
-        char name[TREE_NAME_BUFFER];
-        while(hasNext(tree)){
-            diameter=next(tree,name);
-            fprintf(query3BUE,"%s;%g.2\n",name,diameter);
-        }
-        fclose(query1BUE);
-        fclose(query2BUE);
-        fclose(query3BUE);
-        fclose(trees);
-        fclose(hoods);
-        freeHood(hood);
-        freeTree(tree);
+    }
+    char name[TREE_NAME_BUFFER];
+    while(hasNext(tree)){
+        diameter=next(tree,name);
+        fprintf(query3BUE,"%s;%g.2\n",name,diameter);
+    }
+    fclose(query1BUE);
+    fclose(query2BUE);
+    fclose(query3BUE);
+    fclose(trees);
+    fclose(hoods);
+    freeHood(hood);
+    freeTree(tree);
 
     return EXIT_SUCCESS;
 }
