@@ -105,6 +105,7 @@ int addTreeHood(hoodADT hood, char * treeHood)
 }
 
 //aux function that calculates the amount of trees per habitant in each neighborhood
+//if the amount of habitants in a neighborhood is cero then we set the trees / habitants as zero
 static void treesPerHab(hoodADT hood)
 {
     size_t habitants;

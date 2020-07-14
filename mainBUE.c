@@ -98,7 +98,7 @@ int main(int argc, char const *argv[]){
             }
             token=strtok(NULL,";");
         }
-        if(diameter > 0)
+        if(diameter > 0)// If the diameter is 0 then the diameter was not recorded in the database so we do not include the sample in our diameter average calculation
         {
             mem = addTree(tree, treeName, diameter);
             if(mem == 0) {
