@@ -29,7 +29,7 @@ typedef struct treesCDT {
     size_t size;                        // amount of species in vector
 } treesCDT;
 
-int availableMem2 (void) {
+static int availableMem2 (void) {
     if (errno != ENOMEM)
         return OK;
     perror("Error:");
@@ -94,46 +94,51 @@ static void diamAvg (treesADT tree) // calculates all of the species average dia
     }
 }
 
-static treeNode * addRecTree (treeNode * first, tTree tree) {
+static treeNode * addRecTree (treeNode * first, tTree tree, int * added) {
     if (first == NULL || first->diameterMean < tree.diameterMean) {
         treeNode * aux = malloc(sizeof(treeNode));
         if (!availableMem2())
-            return NULL;
+            return first;
         aux->common_name = malloc((strlen(tree.common_name)+1)*sizeof(char));
         if (!availableMem2())
-            return NULL;
+            return first;
         aux->diameterMean = tree.diameterMean;
         strcpy(aux->common_name,tree.common_name);    
         aux->tail = first;
+        *added = 1;
         return aux;
     }
     if (first->diameterMean == tree.diameterMean) {
         if (strcmp(first->common_name, tree.common_name) > 0) {
             treeNode * aux = malloc(sizeof(treeNode));
             if (!availableMem2())
-                return NULL;
+                return first;
             aux->common_name = malloc((strlen(tree.common_name)+1)*sizeof(char));
             if (!availableMem2())
-                return NULL;
+                return first;
             aux->diameterMean=tree.diameterMean;
             strcpy(aux->common_name, tree.common_name);
             aux->tail = first;
+            *added = 1;
             return aux;
         }
     }
-    first->tail = addRecTree(first->tail, tree);
+    first->tail = addRecTree(first->tail, tree, added);
     return first;
 }
 
 
-void treeList (treesADT tree) {
+int treeList (treesADT tree) {
     diamAvg(tree); // we calculate the diameter average of each species
     for (size_t i = 0; i < tree->size; i++) {
-        tree->firstTree = addRecTree(tree->firstTree, tree->vector[i]);
+        int added = 0;
+        tree->firstTree = addRecTree(tree->firstTree, tree->vector[i], &added);
+        if(added == 0)
+            return !OK;
         free(tree->vector[i].common_name);
     }
     free(tree->vector);
-    return ;
+    return OK;
 }
 
 

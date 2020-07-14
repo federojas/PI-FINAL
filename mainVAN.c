@@ -51,6 +51,8 @@ int main(int argc, char const *argv[]){
     fprintf(query2VAN,"neigbourhoods;trees/hab\n");
     fprintf(query3VAN,"tree name;diameter mean\n");
 
+    int mem = 0; //int variable used to check memory errors (memory shortage)
+
     //we already know that the hoods are in the third column, the tree name in the 7th and the diameter in the 12th 
     while(fgets(linesHoods, MAX_BUFFER, hoods)){
         token=strtok(linesHoods,";");//we already know that the first column goes for the hood and the second for the population
@@ -58,7 +60,11 @@ int main(int argc, char const *argv[]){
         token = strtok(NULL,";");
         pop = atol(token);
         if(pop > 0)
-            addHood(hood, hoodName, pop);
+        {
+           mem = addHood(hood, hoodName, pop);
+           if(mem == 0)
+                return EXIT_FAILURE;
+        }
     }
 
     while(fgets(linesTrees, MAX_BUFFER, trees))
@@ -73,6 +79,7 @@ int main(int argc, char const *argv[]){
             {
                 strcpy(treeName,token);
 
+
             }
             if(i==15)
             {
@@ -82,11 +89,19 @@ int main(int argc, char const *argv[]){
             token=strtok(NULL,";");
         }
         if(diameter > 0) // If the diameter is 0 then the diameter was not recorded in the database so we do not include the sample in our diameter average calculation
-            addTree(tree, treeName, diameter);
+        {    
+            mem = addTree(tree, treeName, diameter);
+            if(mem ==  0)
+                return EXIT_FAILURE;
+        }        
         addTreeHood(hood, hoodName);
     }
-    hoodList(hood);//we use the hoods present in the vector in order to create a list sorted by to criterias (trees per hood and amount of trees per habitant )  
-    treeList(tree); //we use the trees names present in the vector of trees in order to create a list ordered  by the criteria diameter mean per tree spercies
+    mem = hoodList(hood);//we use the hoods present in the vector in order to create a list sorted by to criterias (trees per hood and amount of trees per habitant )  
+    if(mem == 0)
+        return EXIT_FAILURE;
+    mem = treeList(tree); //we use the trees names present in the vector of trees in order to create a list ordered  by the criteria diameter mean per tree spercies
+    if(mem == 0)
+        return EXIT_FAILURE;
     toBegin(tree);
     toBeginHoodHab(hood);
     toBeginQty(hood);

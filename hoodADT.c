@@ -33,7 +33,7 @@ typedef struct hoodCDT {
     size_t vecSize;                 //amount of neighborhoos in vector
 } hoodCDT;
 
-int availableMem (void) {
+static int availableMem (void) {
     if (errno != ENOMEM)
         return OK;
     perror("Error:");
@@ -129,19 +129,20 @@ static hoodNode * sortQty(hoodNode * first, hoodNode * sort)
 }
 
 //function that sorts by descending order of trees per hab, creating a new node and sorts the list by amount of trees per neighborhood without creating new nodes
-static hoodNode * addRec(hoodNode * first, tHood hood, hoodADT neighborhood){
+static hoodNode * addRec(hoodNode * first, tHood hood, hoodADT neighborhood, int * added){
     if (first == NULL || first->treesPerHab < hood.treesPerHab) {
         hoodNode * result = malloc(sizeof(hoodNode));
         if (!availableMem())
-            return NULL;
+            return first;
         result->treeQty = hood.treeQty;
         result->treesPerHab = hood.treesPerHab;
         result->hood_name = malloc((strlen(hood.hood_name)+1) * sizeof(char));
         if (!availableMem())
-            return NULL;
+            return first;
         strcpy(result->hood_name, hood.hood_name);
         result->habTail = first;
         neighborhood->firstHoodQty = sortQty(neighborhood->firstHoodQty, result);
+        *added = 1;
         return result;
     }
     if (first->treesPerHab == hood.treesPerHab) {
@@ -149,19 +150,20 @@ static hoodNode * addRec(hoodNode * first, tHood hood, hoodADT neighborhood){
         {
             hoodNode * result = malloc(sizeof(hoodNode));
             if (!availableMem())
-                return NULL;
+                return first;
             result->treeQty = hood.treeQty;
             result->treesPerHab = hood.treesPerHab;
             result->hood_name = malloc((strlen(hood.hood_name)+1) * sizeof(char));
             if (!availableMem())
-                return NULL;
+                return first;
             strcpy(result->hood_name, hood.hood_name);
             result->habTail = first;
             neighborhood->firstHoodQty = sortQty(neighborhood->firstHoodQty, result);
+            *added = 1;
             return result;
         }
     }
-    first->habTail = addRec(first->habTail, hood, neighborhood);
+    first->habTail = addRec(first->habTail, hood, neighborhood, added);
     return first;
 }
 
@@ -169,7 +171,10 @@ int hoodList (hoodADT hood) {
     treesHab(hood); // we calculate the trees/hab
     for(int i = 0; i < hood->vecSize; i++)
     {
-        hood->firstHoodHab = addRec(hood->firstHoodHab, hood->vecHood[i], hood); //sorts both queries creating only one list
+        int added = 0;
+        hood->firstHoodHab = addRec(hood->firstHoodHab, hood->vecHood[i], hood, &added); //sorts both queries creating only one list
+        if(added == 0) //memory error
+            return !OK;
         free(hood->vecHood[i].hood_name);
     }
     free(hood->vecHood); // we free up no longer required memory
