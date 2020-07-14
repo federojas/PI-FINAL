@@ -10,7 +10,7 @@
 #define HOOD_NAME_BUFFER 5
 
 int main(int argc, char const *argv[]){
-    if (argc != 3){
+    if (argc != 3) {
         fprintf(stderr, "Incorrect amount of arguments introduced\n");
         return EXIT_FAILURE;
     }
@@ -18,19 +18,22 @@ int main(int argc, char const *argv[]){
     treesADT tree = newTree();
     hoodADT hood = newHood();
     FILE *trees, *hoods,*query3BUE,*query1BUE,*query2BUE;
-    trees = fopen(argv[1],"r");
-    hoods = fopen(argv[2],"r");
-    if (trees==NULL|| hoods==NULL) {
+    trees = fopen(argv[1], "r");
+    hoods = fopen(argv[2], "r");
+    if (trees == NULL|| hoods == NULL) {
         fprintf(stderr, "Error in files input\n");
+        freeHood(hood);
+        freeTree(tree);
         return EXIT_FAILURE;
     }
     fseek (trees, 0, SEEK_END);
     fseek (hoods, 0, SEEK_END);
     int size1 = ftell(trees);
     int size2 = ftell(hoods);
-   
-    if(size1==0 || size2==0){
+    if(size1 == 0 || size2 == 0) {
         fprintf(stderr, "At least one of the files is empty\n");
+        freeHood(hood);
+        freeTree(tree);
         return EXIT_FAILURE;
     }
     fseek (trees, 0, SEEK_SET);
@@ -87,6 +90,7 @@ int main(int argc, char const *argv[]){
             addTree(tree, treeName, diameter);
         addTreeHood(hood, hoodName);
     }
+    
     hoodList(hood); //we use the hoods present in the vector in order to create a list sorted by to criterias (trees per hood and amount of trees per habitant )                
     treeList(tree); //we use the trees names present in the vector of trees in order to create a list ordered  by the criteria diameter mean per tree spercies         
     toBegin(tree);
