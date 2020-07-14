@@ -216,7 +216,7 @@ int hasNextHoodQty(hoodADT hood){
     return hood->currentHoodQty != NULL;
 }
 
-void nextHoodQty(hoodADT hood, int *cant, char *hoodName)//me devuelve  trees per hab, el nombre del barrio y qty 
+void nextHoodQty(hoodADT hood, int *cant, char *hoodName)
 {
     if(hasNextHoodQty(hood) == 0)
         return;
