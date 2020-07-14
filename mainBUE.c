@@ -110,7 +110,7 @@ int main(int argc, char const *argv[]){
         }
         char name[TREE_NAME_BUFFER];
         while(hasNext(tree)){
-            diameter=next(tree,name);
+            diameter = next(tree, name);
             fprintf(query3BUE,"%s;%g.2\n",name,diameter);
         }
         fclose(query1BUE);
